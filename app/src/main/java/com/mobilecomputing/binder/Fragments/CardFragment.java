@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mobilecomputing.binder.R;
@@ -21,6 +22,7 @@ public class CardFragment extends BasicFragment {
     private GoogleSignInAccount userAccount;
 
     private ImageView profileImage;
+    private TextView profileName;
 
 
     public CardFragment() {
@@ -39,6 +41,7 @@ public class CardFragment extends BasicFragment {
 
     public void initUI(View view) {
         profileImage = view.findViewById(R.id.card_profile_image);
+        profileName = view.findViewById(R.id.card_text_name);
 
         populateUI();
     }
@@ -46,7 +49,7 @@ public class CardFragment extends BasicFragment {
     public void populateUI() {
 
         if(userAccount != null && profileImage != null) {
-
+            profileName.setText(userAccount.getGivenName() + ".");
             Picasso.with(getContext()).load(userAccount.getPhotoUrl()).into(profileImage);
         }
     }

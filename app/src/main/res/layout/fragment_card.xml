@@ -11,6 +11,34 @@
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
+        <TextView
+            android:id="@+id/card_text_hello"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryText"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:text="@string/hello" />
+
+        <TextView
+            android:id="@+id/card_text_name"
+            android:layout_toEndOf="@+id/card_text_hello"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:text="Josefine." />
+
+        <TextView
+            android:layout_below="@+id/card_text_hello"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorSecondaryText"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:text="Tell us what books you like" />
+
         <android.support.v7.widget.CardView
             android:layout_alignParentEnd="true"
             app:cardCornerRadius="40dp"
@@ -27,11 +55,4 @@
 
     </RelativeLayout>
 
-
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobilecomputing.binder.Fragments.CardFragment;
@@ -38,6 +39,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     private Fragment matchesFragment;
 
     private SignInButton signInButton;
+    private RelativeLayout signInBackground;
 
     private Menu menu;
 
@@ -49,15 +51,12 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
 
             switch (item.getItemId()) {
                 case R.id.navigation_books:
-                    mTextMessage.setText(R.string.title_books);
                     switchContent("CardFragment");
                     return true;
                 case R.id.navigation_matches:
-                    mTextMessage.setText(R.string.title_matches);
                     switchContent("MatchesFragment");
                     return true;
                 case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_profile);
                     switchContent("ProfileFragment");
                     return true;
             }
@@ -71,9 +70,6 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-
-        mTextMessage = (TextView) findViewById(R.id.message);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -100,6 +96,8 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        signInBackground = (RelativeLayout) findViewById(R.id.sign_in_background);
 
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(view -> {
@@ -166,7 +164,6 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
 
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            mTextMessage.setText("Signed in as " + acct.getDisplayName());
             isSignedIn = true;
             ((ProfileFragment)profileFragment).setUserAccount(acct);
             ((CardFragment)cardFragment).setUserAccount(acct);
@@ -185,6 +182,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
      */
     public void setVisibilityOfSignIn() {
         signInButton.setVisibility(isSignedIn ? signInButton.INVISIBLE : signInButton.VISIBLE );
+        signInBackground.setVisibility(isSignedIn ? signInButton.INVISIBLE : signInButton.VISIBLE );
     }
 
     @Override
