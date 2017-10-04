@@ -12,20 +12,20 @@
         <activity
             android:name=".Activities.HomeActivity"
             android:label="@string/app_name">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-        <activity android:name=".Activities.StartActivity" />
-        <activity android:name=".Activities.LoginActivity" />
-        <activity android:name=".Activities.ContactActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Activities.StartActivity" />
+        <activity android:name=".Activities.LoginActivity" />
+        <activity android:name=".Activities.ContactActivity" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity android:name=".Activities.BasicActivity"></activity>
     </application>
