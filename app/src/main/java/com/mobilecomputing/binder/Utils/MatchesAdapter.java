@@ -47,7 +47,7 @@ public class MatchesAdapter extends ArrayAdapter {
 
         matchName.setText(match.name);
         //TODO fix this
-        matchPercent.setText("45 %");
+        matchPercent.setText(match.percent + " %" + match);
 
         return convertView;
     }

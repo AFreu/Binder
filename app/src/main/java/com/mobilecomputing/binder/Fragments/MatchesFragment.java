@@ -41,9 +41,15 @@ public class MatchesFragment extends BasicFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_matches, container, false);
+
         list = view.findViewById(R.id.matches_list);
+
         ArrayList<Match> matchList = new ArrayList<Match>();
-        matchList.add(new Match("Lovisa", 26, null, null, null));
+
+        matchList.add(new Match("Lovisa", 26, null, null, null, 55));
+        matchList.add(new Match("Mikael", 24, null, null, null, 67));
+
+
         matches = new MatchesAdapter(getContext(), R.layout.match_item, matchList);
         initUI(view);
         return view;
