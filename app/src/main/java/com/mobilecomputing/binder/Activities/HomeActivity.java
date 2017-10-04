@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -35,6 +36,8 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
 
     private SignInButton signInButton;
 
+    private Menu menu;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -44,15 +47,15 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
             switch (item.getItemId()) {
                 case R.id.navigation_books:
                     mTextMessage.setText(R.string.title_books);
-                    switchToFragment("CardFragment");
+                    switchContent("CardFragment");
                     return true;
                 case R.id.navigation_matches:
                     mTextMessage.setText(R.string.title_matches);
-                    switchToFragment("MatchesFragment");
+                    switchContent("MatchesFragment");
                     return true;
                 case R.id.navigation_profile:
                     mTextMessage.setText(R.string.title_profile);
-                    switchToFragment("ProfileFragment");
+                    switchContent("ProfileFragment");
                     return true;
             }
 
@@ -67,6 +70,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         setContentView(R.layout.activity_home);
 
         mTextMessage = (TextView) findViewById(R.id.message);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -108,27 +112,33 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     }
 
 
-    private void switchToFragment(String fragment){
+    private void switchContent(String content){
 
-        Fragment frag;
+        Fragment fragment;
+        String title;
 
-        switch (fragment){
+        switch (content){
             case "CardFragment":
-                frag = new CardFragment();
+                fragment = new CardFragment();
+                title = getString(R.string.title_books);
                 break;
             case "MatchesFragment":
-                frag = new MatchesFragment();
+                fragment = new MatchesFragment();
+                title = getString(R.string.title_matches);
                 break;
             case "ProfileFragment":
-                frag = new ProfileFragment();
+                fragment = new ProfileFragment();
+                title = getString(R.string.title_profile);
                 break;
             default:
-                frag = new CardFragment();
+                fragment = new CardFragment();
+                title = getString(R.string.title_books);
                 break;
         }
 
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.container, frag).commit();
+        manager.beginTransaction().replace(R.id.content, fragment).commit();
+        getSupportActionBar().setTitle(title);
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
@@ -157,5 +167,11 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+        return super.onCreateOptionsMenu(menu);
     }
 }
