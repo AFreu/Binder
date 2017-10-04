@@ -46,12 +46,14 @@ public class ProfileFragment extends BasicFragment {
      */
     public void populateUI() {
 
-        if(userAccount != null) {
+        if(userAccount != null && nameText != null) {
             nameText.setText(userAccount.getDisplayName());
         }
     }
 
     public void setUserAccount(GoogleSignInAccount userAccount) {
         this.userAccount = userAccount;
+
+        populateUI();
     }
 }
