@@ -33,6 +33,10 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     private boolean isSignedIn = false;
     private static final int RC_SIGN_IN = 300;
 
+    private Fragment profileFragment;
+    private Fragment cardFragment;
+    private Fragment matchesFragment;
+
     private SignInButton signInButton;
 
     private Menu menu;
@@ -74,6 +78,8 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
+        createFragments();
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -89,6 +95,12 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         });
 
         setVisibilityOfSignIn();
+    }
+
+    private void createFragments() {
+        profileFragment = new ProfileFragment();
+        cardFragment = new CardFragment();
+        matchesFragment = new MatchesFragment();
     }
 
     /**
@@ -118,19 +130,19 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
 
         switch (content){
             case "CardFragment":
-                fragment = new CardFragment();
+                fragment = cardFragment;
                 title = getString(R.string.title_books);
                 break;
             case "MatchesFragment":
-                fragment = new MatchesFragment();
+                fragment = matchesFragment;
                 title = getString(R.string.title_matches);
                 break;
             case "ProfileFragment":
-                fragment = new ProfileFragment();
+                fragment = profileFragment;
                 title = getString(R.string.title_profile);
                 break;
             default:
-                fragment = new CardFragment();
+                fragment = cardFragment;
                 title = getString(R.string.title_books);
                 break;
         }
@@ -145,11 +157,11 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             mTextMessage.setText("Signed in as " + acct.getDisplayName());
-            Log.d("HomeActivity", "handleSignInResult:" + acct.getDisplayName());
             isSignedIn = true;
-
+            ((ProfileFragment)profileFragment).setUserAccount(acct);
         } else {
             isSignedIn = false;
+            ((ProfileFragment)profileFragment).setUserAccount(null);
         }
 
         setVisibilityOfSignIn();

@@ -20,6 +20,10 @@ public class ContactProfileFragment extends BasicFragment {
         // Required empty public constructor
     }
 
+    public static ContactProfileFragment newInstance() {
+        ContactProfileFragment fragment = new ContactProfileFragment();
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

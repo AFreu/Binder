@@ -12,6 +12,4 @@ public abstract class BasicFragment extends Fragment {
     public BasicFragment() {
         // Required empty public constructor
     }
-
-
 }
