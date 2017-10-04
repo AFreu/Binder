@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,6 +76,9 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Toolbar toolBar = (Toolbar)findViewById(R.id.home_toolbar);
+        setSupportActionBar(toolBar);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -92,6 +96,22 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         initSignIn();
 
         setVisibilityOfSignIn();
+
+        RelativeLayout back = (RelativeLayout) findViewById(R.id.home_gradient_background);
+        // blurs the background on sign in
+        back.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                back.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                Blurry.with(HomeActivity.this).radius(25)
+                        .sampling(2)
+                        .async()
+                        .animate(300)
+                        .onto((ViewGroup)back.getParent());
+                return false;
+            }
+        });
     }
 
     private void initSignIn() {
@@ -178,7 +198,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
             ((CardFragment)cardFragment).setUserAccount(acct);
 
             // blurs the background on sign in
-            gridView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            /*gridView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
                     gridView.getViewTreeObserver().removeOnPreDrawListener(this);
@@ -190,7 +210,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
                             .onto((ViewGroup)gridView.getParent());
                     return false;
                 }
-            });
+            });*/
 
         } else {
             isSignedIn = false;

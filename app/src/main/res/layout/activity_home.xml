@@ -21,15 +21,30 @@
         </GridView>
     </RelativeLayout>
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/home_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
 
     <RelativeLayout
-        android:background="@drawable/background_gradient"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/home_gradient_background"
+            android:background="@drawable/background_gradient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </RelativeLayout>
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/app_body"
+        android:layout_below="@+id/home_toolbar"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

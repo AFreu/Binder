@@ -17,6 +17,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Random;
 
+import jp.wasabeef.blurry.Blurry;
+
 /**
  * Created by mikael on 2017-10-04.
  */
@@ -47,23 +49,24 @@ public class ImageAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        ViewHolder holder = null;
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            row = inflater.inflate(layoutResource, parent, false);
-            holder = new ViewHolder();
+            final View r = inflater.inflate(layoutResource, parent, false);
+            final ViewHolder holder = new ViewHolder();
 
+            holder.image = r.findViewById(R.id.image_layout_image);
+            r.setTag(holder);
+
+            String url = imageUrls.get(position);
+            Picasso.with(context).load(url).into(holder.image);
+
+            return r;
 
         } else {
-            holder = (ViewHolder) row.getTag();
+            final ViewHolder holder = (ViewHolder) row.getTag();
         }
 
-        holder.image = row.findViewById(R.id.image_layout_image);
-        row.setTag(holder);
-
-        String url = imageUrls.get(position);
-        Picasso.with(context).load(url).into(holder.image);
 
 
         return row;
