@@ -21,7 +21,6 @@
         <activity android:name=".Activities.StartActivity" />
         <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.ContactActivity" />
-        <activity android:name=".Activities.BasicActivity"></activity>
     </application>
 
 </manifest>

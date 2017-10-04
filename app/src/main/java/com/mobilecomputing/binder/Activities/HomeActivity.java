@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.mobilecomputing.binder.Fragments.CardFragment;
