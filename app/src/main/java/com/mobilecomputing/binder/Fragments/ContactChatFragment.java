@@ -20,6 +20,10 @@ public class ContactChatFragment extends BasicFragment {
         // Required empty public constructor
     }
 
+    public static ContactChatFragment newInstance() {
+        ContactChatFragment fragment = new ContactChatFragment();
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
