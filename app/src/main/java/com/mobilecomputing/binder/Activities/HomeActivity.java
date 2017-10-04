@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobilecomputing.binder.Fragments.CardFragment;
@@ -38,6 +39,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     private Fragment matchesFragment;
 
     private SignInButton signInButton;
+    private RelativeLayout signInBackground;
 
     private Menu menu;
 
@@ -100,6 +102,8 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        signInBackground = (RelativeLayout) findViewById(R.id.sign_in_background);
 
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(view -> {
@@ -185,6 +189,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
      */
     public void setVisibilityOfSignIn() {
         signInButton.setVisibility(isSignedIn ? signInButton.INVISIBLE : signInButton.VISIBLE );
+        signInBackground.setVisibility(isSignedIn ? signInButton.INVISIBLE : signInButton.VISIBLE );
     }
 
     @Override
