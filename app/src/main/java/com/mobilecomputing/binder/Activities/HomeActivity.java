@@ -4,11 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.mobilecomputing.binder.Fragments.CardFragment;
+import com.mobilecomputing.binder.Fragments.MatchesFragment;
+import com.mobilecomputing.binder.Fragments.ProfileFragment;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -16,6 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+
 import com.mobilecomputing.binder.R;
 
 public class HomeActivity extends BasicActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -32,17 +40,22 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                case R.id.navigation_books:
+                    mTextMessage.setText(R.string.title_books);
+                    switchToFragment("CardFragment");
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                case R.id.navigation_matches:
+                    mTextMessage.setText(R.string.title_matches);
+                    switchToFragment("MatchesFragment");
                     return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                case R.id.navigation_profile:
+                    mTextMessage.setText(R.string.title_profile);
+                    switchToFragment("ProfileFragment");
                     return true;
             }
+
             return false;
         }
 
@@ -94,6 +107,30 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         }
     }
 
+
+    private void switchToFragment(String fragment){
+
+        Fragment frag;
+
+        switch (fragment){
+            case "CardFragment":
+                frag = new CardFragment();
+                break;
+            case "MatchesFragment":
+                frag = new MatchesFragment();
+                break;
+            case "ProfileFragment":
+                frag = new ProfileFragment();
+                break;
+            default:
+                frag = new CardFragment();
+                break;
+        }
+
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.container, frag).commit();
+    }
+
     private void handleSignInResult(GoogleSignInResult result) {
 
         if (result.isSuccess()) {
@@ -114,7 +151,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
      * Hides sign-in button when user is signed in and shows it otherwise
      */
     public void setVisibilityOfSignIn() {
-        signInButton.setVisibility(isSignedIn ? View.INVISIBLE : View.VISIBLE );
+        signInButton.setVisibility(isSignedIn ? signInButton.INVISIBLE : signInButton.VISIBLE );
     }
 
     @Override
