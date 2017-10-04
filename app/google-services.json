@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "252112899629",
+    "project_id": "binder-a63af"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252112899629:android:0e2b528f6bf5fd7c",
+        "android_client_info": {
+          "package_name": "com.mobilecomputing.binder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252112899629-q889ipq5tvhvg0fmj6u1n5llgvc6546q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobilecomputing.binder",
+            "certificate_hash": "d87e467db7c3525eb4cda5ae50c0bd2da1ea7e44"
+          }
+        },
+        {
+          "client_id": "252112899629-sfusb5kemmu90vurdp5fs81d226a15pc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChC5rhZyfHH6EYJ9DFwxDbiAeQavJjM3A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
