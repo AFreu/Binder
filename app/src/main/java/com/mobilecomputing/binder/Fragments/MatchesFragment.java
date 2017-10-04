@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.mobilecomputing.binder.R;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Date;
 
 
 /**
@@ -33,9 +34,7 @@ public class MatchesFragment extends BasicFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_matches, container, false);
-
         initUI(view);
-
         return view;
     }
 
