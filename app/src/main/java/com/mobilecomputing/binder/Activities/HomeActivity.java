@@ -51,15 +51,12 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
 
             switch (item.getItemId()) {
                 case R.id.navigation_books:
-                    mTextMessage.setText(R.string.title_books);
                     switchContent("CardFragment");
                     return true;
                 case R.id.navigation_matches:
-                    mTextMessage.setText(R.string.title_matches);
                     switchContent("MatchesFragment");
                     return true;
                 case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_profile);
                     switchContent("ProfileFragment");
                     return true;
             }
@@ -73,9 +70,6 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-
-        mTextMessage = (TextView) findViewById(R.id.message);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -170,7 +164,6 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
 
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            mTextMessage.setText("Signed in as " + acct.getDisplayName());
             isSignedIn = true;
             ((ProfileFragment)profileFragment).setUserAccount(acct);
             ((CardFragment)cardFragment).setUserAccount(acct);
