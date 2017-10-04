@@ -38,6 +38,7 @@ dependencies {
     compile 'com.android.support:support-v4:26.+'
     compile 'com.google.android.gms:play-services-auth:9.0.0'
     compile 'com.github.stfalcon:chatkit:0.2.2'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
 
     testCompile 'junit:junit:4.12'
