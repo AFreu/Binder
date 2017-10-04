@@ -6,14 +6,21 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mobilecomputing.binder.R;
+import com.squareup.picasso.Picasso;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CardFragment extends BasicFragment {
+
+    private GoogleSignInAccount userAccount;
+
+    private ImageView profileImage;
 
 
     public CardFragment() {
@@ -24,8 +31,28 @@ public class CardFragment extends BasicFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_card, container, false);
+        View view = inflater.inflate(R.layout.fragment_card, container, false);
+        initUI(view);
+
+        return view;
+    }
+
+    public void initUI(View view) {
+        profileImage = view.findViewById(R.id.card_profile_image);
+
+        populateUI();
+    }
+
+    public void populateUI() {
+
+        if(userAccount != null) {
+
+            Picasso.with(getContext()).load(userAccount.getPhotoUrl()).into(profileImage);
+        }
+    }
+
+    public void setUserAccount(GoogleSignInAccount userAccount) {
+        this.userAccount = userAccount;
     }
 
 }

@@ -50,7 +50,7 @@ public class ProfileFragment extends BasicFragment {
      */
     public void populateUI() {
 
-        if(userAccount != null) {
+        if(userAccount != null && nameText != null) {
             nameText.setText(userAccount.getDisplayName());
             Picasso.with(getContext()).load(userAccount.getPhotoUrl()).into(profileImage);
         }
@@ -58,5 +58,7 @@ public class ProfileFragment extends BasicFragment {
 
     public void setUserAccount(GoogleSignInAccount userAccount) {
         this.userAccount = userAccount;
+
+        populateUI();
     }
 }
