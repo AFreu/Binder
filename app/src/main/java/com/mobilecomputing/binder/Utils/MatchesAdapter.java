@@ -34,6 +34,7 @@ public class MatchesAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
+
         Match match = (Match) getItem(position);
 
         if (convertView == null){
@@ -42,7 +43,7 @@ public class MatchesAdapter extends ArrayAdapter {
 
         TextView matchName = (TextView) convertView.findViewById(R.id.match_name);
         TextView matchPercent = (TextView) convertView.findViewById(R.id.match_percent);
-        ImageView matchPicture = convertView.findViewById(R.id.match_picture);
+        ImageView matchPicture = (ImageView) convertView.findViewById(R.id.match_picture);
 
         matchName.setText(match.name);
         //TODO fix this
