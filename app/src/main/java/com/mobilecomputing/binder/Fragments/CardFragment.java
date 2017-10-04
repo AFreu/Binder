@@ -45,7 +45,7 @@ public class CardFragment extends BasicFragment {
 
     public void populateUI() {
 
-        if(userAccount != null) {
+        if(userAccount != null && profileImage != null) {
 
             Picasso.with(getContext()).load(userAccount.getPhotoUrl()).into(profileImage);
         }
@@ -53,6 +53,8 @@ public class CardFragment extends BasicFragment {
 
     public void setUserAccount(GoogleSignInAccount userAccount) {
         this.userAccount = userAccount;
+
+        populateUI();
     }
 
 }
