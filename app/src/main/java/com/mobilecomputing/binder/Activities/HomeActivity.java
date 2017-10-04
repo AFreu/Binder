@@ -72,6 +72,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
         mTextMessage = (TextView) findViewById(R.id.message);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -80,6 +81,17 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
 
         createFragments();
 
+        // sets first fragment to booksfragment
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.content, cardFragment).commit();
+        getSupportActionBar().setTitle(getString(R.string.title_books));
+
+        initSignIn();
+
+        setVisibilityOfSignIn();
+    }
+
+    private void initSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -93,8 +105,6 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         signInButton.setOnClickListener(view -> {
             signInWithGoogle();
         });
-
-        setVisibilityOfSignIn();
     }
 
     private void createFragments() {
@@ -159,9 +169,11 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
             mTextMessage.setText("Signed in as " + acct.getDisplayName());
             isSignedIn = true;
             ((ProfileFragment)profileFragment).setUserAccount(acct);
+            ((CardFragment)cardFragment).setUserAccount(acct);
         } else {
             isSignedIn = false;
             ((ProfileFragment)profileFragment).setUserAccount(null);
+            ((CardFragment)cardFragment).setUserAccount(null);
         }
 
         setVisibilityOfSignIn();
