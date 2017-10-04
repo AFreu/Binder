@@ -1,13 +1,14 @@
-package com.mobilecomputing.binder;
+package com.mobilecomputing.binder.Activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class HomeActivity extends AppCompatActivity {
+import com.mobilecomputing.binder.R;
+
+public class HomeActivity extends BasicActivity {
 
     private TextView mTextMessage;
 
