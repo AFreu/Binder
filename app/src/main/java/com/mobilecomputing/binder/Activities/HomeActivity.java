@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.mobilecomputing.binder.Fragments.CardFragment;
@@ -33,6 +32,10 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     private GoogleApiClient googleApiClient;
     private boolean isSignedIn = false;
     private static final int RC_SIGN_IN = 300;
+
+    private Fragment profileFragment;
+    private Fragment cardFragment;
+    private Fragment matchesFragment;
 
     private SignInButton signInButton;
 
@@ -69,12 +72,26 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
         mTextMessage = (TextView) findViewById(R.id.message);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
+        createFragments();
+
+        // sets first fragment to booksfragment
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.content, cardFragment).commit();
+        getSupportActionBar().setTitle(getString(R.string.title_books));
+
+        initSignIn();
+
+        setVisibilityOfSignIn();
+    }
+
+    private void initSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -88,8 +105,12 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         signInButton.setOnClickListener(view -> {
             signInWithGoogle();
         });
+    }
 
-        setVisibilityOfSignIn();
+    private void createFragments() {
+        profileFragment = new ProfileFragment();
+        cardFragment = new CardFragment();
+        matchesFragment = new MatchesFragment();
     }
 
     /**
@@ -119,19 +140,19 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
 
         switch (content){
             case "CardFragment":
-                fragment = new CardFragment();
+                fragment = cardFragment;
                 title = getString(R.string.title_books);
                 break;
             case "MatchesFragment":
-                fragment = new MatchesFragment();
+                fragment = matchesFragment;
                 title = getString(R.string.title_matches);
                 break;
             case "ProfileFragment":
-                fragment = new ProfileFragment();
+                fragment = profileFragment;
                 title = getString(R.string.title_profile);
                 break;
             default:
-                fragment = new CardFragment();
+                fragment = cardFragment;
                 title = getString(R.string.title_books);
                 break;
         }
@@ -146,11 +167,13 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             mTextMessage.setText("Signed in as " + acct.getDisplayName());
-            Log.d("HomeActivity", "handleSignInResult:" + acct.getDisplayName());
             isSignedIn = true;
-
+            ((ProfileFragment)profileFragment).setUserAccount(acct);
+            ((CardFragment)cardFragment).setUserAccount(acct);
         } else {
             isSignedIn = false;
+            ((ProfileFragment)profileFragment).setUserAccount(null);
+            ((CardFragment)cardFragment).setUserAccount(null);
         }
 
         setVisibilityOfSignIn();

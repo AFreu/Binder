@@ -1,15 +1,51 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+
+        <item name="colorPrimary">@android:color/transparent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
+
+    </style>
+    
+    <style name="ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+
+        <item name="android:color">@android:color/transparent</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="titleTextStyle">@style/TitleStyle</item>
+
+    </style>
+
+    <style name="TitleStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">24dip</item>
+        <item name="android:textStyle">bold</item>
+
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="PrimaryTextStyle" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">20dip</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="SecondaryTextStyle" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">20dip</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
 
 </resources>

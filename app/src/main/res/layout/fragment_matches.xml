@@ -5,9 +5,17 @@
     tools:context="com.mobilecomputing.binder.Fragments.MatchesFragment">
 
 
-        <ListView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/matches_list"/>
+            android:orientation="vertical">
+
+            <ListView
+                tools:listitem="@layout/match_item"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/matches_list"/>
+
+        </LinearLayout>
 
     </FrameLayout>
