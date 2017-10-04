@@ -8,12 +8,28 @@
     tools:context="com.mobilecomputing.binder.Activities.HomeActivity">
 
     <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <GridView
+            android:id="@+id/background_grid"
+            android:background="@color/actionBarColor"
+            android:layout_width="match_parent"
+            android:columnWidth="100dp"
+            android:numColumns="auto_fit"
+            android:layout_height="match_parent">
+
+        </GridView>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:background="@drawable/background_gradient"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/app_body"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -43,10 +59,8 @@
     <RelativeLayout
         android:id="@+id/sign_in_background"
         android:clickable="true"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"

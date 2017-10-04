@@ -4,19 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.mobilecomputing.binder.Fragments.CardFragment;
-import com.mobilecomputing.binder.Fragments.MatchesFragment;
-import com.mobilecomputing.binder.Fragments.ProfileFragment;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -24,12 +22,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-
+import com.mobilecomputing.binder.Fragments.CardFragment;
+import com.mobilecomputing.binder.Fragments.MatchesFragment;
+import com.mobilecomputing.binder.Fragments.ProfileFragment;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Utils.ImageAdapter;
+
+import jp.wasabeef.blurry.Blurry;
 
 public class HomeActivity extends BasicActivity implements GoogleApiClient.OnConnectionFailedListener {
 
-    private TextView mTextMessage;
+    private GridView gridView;
+    private LinearLayout appBody;
     private GoogleApiClient googleApiClient;
     private boolean isSignedIn = false;
     private static final int RC_SIGN_IN = 300;
@@ -74,9 +78,12 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        appBody = (LinearLayout) findViewById(R.id.app_body);
+        ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.image_layout);
+        gridView = (GridView) findViewById(R.id.background_grid);
+        gridView.setAdapter(imageAdapter);
 
         createFragments();
-
         // sets first fragment to booksfragment
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.content, cardFragment).commit();
@@ -88,6 +95,8 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     }
 
     private void initSignIn() {
+        appBody.setVisibility(View.INVISIBLE);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -167,6 +176,22 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
             isSignedIn = true;
             ((ProfileFragment)profileFragment).setUserAccount(acct);
             ((CardFragment)cardFragment).setUserAccount(acct);
+
+            // blurs the background on sign in
+            gridView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    gridView.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                    Blurry.with(HomeActivity.this).radius(8)
+                            .sampling(2)
+                            .async()
+                            .animate(300)
+                            .onto((ViewGroup)gridView.getParent());
+                    return false;
+                }
+            });
+
         } else {
             isSignedIn = false;
             ((ProfileFragment)profileFragment).setUserAccount(null);
@@ -183,6 +208,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     public void setVisibilityOfSignIn() {
         signInButton.setVisibility(isSignedIn ? signInButton.INVISIBLE : signInButton.VISIBLE );
         signInBackground.setVisibility(isSignedIn ? signInButton.INVISIBLE : signInButton.VISIBLE );
+        appBody.setVisibility(isSignedIn ? signInButton.VISIBLE : signInButton.INVISIBLE );
     }
 
     @Override

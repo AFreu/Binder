@@ -6,6 +6,8 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
     defaultConfig {
+        renderscriptTargetApi 26
+        renderscriptSupportModeEnabled true
         applicationId "com.mobilecomputing.binder"
         minSdkVersion 21
         targetSdkVersion 26
@@ -39,7 +41,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:9.0.0'
     compile 'com.github.stfalcon:chatkit:0.2.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
-
+    compile 'jp.wasabeef:blurry:2.1.1'
 
     testCompile 'junit:junit:4.12'
 
