@@ -25,11 +25,27 @@
 
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">24dip</item>
+        <item name="android:textStyle">bold</item>
 
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="PrimaryTextStyle" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">20dip</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="SecondaryTextStyle" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">20dip</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
 
 </resources>
