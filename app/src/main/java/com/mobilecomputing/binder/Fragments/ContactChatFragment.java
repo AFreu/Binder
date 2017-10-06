@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobilecomputing.binder.Modules.Author;
+import com.mobilecomputing.binder.Modules.ChatImage;
 import com.mobilecomputing.binder.Modules.Message;
 import com.mobilecomputing.binder.R;
 import com.stfalcon.chatkit.commons.ImageLoader;
@@ -32,7 +33,7 @@ public class ContactChatFragment extends BasicFragment
         implements MessagesListAdapter.OnLoadMoreListener {
 
 
-    private String senderId = "Jimmy";
+    private String senderId = "Me";
     private ImageLoader imageLoader;
 
 
@@ -69,9 +70,9 @@ public class ContactChatFragment extends BasicFragment
             @Override
             public boolean onSubmit(CharSequence input) {
                 Author author = new Author();
-                author.setId(total % 2 == 0 ? "Jimmy" : "Match");
-                author.setName("Jimmy");
-                author.setAvatar(null);
+                author.setId(total % 2 == 0 ? "Me" : "Match");
+                author.setName("Me");
+                author.setAvatar("https://blog.prepscholar.com/hubfs/body_testinprogress.gif?t=1506619170859");
                 Message msg = new Message();
                 msg.setId(String.valueOf(total));
                 msg.setText(String.valueOf(input));

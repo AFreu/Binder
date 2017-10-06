@@ -10,8 +10,15 @@
         android:id="@+id/messagesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/input"
+        android:layout_above="@+id/divider"
         app:inputHint="@string/hint_enter_a_message"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_above="@+id/input"
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/warm_grey"/>
 
     <com.stfalcon.chatkit.messages.MessageInput
         android:id="@+id/input"
