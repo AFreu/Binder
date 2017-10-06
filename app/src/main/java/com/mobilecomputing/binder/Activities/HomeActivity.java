@@ -44,6 +44,9 @@ import com.mobilecomputing.binder.Fragments.ProfileFragment;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jp.wasabeef.blurry.Blurry;
 
 public class HomeActivity extends BasicActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -53,6 +56,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     private GoogleApiClient googleApiClient;
     private boolean isSignedIn = false;
     private static final int RC_SIGN_IN = 300;
+    public static List<String> allGenres = new ArrayList<>();
 
     private Fragment profileFragment;
     private Fragment cardFragment;
@@ -89,6 +93,8 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        addAllGenres();
 
         Toolbar toolBar = (Toolbar)findViewById(R.id.home_toolbar);
         setSupportActionBar(toolBar);
@@ -127,6 +133,17 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
                 return false;
             }
         });
+    }
+
+    private void addAllGenres() {
+        allGenres.add("science");
+        allGenres.add("biography");
+        allGenres.add("drama");
+        allGenres.add("sci-fi");
+        allGenres.add("romance");
+        allGenres.add("fantasy");
+        allGenres.add("action");
+        allGenres.add("horror");
     }
 
     private void initSignIn() {
