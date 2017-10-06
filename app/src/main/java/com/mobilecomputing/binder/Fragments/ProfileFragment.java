@@ -3,6 +3,7 @@ package com.mobilecomputing.binder.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,13 @@ import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Views.BottomSheet;
 import com.mobilecomputing.binder.Views.ChipButton;
 import com.mobilecomputing.binder.Views.ChipView;
 import com.squareup.picasso.Picasso;
 import com.wefika.flowlayout.FlowLayout;
+
+import java.util.ArrayList;
 
 
 /**
@@ -29,13 +33,16 @@ public class ProfileFragment extends BasicFragment {
     private TextView nameText;
     private ImageView profileImage;
     private FlowLayout flowLayout;
+    private BottomSheet bottomSheet;
 
     private View.OnClickListener clickRemoveListener;
     private View.OnClickListener clickAddListener;
 
     public ProfileFragment() {
         // Required empty public constructor
+
     }
+
 
 
     @Override
@@ -53,10 +60,22 @@ public class ProfileFragment extends BasicFragment {
         clickAddListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.addToBackStack(null);
 
+                ArrayList<String> g = new ArrayList<>();
+                g.add("Sci-Fi");
+                g.add("Fantasy");
+
+                bottomSheet = new BottomSheet();
+                bottomSheet.setGenres(g);
+                bottomSheet.show(ft, "dialog");
             }
         };
         initUI(view);
+
+
+
 
 
 

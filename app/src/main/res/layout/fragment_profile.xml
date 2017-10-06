@@ -73,13 +73,30 @@
 
         </LinearLayout>
 
-        <com.wefika.flowlayout.FlowLayout
-            android:id="@+id/profile_flowlayout"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ListView
+                android:id="@+id/profile_genre_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/add_genre" />
 
-        </com.wefika.flowlayout.FlowLayout>
+            <ScrollView
+                android:id="@+id/profile_dislikes_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.wefika.flowlayout.FlowLayout
+                    android:id="@+id/profile_flowlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                </com.wefika.flowlayout.FlowLayout>
+            </ScrollView>
+        </FrameLayout>
 
     </LinearLayout>
 
