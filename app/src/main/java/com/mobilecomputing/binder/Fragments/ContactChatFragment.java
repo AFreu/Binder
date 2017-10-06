@@ -3,6 +3,7 @@ package com.mobilecomputing.binder.Fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import com.mobilecomputing.binder.Modules.Author;
 import com.mobilecomputing.binder.Modules.ChatImage;
 import com.mobilecomputing.binder.Modules.Message;
+import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.commons.models.IMessage;
@@ -32,6 +34,7 @@ import com.squareup.picasso.Picasso;
 public class ContactChatFragment extends BasicFragment
         implements MessagesListAdapter.OnLoadMoreListener {
 
+    private Match mContact;
 
     private String senderId = "Me";
     private ImageLoader imageLoader;
@@ -46,9 +49,19 @@ public class ContactChatFragment extends BasicFragment
         // Required empty public constructor
     }
 
-    public static ContactChatFragment newInstance() {
+    public static ContactChatFragment newInstance(Match contact) {
         ContactChatFragment fragment = new ContactChatFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("contact", contact);
+        fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mContact = (Match)getArguments().getSerializable("contact");
     }
 
     @Override

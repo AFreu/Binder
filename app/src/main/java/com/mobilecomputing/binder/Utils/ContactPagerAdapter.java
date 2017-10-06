@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.mobilecomputing.binder.Activities.ContactActivity;
 import com.mobilecomputing.binder.Fragments.ContactChatFragment;
 import com.mobilecomputing.binder.Fragments.ContactProfileFragment;
+import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 
 /**
@@ -19,14 +20,16 @@ import com.mobilecomputing.binder.R;
 public class ContactPagerAdapter extends FragmentPagerAdapter
 {
     private ContactActivity mContactActivity;
+    private Match mContact;
 
     public ContactPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    public ContactPagerAdapter(FragmentManager fm, ContactActivity contactActivity) {
+    public ContactPagerAdapter(FragmentManager fm, ContactActivity contactActivity, Match contact) {
         super(fm);
         mContactActivity = contactActivity;
+        mContact = contact;
     }
 
     @Override
@@ -35,9 +38,9 @@ public class ContactPagerAdapter extends FragmentPagerAdapter
         // Return a PlaceholderFragment (defined as a static inner class below).
         switch (position) {
             case 0:
-                return ContactProfileFragment.newInstance();
+                return ContactProfileFragment.newInstance(mContact);
             case 1:
-                return ContactChatFragment.newInstance();
+                return ContactChatFragment.newInstance(mContact);
         }
         return null;
     }

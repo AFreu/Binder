@@ -5,13 +5,17 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 
+import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ContactPagerAdapter;
 
 
 public class ContactActivity extends BasicActivity {
+
+    private String TAG = "ContactActivity";
 
     private ContactPagerAdapter mContactPagerAdapter;
     private ViewPager mViewPager;
@@ -21,8 +25,11 @@ public class ContactActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
+        Intent intent = getIntent();
+        Match contact = (Match)intent.getSerializableExtra("contact");
 
-        mContactPagerAdapter = new ContactPagerAdapter(getSupportFragmentManager(), this);
+
+        mContactPagerAdapter = new ContactPagerAdapter(getSupportFragmentManager(), this, contact);
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mContactPagerAdapter);
@@ -30,8 +37,7 @@ public class ContactActivity extends BasicActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        Intent intent = getIntent();
-        System.out.println("" + intent.getExtras());
+
 
     }
 
