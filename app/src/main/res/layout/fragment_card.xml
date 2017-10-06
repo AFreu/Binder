@@ -1,7 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-    android:layout_marginRight="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,8 +7,12 @@
     tools:context="com.mobilecomputing.binder.Fragments.CardFragment">
 
     <RelativeLayout
+        android:id="@+id/profile_bar"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/card_text_hello"
@@ -56,4 +58,20 @@
 
     </RelativeLayout>
 
-</LinearLayout>
+    <com.yuyakaido.android.cardstackview.CardStackView
+        app:visibleCount="3"
+        android:id="@+id/card_stack"
+        app:swipeThreshold="0.4"
+        app:swipeDirection="horizontal"
+        app:scaleDiff="0.02"
+        android:paddingTop="116dp"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+
+
+</RelativeLayout>

@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.squareup.picasso.Picasso;
+import com.yuyakaido.android.cardstackview.CardStackView;
 
 
 /**
@@ -23,7 +25,7 @@ public class CardFragment extends BasicFragment {
 
     private ImageView profileImage;
     private TextView profileName;
-
+    private CardStackView cardStack;
 
     public CardFragment() {
         // Required empty public constructor
@@ -42,6 +44,9 @@ public class CardFragment extends BasicFragment {
     public void initUI(View view) {
         profileImage = view.findViewById(R.id.card_profile_image);
         profileName = view.findViewById(R.id.card_text_name);
+        cardStack = view.findViewById(R.id.card_stack);
+        ImageAdapter imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
+        cardStack.setAdapter(imageAdapter);
 
         populateUI();
     }

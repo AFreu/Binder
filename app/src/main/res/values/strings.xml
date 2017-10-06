@@ -18,4 +18,5 @@
     <string name="text_password">Password</string>
     <string name="text_binder">Binder</string>
     <string name="text_or">OR</string>
+    <string name="text_log_in">Log in</string>
 </resources>
