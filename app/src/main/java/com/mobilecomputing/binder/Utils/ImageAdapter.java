@@ -15,6 +15,7 @@ import com.mobilecomputing.binder.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import jp.wasabeef.blurry.Blurry;
@@ -25,7 +26,7 @@ import jp.wasabeef.blurry.Blurry;
 
 public class ImageAdapter extends ArrayAdapter {
 
-    private ArrayList<String> imageUrls = new ArrayList();
+    private List<String> imageUrls;
     private int layoutResource;
     private Context context;
 
@@ -36,7 +37,6 @@ public class ImageAdapter extends ArrayAdapter {
         this.layoutResource = layoutResource;
 
         ArrayList<String> urls = new ArrayList<>();
-
         Random r = new Random();
         for(int i = 1; i < 13; i++) {
             int rand = r.nextInt(1000 - 1) + 1;
@@ -44,6 +44,13 @@ public class ImageAdapter extends ArrayAdapter {
         }
 
         this.imageUrls = urls;
+    }
+
+    public void setContent(List<String> urls){
+        imageUrls.clear();
+        imageUrls.addAll(urls);
+
+        notifyDataSetChanged();
     }
 
 

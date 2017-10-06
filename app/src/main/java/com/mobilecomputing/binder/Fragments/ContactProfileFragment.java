@@ -13,6 +13,9 @@ import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Views.ExpandableHeightGridView;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,6 +61,15 @@ public class ContactProfileFragment extends BasicFragment {
 
         Log.d(TAG,"Number of images 1: " + imageAdapter1.getCount() + " ");
         Log.d(TAG,"Number of images 2: " + imageAdapter2.getCount() + " ");
+
+        ArrayList<String> urls = new ArrayList<>();
+        Random r = new Random();
+        for(int i = 1; i < 9; i++) {
+            int rand = r.nextInt(1000 - 1) + 1;
+            urls.add("http://covers.openlibrary.org/b/ID/" + rand + "-L.jpg");
+        }
+
+        imageAdapter2.setContent(urls);
 
 
         return view;
