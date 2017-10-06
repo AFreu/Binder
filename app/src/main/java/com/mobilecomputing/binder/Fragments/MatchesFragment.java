@@ -29,6 +29,7 @@ import java.util.List;
  */
 public class MatchesFragment extends BasicFragment {
 
+
     public static final String MATCH_ID = "match ID";
 
     private TextView nameText;
@@ -80,9 +81,10 @@ public class MatchesFragment extends BasicFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getActivity(), ContactActivity.class);
-                intent.putExtra(MATCH_ID, matchList.get(position).id);
+                intent.putExtra("contact", matchList.get(position));
                 System.out.println("List object clicked" + intent.getExtras());
                 getActivity().startActivity(intent);
+
             }
         });
         //nameText.setText();

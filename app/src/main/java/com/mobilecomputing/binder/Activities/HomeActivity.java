@@ -149,6 +149,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         ((ProfileFragment)profileFragment).setUserAccount(null);
         ((CardFragment)cardFragment).setUserAccount(null);
         setVisibilityOfSignIn();
+        setScanMenu();
     }
 
     /**
@@ -180,18 +181,22 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
 
         switch (content){
             case "CardFragment":
+                setScanMenu();
                 fragment = cardFragment;
                 title = getString(R.string.title_books);
                 break;
             case "MatchesFragment":
+                setMainMenu();
                 fragment = matchesFragment;
                 title = getString(R.string.title_matches);
                 break;
             case "ProfileFragment":
+                setMainMenu();
                 fragment = profileFragment;
                 title = getString(R.string.title_profile);
                 break;
             default:
+                setMainMenu();
                 fragment = cardFragment;
                 title = getString(R.string.title_books);
                 break;
@@ -209,6 +214,9 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
             isSignedIn = true;
             ((ProfileFragment)profileFragment).setUserAccount(acct);
             ((CardFragment)cardFragment).setUserAccount(acct);
+
+            setScanMenu();
+            setVisibilityOfSignIn();
 
             // blurs the background on sign in
             /*gridView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -230,8 +238,6 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
             ((ProfileFragment)profileFragment).setUserAccount(null);
             ((CardFragment)cardFragment).setUserAccount(null);
         }
-
-        setVisibilityOfSignIn();
     }
 
 
@@ -247,6 +253,16 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    public void setMainMenu() {
+        menu.clear();
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+    }
+
+    public void setScanMenu() {
+        menu.clear();
+        getMenuInflater().inflate(R.menu.scan_menu, menu);
     }
 
     @Override
