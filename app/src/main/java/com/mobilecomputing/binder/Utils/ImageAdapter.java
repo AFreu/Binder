@@ -3,11 +3,9 @@ package com.mobilecomputing.binder.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
@@ -17,8 +15,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import jp.wasabeef.blurry.Blurry;
 
 /**
  * Created by mikael on 2017-10-04.
@@ -53,7 +49,14 @@ public class ImageAdapter extends ArrayAdapter {
         notifyDataSetChanged();
     }
 
-
+    /**
+     * Updates data for this adapter and notifies about the changes.
+     * @param imageUrls data to use.
+     */
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+        notifyDataSetChanged();
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

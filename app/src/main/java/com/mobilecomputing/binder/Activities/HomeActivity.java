@@ -1,13 +1,23 @@
 package com.mobilecomputing.binder.Activities;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +26,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -23,12 +34,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.text.TextRecognizer;
 import com.mobilecomputing.binder.Fragments.CardFragment;
 import com.mobilecomputing.binder.Fragments.MatchesFragment;
 import com.mobilecomputing.binder.Fragments.ProfileFragment;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import jp.wasabeef.blurry.Blurry;
 
@@ -39,6 +56,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     private GoogleApiClient googleApiClient;
     private boolean isSignedIn = false;
     private static final int RC_SIGN_IN = 300;
+    public static List<String> allGenres = new ArrayList<>();
 
     private Fragment profileFragment;
     private Fragment cardFragment;
@@ -47,6 +65,9 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     private SignInButton signInButton;
     private Button signInButtonNoGoogle;
     private RelativeLayout signInBackground;
+
+    private static final int RC_OCR_CAPTURE = 9003;
+    private static final String TAG = "MainActivity";
 
     private Menu menu;
 
@@ -72,6 +93,8 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        addAllGenres();
 
         Toolbar toolBar = (Toolbar)findViewById(R.id.home_toolbar);
         setSupportActionBar(toolBar);
@@ -110,6 +133,17 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
                 return false;
             }
         });
+    }
+
+    private void addAllGenres() {
+        allGenres.add("science");
+        allGenres.add("biography");
+        allGenres.add("drama");
+        allGenres.add("sci-fi");
+        allGenres.add("romance");
+        allGenres.add("fantasy");
+        allGenres.add("action");
+        allGenres.add("horror");
     }
 
     private void initSignIn() {
@@ -171,6 +205,23 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
 
             setVisibilityOfSignIn();
         }
+        else if(requestCode == RC_OCR_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
+                    Log.d(TAG, "Text read: " + text);
+
+                    fetchBookFromText(text);
+                } else {
+                    Log.d(TAG, "No Text captured, intent data is null");
+                }
+            } else {
+            }
+        }
+    }
+
+    private void fetchBookFromText(String text) {
+        
     }
 
 
@@ -269,5 +320,61 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_scan:
+                int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+                if (rc == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(this, OcrCaptureActivity.class);
+                    intent.putExtra(OcrCaptureActivity.AutoFocus, true);
+                    intent.putExtra(OcrCaptureActivity.UseFlash, true);
+
+                    startActivityForResult(intent, RC_OCR_CAPTURE);
+                } else {
+                    requestCameraPermission();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    /**
+     * Handles the requesting of the camera permission.  This includes
+     * showing a "Snackbar" message of why the permission is needed then
+     * sending the request.
+     */
+    private static final int RC_HANDLE_CAMERA_PERM = 2;
+
+    private void requestCameraPermission() {
+        Log.w("TAG", "Camera permission is not granted. Requesting permission");
+
+        final String[] permissions = new String[]{Manifest.permission.CAMERA};
+
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.CAMERA)) {
+            ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_CAMERA_PERM);
+            return;
+        }
+
+        final Activity thisActivity = this;
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCompat.requestPermissions(thisActivity, permissions,
+                        RC_HANDLE_CAMERA_PERM);
+            }
+        };
+
+        View view = findViewById(R.id.container);
+        Snackbar.make(view, "permission_camera_rationale",
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction("ok", listener)
+                .show();
     }
 }
