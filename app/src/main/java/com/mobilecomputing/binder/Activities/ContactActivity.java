@@ -1,5 +1,6 @@
 package com.mobilecomputing.binder.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -28,6 +29,9 @@ public class ContactActivity extends BasicActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        Intent intent = getIntent();
+        System.out.println("" + intent.getExtras());
 
     }
 
