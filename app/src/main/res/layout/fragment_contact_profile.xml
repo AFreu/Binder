@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,102 +7,106 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:isScrollContainer="true">
 
         <LinearLayout
+            android:id="@+id/linear_layout_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_margin="@dimen/default_margin">
+            android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/default_margin"
+            android:orientation="horizontal">
 
 
-                <android.support.v7.widget.CardView
-                    app:cardCornerRadius="40dp"
+            <android.support.v7.widget.CardView
+                android:layout_width="@dimen/profile_image_size"
+                android:layout_height="@dimen/profile_image_size"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/default_margin"
+                app:cardCornerRadius="40dp">
+
+                <ImageView
+                    android:id="@+id/imageView2"
                     android:layout_width="@dimen/profile_image_size"
                     android:layout_height="@dimen/profile_image_size"
-                    android:layout_margin="@dimen/default_margin"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_profile" />
+            </android.support.v7.widget.CardView>
 
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="@dimen/profile_image_size"
-                        android:layout_height="@dimen/profile_image_size"
-                        app:srcCompat="@drawable/ic_profile"
-                        android:layout_gravity="center"/>
-                </android.support.v7.widget.CardView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/textView4"
+                    style="@style/TitleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="@dimen/default_margin">
+                    android:layout_margin="@dimen/default_margin"
+                    android:layout_weight="1"
+                    android:text="John Doe" />
 
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="John Doe"
-                        android:layout_margin="@dimen/default_margin"
-                        style="@style/TitleStyle"/>
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="89% match based on books such as"
-                        android:layout_margin="@dimen/default_margin"
-                        style="@style/SecondaryTextStyle"/>
-                </LinearLayout>
-
+                <TextView
+                    android:id="@+id/textView3"
+                    style="@style/SecondaryTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/default_margin"
+                    android:layout_weight="1"
+                    android:text="89% match based on books such as" />
             </LinearLayout>
 
-            <GridView
-                android:id="@+id/book_grid_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin"
-                android:clickable="true"
-                android:columnWidth="@dimen/book_image_size"
-                android:drawSelectorOnTop="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:numColumns="3"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="5dp"
-                tools:listitem="@layout/book_item" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Other books Joe loves"
-                android:layout_margin="@dimen/default_margin"
-                style="@style/SecondaryTextStyle"/>
-
-            <GridView
-                android:id="@+id/book_grid_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin"
-                android:clickable="true"
-                android:columnWidth="@dimen/book_image_size"
-                android:drawSelectorOnTop="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:numColumns="3"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="5dp"
-                tools:listitem="@layout/book_item" />
-
         </LinearLayout>
-    </ScrollView>
-</FrameLayout>
+
+        <com.mobilecomputing.binder.Views.ExpandableHeightGridView
+            android:id="@+id/book_grid_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linear_layout_1"
+            android:layout_margin="@dimen/default_margin"
+            android:clickable="true"
+            android:columnWidth="@dimen/book_image_size"
+            android:drawSelectorOnTop="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:isScrollContainer="false"
+            android:numColumns="3"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dp"
+            tools:listitem="@layout/image_layout" />
+
+        <TextView
+            android:id="@+id/grid_split"
+            style="@style/SecondaryTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/book_grid_1"
+            android:layout_margin="@dimen/default_margin"
+            android:text="Other books Joe loves" />
+
+        <com.mobilecomputing.binder.Views.ExpandableHeightGridView
+            android:id="@+id/book_grid_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/grid_split"
+            android:layout_margin="@dimen/default_margin"
+            android:clickable="true"
+            android:columnWidth="@dimen/book_image_size"
+            android:drawSelectorOnTop="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:isScrollContainer="false"
+            android:numColumns="3"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dp"
+            tools:listitem="@layout/image_layout" />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
