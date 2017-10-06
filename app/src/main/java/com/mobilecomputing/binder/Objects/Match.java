@@ -12,15 +12,15 @@ public class Match implements Serializable {
     public Integer age;
     public String city;
     public String id;
-    public URL picture;
+    public String pictureUrl;
     public Integer percent;
 
-    public Match (String name, Integer age, String city, String id, URL picture, Integer percent){
+    public Match (String name, Integer age, String city, String id, String picture, Integer percent){
         this.name = name;
         this.age = age;
         this.city = city;
         this.id = id;
-        this.picture = picture;
+        this.pictureUrl = picture;
         this.percent = percent;
     }
 
