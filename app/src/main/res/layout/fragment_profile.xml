@@ -84,10 +84,7 @@
                 android:layout_height="wrap_content" />
 
         </com.wefika.flowlayout.FlowLayout>
-
-
-
-
+        
     </LinearLayout>
 
 </FrameLayout>
