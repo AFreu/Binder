@@ -3,10 +3,13 @@ package com.mobilecomputing.binder.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
@@ -14,10 +17,14 @@ import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Views.BottomSheet;
 import com.mobilecomputing.binder.Views.ChipButton;
 import com.mobilecomputing.binder.Views.ChipView;
 import com.squareup.picasso.Picasso;
 import com.wefika.flowlayout.FlowLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -25,17 +32,35 @@ import com.wefika.flowlayout.FlowLayout;
  */
 public class ProfileFragment extends BasicFragment {
 
+    private String TAG = "ProfileFragment";
+
     private GoogleSignInAccount userAccount;
     private TextView nameText;
     private ImageView profileImage;
     private FlowLayout flowLayout;
+    private BottomSheet bottomSheet = new BottomSheet();
+
+    private List<String> allGenres;
+    private ChipButton chipButton;
 
     private View.OnClickListener clickRemoveListener;
     private View.OnClickListener clickAddListener;
+    private AdapterView.OnItemClickListener clickGenreListener;
 
     public ProfileFragment() {
         // Required empty public constructor
+        allGenres = new ArrayList<>();
+        allGenres.add("science");
+        allGenres.add("biography");
+        allGenres.add("drama");
+        allGenres.add("sci-fi");
+        allGenres.add("romance");
+        allGenres.add("fantasy");
+        allGenres.add("action");
+        allGenres.add("horror");
+
     }
+
 
 
     @Override
@@ -46,17 +71,49 @@ public class ProfileFragment extends BasicFragment {
         clickRemoveListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((FlowLayout)view.getParent()).removeView(view);
+
+                ChipView c = (ChipView) view;
+
+                ((FlowLayout)c.getParent()).removeView(c);
+
+                allGenres.add(c.getText());
+
+                chipButton.setVisibility(View.VISIBLE);
+
             }
         };
 
         clickAddListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.addToBackStack(null);
+
+                bottomSheet.setGenres(allGenres);
+                bottomSheet.setOnItemClickListener(clickGenreListener);
+                bottomSheet.show(ft, "dialog");
+            }
+        };
+
+        clickGenreListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d(TAG, "clicking genre");
+
+                addDislikedGenre((String)adapterView.getAdapter().getItem(i));
+                allGenres.remove(adapterView.getAdapter().getItem(i));
+                bottomSheet.dismiss();
+
+                if(allGenres.isEmpty()){
+                    chipButton.setVisibility(View.INVISIBLE);
+                }
 
             }
         };
         initUI(view);
+
+
+
 
 
 
@@ -70,19 +127,11 @@ public class ProfileFragment extends BasicFragment {
         flowLayout = view.findViewById(R.id.profile_flowlayout);
 
 
-        ChipButton c = new ChipButton(getContext());
-        c.setOnClickListener(clickAddListener);
-        c.setLayoutParams(new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,FlowLayout.LayoutParams.WRAP_CONTENT));
-        flowLayout.addView(c);
+        chipButton = new ChipButton(getContext());
+        chipButton.setOnClickListener(clickAddListener);
+        chipButton.setLayoutParams(new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,FlowLayout.LayoutParams.WRAP_CONTENT));
+        flowLayout.addView(chipButton);
 
-
-        addDislikedGenre("Vad");
-        addDislikedGenre("en knapp");
-
-
-        addDislikedGenre("Vadsomhelst");
-        addDislikedGenre("Fantasy");
-        addDislikedGenre("Sci-fi");
 
         populateUI();
     }

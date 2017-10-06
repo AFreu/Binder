@@ -7,6 +7,7 @@
     android:background="@drawable/background_addgenre">
 
     <TextView
+        android:id="@+id/add_genre_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
