@@ -44,6 +44,8 @@ dependencies {
     compile 'jp.wasabeef:blurry:2.1.1'
     compile "com.yuyakaido.android:card-stack-view:1.0.0-beta5"
 
+    compile 'com.google.android.gms:play-services-vision:9.0.0'
+
     testCompile 'junit:junit:4.12'
 
 }
