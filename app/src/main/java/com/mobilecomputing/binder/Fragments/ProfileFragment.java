@@ -65,8 +65,7 @@ public class ProfileFragment extends BasicFragment {
         t.setOnClickListener(clickRemoveListener);
         //t.getLayoutParams().width = FlowLayout.LayoutParams.WRAP_CONTENT;
 
-
-        flowLayout.addView(t);
+        flowLayout.addView(t, FlowLayout.LayoutParams.WRAP_CONTENT);
 
         TextView b = new TextView(getContext());
         b.setText("En knapp");
@@ -75,16 +74,17 @@ public class ProfileFragment extends BasicFragment {
 
         //b.getLayoutParams().width = FlowLayout.LayoutParams.WRAP_CONTENT;
 
-        flowLayout.addView(b);
+        flowLayout.addView(b, FlowLayout.LayoutParams.WRAP_CONTENT);
+
+
 
         TextView q = new TextView(getContext());
         q.setText("hej");
         q.setTextSize(20);
         q.setOnClickListener(clickRemoveListener);
 
-        flowLayout.addView(q);
+        flowLayout.addView(q, FlowLayout.LayoutParams.WRAP_CONTENT);
 
-        flowLayout.postInvalidate();
 
         populateUI();
     }
