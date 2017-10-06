@@ -28,6 +28,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -38,11 +42,17 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.text.TextRecognizer;
+import com.google.gson.Gson;
 import com.mobilecomputing.binder.Fragments.CardFragment;
 import com.mobilecomputing.binder.Fragments.MatchesFragment;
 import com.mobilecomputing.binder.Fragments.ProfileFragment;
+import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +78,8 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
 
     private static final int RC_OCR_CAPTURE = 9003;
     private static final String TAG = "MainActivity";
+
+    private static final int CHOOSE_BOOK_ACTIVITY = 1435;
 
     private Menu menu;
 
@@ -220,8 +232,68 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         }
     }
 
+    private String removeLastChar(String str) {
+        return str.substring(0, str.length() - 1);
+    }
+
+    List<Book> books = new ArrayList<>();
     private void fetchBookFromText(String text) {
-        
+        String[] words = text.split("\\W+");
+        String searchString = "";
+        for (String word : words) {
+            searchString += word+"+";
+        }
+        searchString = removeLastChar(searchString);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String urlPrefix = "https://openlibrary.org/search.json?";
+        String urlSufix = "q="+searchString;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                urlPrefix + urlSufix,
+                response -> {
+
+                    JSONObject json;
+
+                    try {
+                        json = new JSONObject(response);
+
+                        JSONArray worksArray = json.getJSONArray("docs");
+
+                        if(worksArray != null) {
+                            for (int i = 0; i < worksArray.length(); i++)
+                            {
+                                JSONObject obj = (JSONObject) worksArray.get(i);
+                                String str = "";
+                                try {
+                                    str = obj.getString("subtitle") != null ? obj.getString("subtitle") : "";
+                                } catch (JSONException e) { e.printStackTrace(); }
+
+                                String author = "";
+                                try {
+                                    author = obj.getString("author_name") != null ? obj.getString("author_name") : "";
+                                } catch (JSONException e) { e.printStackTrace(); }
+
+                                Book book = new Book(obj.getString("title") + str,
+                                                     author, "", "");
+                                books.add(book);
+
+                            }
+                            Log.d("HomeActivity", "num of books: " + books.size());
+
+                            Intent intent = new Intent(this, SearchResultActivity.class);
+                            String strBooks = new Gson().toJson(books);
+                            intent.putExtra("books", strBooks);
+                            startActivityForResult(intent, CHOOSE_BOOK_ACTIVITY);
+
+                        } else {
+                            Log.d("HomeActivity", "no books found..");
+                        }
+
+                    } catch (JSONException e) { e.printStackTrace(); }
+
+                }, error -> {
+            Log.d("HomeActivity", "That didn't work..");
+        });
+        queue.add(stringRequest);
     }
 
 
