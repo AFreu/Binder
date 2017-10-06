@@ -3,6 +3,7 @@ package com.mobilecomputing.binder.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Views.ChipView;
 import com.squareup.picasso.Picasso;
 import com.wefika.flowlayout.FlowLayout;
 
@@ -59,32 +61,14 @@ public class ProfileFragment extends BasicFragment {
         flowLayout = view.findViewById(R.id.profile_flowlayout);
 
 
-        TextView t = new TextView(getContext());
-        t.setText("Vadsomhelst!");
-        t.setTextSize(20);
-        t.setOnClickListener(clickRemoveListener);
-        //t.getLayoutParams().width = FlowLayout.LayoutParams.WRAP_CONTENT;
 
-        flowLayout.addView(t, FlowLayout.LayoutParams.WRAP_CONTENT);
-
-        TextView b = new TextView(getContext());
-        b.setText("En knapp");
-        b.setTextSize(20);
-        b.setOnClickListener(clickRemoveListener);
-
-        //b.getLayoutParams().width = FlowLayout.LayoutParams.WRAP_CONTENT;
-
-        flowLayout.addView(b, FlowLayout.LayoutParams.WRAP_CONTENT);
+        addDislikedGenre("Vad");
+        addDislikedGenre("en knapp");
 
 
-
-        TextView q = new TextView(getContext());
-        q.setText("hej");
-        q.setTextSize(20);
-        q.setOnClickListener(clickRemoveListener);
-
-        flowLayout.addView(q, FlowLayout.LayoutParams.WRAP_CONTENT);
-
+        addDislikedGenre("Vadsomhelst");
+        addDislikedGenre("Fantasy");
+        addDislikedGenre("Sci-fi");
 
         populateUI();
     }
@@ -104,6 +88,25 @@ public class ProfileFragment extends BasicFragment {
         this.userAccount = userAccount;
 
         populateUI();
+    }
+
+    private void addDislikedGenre(String name){
+
+        ChipView c = new ChipView(getContext());
+        c.setText(name);
+        c.setOnClickListener(clickRemoveListener);
+        c.setLayoutParams(new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,FlowLayout.LayoutParams.WRAP_CONTENT));
+
+        flowLayout.addView(c);
+
+    }
+
+
+    private void reLayoutChildren(View view) {
+        view.measure(
+                View.MeasureSpec.makeMeasureSpec(view.getMeasuredWidth(), View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(view.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
+        view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
     }
 
 
