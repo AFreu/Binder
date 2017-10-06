@@ -73,12 +73,13 @@
 
         </LinearLayout>
 
-        <GridLayout
+        <com.wefika.flowlayout.FlowLayout
+            android:id="@+id/profile_flowlayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/ship_grid">
+            android:layout_height="match_parent">
 
-        </GridLayout>
+
+        </com.wefika.flowlayout.FlowLayout>
 
 
     </LinearLayout>

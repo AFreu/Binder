@@ -43,6 +43,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'jp.wasabeef:blurry:2.1.1'
     compile "com.yuyakaido.android:card-stack-view:1.0.0-beta5"
+    compile "com.wefika:flowlayout:0.4.1"
 
     testCompile 'junit:junit:4.12'
 
