@@ -1,15 +1,19 @@
 package com.mobilecomputing.binder.Fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.mobilecomputing.binder.Activities.ContactActivity;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.MatchesAdapter;
@@ -25,11 +29,14 @@ import java.util.List;
  */
 public class MatchesFragment extends BasicFragment {
 
+    public static final String MATCH_ID = "match ID";
+
     private TextView nameText;
     private TextView percentText;
     private ImageView profileImage;
     ListView list;
     MatchesAdapter matches;
+    ArrayList<Match> matchList;
 
     public MatchesFragment() {
         // Required empty public constructor
@@ -44,7 +51,7 @@ public class MatchesFragment extends BasicFragment {
 
         list = view.findViewById(R.id.matches_list);
 
-        ArrayList<Match> matchList = new ArrayList<Match>();
+        matchList = new ArrayList<Match>();
 
         matchList.add(new Match("Lovisa", 26, null, null, null, 55));
         matchList.add(new Match("Mikael", 24, null, null, null, 67));
@@ -58,7 +65,7 @@ public class MatchesFragment extends BasicFragment {
     public void initUI(View view) {
         nameText = view.findViewById(R.id.profile_name);
         profileImage = view.findViewById(R.id.profile_picture);
-
+        list.setAdapter(matches);
         populateUI();
     }
 
@@ -66,7 +73,18 @@ public class MatchesFragment extends BasicFragment {
      * Populates the user interface based on Google user data
      */
     public void populateUI() {
-        list.setAdapter(matches);
+
+        list.setClickable(true);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getActivity(), ContactActivity.class);
+                intent.putExtra(MATCH_ID, matchList.get(position).id);
+                System.out.println("List object clicked" + intent.getExtras());
+                getActivity().startActivity(intent);
+            }
+        });
         //nameText.setText();
         //Picasso.with(getContext()).load();
     }
