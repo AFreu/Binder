@@ -20,4 +20,5 @@
     <string name="text_or">OR</string>
 
     <string name="contact_profile_percent_match">% match based on books such as</string>
+    <string name="text_log_in">Log in</string>
 </resources>
