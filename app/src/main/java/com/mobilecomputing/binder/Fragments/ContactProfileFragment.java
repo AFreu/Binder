@@ -80,6 +80,7 @@ public class ContactProfileFragment extends BasicFragment {
         book_grid_1 = view.findViewById(R.id.book_grid_1);
         book_grid_2 = view.findViewById(R.id.book_grid_2);
 
+        book_grid_1.setExpanded(true);
         book_grid_2.setExpanded(true);
 
         imageAdapter1 = new ImageAdapter(getContext(), R.layout.image_layout);
@@ -98,6 +99,7 @@ public class ContactProfileFragment extends BasicFragment {
             urls.add("http://covers.openlibrary.org/b/ID/" + rand + "-L.jpg");
         }
 
+        imageAdapter1.setContent(urls.subList(3,6));
         imageAdapter2.setContent(urls);
 
 
