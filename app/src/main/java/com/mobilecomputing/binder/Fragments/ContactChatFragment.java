@@ -83,7 +83,7 @@ public class ContactChatFragment extends BasicFragment
             @Override
             public boolean onSubmit(CharSequence input) {
                 Author author = new Author();
-                author.setId(total % 2 == 0 ? "Me" : mContact.id);
+                author.setId(total % 2 == 0 ? "Me" : "Match");
                 author.setName(total % 2 == 0 ? "Me" : mContact.name);
                 author.setAvatar("https://blog.prepscholar.com/hubfs/body_testinprogress.gif?t=1506619170859");
                 Message msg = new Message();

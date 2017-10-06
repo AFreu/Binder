@@ -29,10 +29,13 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    </android.support.v7.widget.Toolbar>
 
 
     <RelativeLayout
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -126,11 +129,14 @@
 
             </android.support.design.widget.TextInputLayout>
 
+
             <Button
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:background="@drawable/button_flat"
+                android:foreground="?attr/selectableItemBackground"
                 android:id="@+id/sign_in_button_noGoogle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:text="@string/text_log_in" />
 
             <RelativeLayout
