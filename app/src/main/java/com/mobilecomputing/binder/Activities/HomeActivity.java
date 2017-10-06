@@ -8,10 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -44,32 +45,28 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
     private Fragment matchesFragment;
 
     private SignInButton signInButton;
+    private Button signInButtonNoGoogle;
     private RelativeLayout signInBackground;
 
     private Menu menu;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+            = item -> {
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_books:
+                        switchContent("CardFragment");
+                        return true;
+                    case R.id.navigation_matches:
+                        switchContent("MatchesFragment");
+                        return true;
+                    case R.id.navigation_profile:
+                        switchContent("ProfileFragment");
+                        return true;
+                }
 
-            switch (item.getItemId()) {
-                case R.id.navigation_books:
-                    switchContent("CardFragment");
-                    return true;
-                case R.id.navigation_matches:
-                    switchContent("MatchesFragment");
-                    return true;
-                case R.id.navigation_profile:
-                    switchContent("ProfileFragment");
-                    return true;
-            }
-
-            return false;
-        }
-
-    };
+                return false;
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +83,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.image_layout);
         gridView = (GridView) findViewById(R.id.background_grid);
         gridView.setAdapter(imageAdapter);
+        gridView.setOnTouchListener((v, event) -> event.getAction() == MotionEvent.ACTION_MOVE);
 
         createFragments();
         // sets first fragment to booksfragment
@@ -132,12 +130,25 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         signInButton.setOnClickListener(view -> {
             signInWithGoogle();
         });
+
+        signInButtonNoGoogle = (Button) findViewById(R.id.sign_in_button_noGoogle);
+        signInButtonNoGoogle.setOnClickListener(view -> {
+            mockSignIn();
+        });
     }
 
     private void createFragments() {
         profileFragment = new ProfileFragment();
         cardFragment = new CardFragment();
         matchesFragment = new MatchesFragment();
+    }
+
+    private void mockSignIn() {
+
+        isSignedIn = true;
+        ((ProfileFragment)profileFragment).setUserAccount(null);
+        ((CardFragment)cardFragment).setUserAccount(null);
+        setVisibilityOfSignIn();
     }
 
     /**
@@ -156,6 +167,8 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
+
+            setVisibilityOfSignIn();
         }
     }
 

@@ -6,4 +6,7 @@
     <dimen name="default_margin">8dp</dimen>
     <dimen name="profile_image_size">80dp</dimen>
     <dimen name="book_image_size">100dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
+    <dimen name="margin_huge">64dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
 </resources>

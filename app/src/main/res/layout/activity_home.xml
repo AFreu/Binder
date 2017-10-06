@@ -10,6 +10,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <GridView
             android:id="@+id/background_grid"
             android:background="@color/actionBarColor"
@@ -32,14 +33,16 @@
 
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <RelativeLayout
             android:id="@+id/home_gradient_background"
             android:background="@drawable/background_gradient"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </RelativeLayout>
+
     </RelativeLayout>
 
     <LinearLayout
@@ -68,6 +71,8 @@
             app:itemTextColor="@drawable/bottom_nav_item_color_selector"
             app:menu="@menu/navigation" />
 
+
+
     </LinearLayout>
 
 
@@ -77,13 +82,96 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
-            android:layout_centerHorizontal="true"
+        <LinearLayout
+            android:layout_marginTop="@dimen/margin_huge"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:padding="@dimen/margin_large">
 
+            <TextView
+                style="@style/PrimaryHeaderStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/text_binder" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/email_text_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/email_text_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/text_email"
+                    android:inputType="textEmailAddress" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/password_text_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/password_text_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/text_password"
+                    android:inputType="textEmailAddress" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/sign_in_button_noGoogle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:text="Log in" />
+
+            <RelativeLayout
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/start_line"
+                    android:layout_centerVertical="true"
+                    android:background="@color/colorIconsHighlighted"
+                    android:layout_width="100dp"
+                    android:layout_height="1dp">
+                </View>
+
+                <TextView
+                    android:id="@+id/or_text"
+                    android:layout_toEndOf="@id/start_line"
+                    android:layout_margin="@dimen/margin_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_or" />
+
+                <View
+                    android:layout_toEndOf="@id/or_text"
+                    android:layout_centerVertical="true"
+                    android:background="@color/colorSecondaryText"
+                    android:layout_width="100dp"
+                    android:layout_height="1dp">
+                </View>
+            </RelativeLayout>
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>
