@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Views.ChipButton;
 import com.mobilecomputing.binder.Views.ChipView;
 import com.squareup.picasso.Picasso;
 import com.wefika.flowlayout.FlowLayout;
@@ -30,6 +31,7 @@ public class ProfileFragment extends BasicFragment {
     private FlowLayout flowLayout;
 
     private View.OnClickListener clickRemoveListener;
+    private View.OnClickListener clickAddListener;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -47,6 +49,13 @@ public class ProfileFragment extends BasicFragment {
                 ((FlowLayout)view.getParent()).removeView(view);
             }
         };
+
+        clickAddListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        };
         initUI(view);
 
 
@@ -60,6 +69,11 @@ public class ProfileFragment extends BasicFragment {
 
         flowLayout = view.findViewById(R.id.profile_flowlayout);
 
+
+        ChipButton c = new ChipButton(getContext());
+        c.setOnClickListener(clickAddListener);
+        c.setLayoutParams(new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,FlowLayout.LayoutParams.WRAP_CONTENT));
+        flowLayout.addView(c);
 
 
         addDislikedGenre("Vad");
@@ -97,7 +111,8 @@ public class ProfileFragment extends BasicFragment {
         c.setOnClickListener(clickRemoveListener);
         c.setLayoutParams(new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,FlowLayout.LayoutParams.WRAP_CONTENT));
 
-        flowLayout.addView(c);
+        flowLayout.addView(c, flowLayout.getChildCount() - 1);
+
 
     }
 
