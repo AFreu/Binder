@@ -11,14 +11,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:isScrollContainer="true">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/linear_layout_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_margin="@dimen/default_margin"
             android:orientation="horizontal">
 
@@ -69,7 +67,6 @@
             android:id="@+id/book_grid_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_layout_1"
             android:layout_margin="@dimen/default_margin"
             android:clickable="true"
             android:columnWidth="@dimen/book_image_size"
@@ -87,7 +84,6 @@
             style="@style/SecondaryTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/book_grid_1"
             android:layout_margin="@dimen/default_margin"
             android:text="Other books Joe loves" />
 
@@ -95,7 +91,6 @@
             android:id="@+id/book_grid_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/contact_profile_grid_split"
             android:layout_margin="@dimen/default_margin"
             android:clickable="true"
             android:columnWidth="@dimen/book_image_size"
