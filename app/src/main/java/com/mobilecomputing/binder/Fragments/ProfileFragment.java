@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -54,6 +55,9 @@ public class ProfileFragment extends BasicFragment {
             nameText.setText(userAccount.getDisplayName());
             Picasso.with(getContext()).load(userAccount.getPhotoUrl()).into(profileImage);
         }
+
+
+
     }
 
     public void setUserAccount(GoogleSignInAccount userAccount) {
