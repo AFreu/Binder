@@ -15,6 +15,7 @@
         android:textColor="#ffffff"
         android:text="genre"/>
     <TextView
+        android:id="@+id/genre_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
