@@ -29,16 +29,17 @@ public class GenreAdapter extends ArrayAdapter {
         super(context, resource, objects);
     }
 
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         String genre = (String) getItem(position);
 
         if (convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.add_genre, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.genre_item, parent, false);
         }
 
-        TextView text = convertView.findViewById(R.id.add_genre_text);
+        TextView text = convertView.findViewById(R.id.genre_item_text);
 
 
         text.setText(genre);

@@ -73,7 +73,7 @@ public class CardFragment extends BasicFragment {
         cardStack = view.findViewById(R.id.card_stack);
         ImageAdapter imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
 
-        fetchData(new ArrayList<>());
+        //fetchData(new ArrayList<>());
         //imageAdapter.setImageUrls(fetchData(null).forEach(book -> book.getGenre()));
         cardStack.setAdapter(imageAdapter);
 

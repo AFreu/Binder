@@ -7,9 +7,9 @@ import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.GenreAdapter;
@@ -24,16 +24,22 @@ import java.util.List;
 public class BottomSheet extends BottomSheetDialogFragment {
 
 
-    ArrayAdapter adapter;
+    GenreAdapter adapter;
     ListView listView;
     List<String> mGenres;
+    OnItemClickListener mOnClickListener;
+
 
     public BottomSheet() {
 
     }
 
     public void setGenres(List<String> genres) {
-        this.mGenres = mGenres;
+        this.mGenres = genres;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onClickListener){
+        this.mOnClickListener = onClickListener;
     }
 
     @Override
@@ -49,9 +55,9 @@ public class BottomSheet extends BottomSheetDialogFragment {
         listView = view.findViewById(R.id.bottom_sheet_list);
 
 
-
-        adapter = new GenreAdapter(getContext(), R.layout.add_genre, mGenres);
+        adapter = new GenreAdapter(getContext(), R.layout.genre_item, mGenres);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(mOnClickListener);
         return view;
     }
 }
