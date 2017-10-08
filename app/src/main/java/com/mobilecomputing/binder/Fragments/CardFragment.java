@@ -77,7 +77,7 @@ public class CardFragment extends BasicFragment {
         cardStack.setAdapter(imageAdapter);
 
         fetchData(new ArrayList<>());
-        
+
         populateUI();
     }
 
@@ -110,12 +110,10 @@ public class CardFragment extends BasicFragment {
 
                                 if(worksArray != null) {
 
-                                    // TODO add all books from a genre and not only the first one
-                                    Book b = new Book(worksArray.get(0).toString());
-                                    books.add(b);
-
-                                    Log.d("CardFragment", "num of books: " + books.size());
-
+                                    // TODO filter what books to fetch in some way..
+                                    for(int j = 0; j < worksArray.length(); j++)
+                                        books.add(new Book(worksArray.get(j).toString()));
+                                    
                                 } else {
                                     Log.d("CardFragment", "no works found..");
                                 }
