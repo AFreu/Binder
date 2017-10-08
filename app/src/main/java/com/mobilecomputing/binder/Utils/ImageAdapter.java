@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class ImageAdapter extends ArrayAdapter {
 
-    private List<Book> books;
+    private List<Book> books = new ArrayList<>();
     private int layoutResource;
     private Context context;
 
@@ -32,7 +32,6 @@ public class ImageAdapter extends ArrayAdapter {
 
         this.context = context;
         this.layoutResource = layoutResource;
-        this.books = new ArrayList<>();
 
         /*ArrayList<String> urls = new ArrayList<>();
         Random r = new Random();
@@ -81,36 +80,25 @@ public class ImageAdapter extends ArrayAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
+        View v = convertView;
 
-        if (row == null) {
+        if(v == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            final View r = inflater.inflate(layoutResource, parent, false);
-            final ViewHolder holder = new ViewHolder();
-
-            holder.image = r.findViewById(R.id.image_layout_image);
-            r.setTag(holder);
-
-            String url = books.get(position).getImageUrl();
-            Picasso.with(context).load(url).into(holder.image);
-
-            return r;
-
-        } else {
-            final ViewHolder holder = (ViewHolder) row.getTag();
+            v = inflater.inflate(layoutResource, parent, false);
         }
 
+        //holder.image = r.findViewById(R.id.image_layout_image);
+        //r.setTag(holder);
 
+        String url = books.get(position).getImageUrl();
+        Picasso.with(context).load(url).into((ImageView)v.findViewById(R.id.image_layout_image));
 
-        return row;
+        return v;
+
     }
 
     @Override
     public int getCount() {
         return books.size();
-    }
-
-    static class ViewHolder {
-        ImageView image;
     }
 }

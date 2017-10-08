@@ -74,10 +74,10 @@ public class CardFragment extends BasicFragment {
         profileName = view.findViewById(R.id.card_text_name);
         cardStack = view.findViewById(R.id.card_stack);
         imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
+        cardStack.setAdapter(imageAdapter);
 
         fetchData(new ArrayList<>());
-        //imageAdapter.setImageUrls(fetchData(null).forEach(book -> book.getGenre()));
-
+        
         populateUI();
     }
 
@@ -131,11 +131,7 @@ public class CardFragment extends BasicFragment {
         });
 
         queue.addRequestFinishedListener(listener -> {
-            Log.d("CardFragment", "ALL DONE");
-
             imageAdapter.setBooks(books);
-            cardStack.setAdapter(imageAdapter);
-
         });
     }
 
