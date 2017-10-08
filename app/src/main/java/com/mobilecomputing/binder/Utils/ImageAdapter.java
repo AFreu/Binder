@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.squareup.picasso.Picasso;
 
@@ -22,7 +23,7 @@ import java.util.Random;
 
 public class ImageAdapter extends ArrayAdapter {
 
-    private List<String> imageUrls;
+    private List<Book> books;
     private int layoutResource;
     private Context context;
 
@@ -31,30 +32,50 @@ public class ImageAdapter extends ArrayAdapter {
 
         this.context = context;
         this.layoutResource = layoutResource;
+        this.books = new ArrayList<>();
 
-        ArrayList<String> urls = new ArrayList<>();
+        /*ArrayList<String> urls = new ArrayList<>();
         Random r = new Random();
         for(int i = 1; i < 13; i++) {
             int rand = r.nextInt(1000 - 1) + 1;
             urls.add("http://covers.openlibrary.org/b/ID/" + rand + "-L.jpg");
         }
 
-        this.imageUrls = urls;
+        this.books = urls;*/
     }
 
-    public void setContent(List<String> urls){
-        imageUrls.clear();
-        imageUrls.addAll(urls);
+    public void mockData() {
+
+        Random r = new Random();
+        for(int i = 1; i < 13; i++) {
+            int rand = r.nextInt(1000 - 1) + 1;
+            books.add(new Book("", "", "", "http://covers.openlibrary.org/b/ID/" + rand + "-L.jpg"));
+        }
+
+    }
+
+    public void setContent(List<Book> books){
+        books.clear();
+        books.addAll(books);
 
         notifyDataSetChanged();
     }
 
     /**
      * Updates data for this adapter and notifies about the changes.
-     * @param imageUrls data to use.
+     * @param books data to use.
      */
-    public void setImageUrls(List<String> imageUrls) {
-        this.imageUrls = imageUrls;
+    public void setBooks(List<Book> books) {
+        this.books = books;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Adds imageUrl to list of image data for this adapter and notifies about the changes.
+     * @param book data to add.
+     */
+    public void addBook(Book book) {
+        books.add(book);
         notifyDataSetChanged();
     }
 
@@ -70,7 +91,7 @@ public class ImageAdapter extends ArrayAdapter {
             holder.image = r.findViewById(R.id.image_layout_image);
             r.setTag(holder);
 
-            String url = imageUrls.get(position);
+            String url = books.get(position).getImageUrl();
             Picasso.with(context).load(url).into(holder.image);
 
             return r;
@@ -86,7 +107,7 @@ public class ImageAdapter extends ArrayAdapter {
 
     @Override
     public int getCount() {
-        return imageUrls.size();
+        return books.size();
     }
 
     static class ViewHolder {

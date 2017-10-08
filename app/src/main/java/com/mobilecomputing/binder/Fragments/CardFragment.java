@@ -49,6 +49,8 @@ public class CardFragment extends BasicFragment {
     private TextView profileName;
     private CardStackView cardStack;
 
+    private ImageAdapter imageAdapter;
+
     public CardFragment() {
         // Required empty public constructor
     }
@@ -71,11 +73,10 @@ public class CardFragment extends BasicFragment {
         profileImage = view.findViewById(R.id.card_profile_image);
         profileName = view.findViewById(R.id.card_text_name);
         cardStack = view.findViewById(R.id.card_stack);
-        ImageAdapter imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
+        imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
 
-        //fetchData(new ArrayList<>());
+        fetchData(new ArrayList<>());
         //imageAdapter.setImageUrls(fetchData(null).forEach(book -> book.getGenre()));
-        cardStack.setAdapter(imageAdapter);
 
         populateUI();
     }
@@ -86,7 +87,7 @@ public class CardFragment extends BasicFragment {
      * @return list of books
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public List<Book> fetchData(List<String> ignoreGenres) {
+    public void fetchData(List<String> ignoreGenres) {
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String urlPrefix = "https://openlibrary.org/subjects/";
@@ -110,7 +111,9 @@ public class CardFragment extends BasicFragment {
                                 if(worksArray != null) {
 
                                     // TODO add all books from a genre and not only the first one
-                                    books.add(new Book(worksArray.get(0).toString()));
+                                    Book b = new Book(worksArray.get(0).toString());
+                                    books.add(b);
+
                                     Log.d("CardFragment", "num of books: " + books.size());
 
                                 } else {
@@ -127,7 +130,13 @@ public class CardFragment extends BasicFragment {
             queue.add(stringRequest);
         });
 
-        return new ArrayList<>();
+        queue.addRequestFinishedListener(listener -> {
+            Log.d("CardFragment", "ALL DONE");
+
+            imageAdapter.setBooks(books);
+            cardStack.setAdapter(imageAdapter);
+
+        });
     }
 
     public void populateUI() {

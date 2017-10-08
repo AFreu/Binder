@@ -1,8 +1,10 @@
 package com.mobilecomputing.binder.Fragments;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
@@ -63,6 +66,7 @@ public class ContactProfileFragment extends BasicFragment {
         mContact = (Match)getArguments().getSerializable("contact");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,15 +96,15 @@ public class ContactProfileFragment extends BasicFragment {
         Log.d(TAG,"Number of images 1: " + imageAdapter1.getCount() + " ");
         Log.d(TAG,"Number of images 2: " + imageAdapter2.getCount() + " ");
 
-        ArrayList<String> urls = new ArrayList<>();
+        ArrayList<Book> booksToAdd = new ArrayList<>();
         Random r = new Random();
         for(int i = 1; i < 9; i++) {
             int rand = r.nextInt(1000 - 1) + 1;
-            urls.add("http://covers.openlibrary.org/b/ID/" + rand + "-L.jpg");
+            booksToAdd.add(new Book ("", "", "", "http://covers.openlibrary.org/b/ID/" + rand + "-L.jpg"));
         }
 
-        imageAdapter1.setContent(urls.subList(3,6));
-        imageAdapter2.setContent(urls);
+        imageAdapter1.setContent(booksToAdd.subList(3,6));
+        imageAdapter2.setContent(booksToAdd);
 
 
         return view;
