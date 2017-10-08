@@ -1,9 +1,7 @@
 package com.mobilecomputing.binder.Objects;
 
-import android.os.Debug;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,10 +23,19 @@ public class Book {
             if(json != null) {
                 JSONObject authorJson = (JSONObject) json.getJSONArray("authors").get(0);
                 author = authorJson.get("name").toString();
+
+                Log.d("CardFragment", author);
+
                 title = json.get("title").toString();
 
+                Log.d("CardFragment", title);
+
+                imageUrl = "http://covers.openlibrary.org/b/ID/" + json.get("cover_id") + "-L.jpg";
+
+                Log.d("CardFragment", imageUrl);
+
             } else {
-                Log.d("CardFragment", "no works..");
+                Log.d("CardFragment", "No json found");
             }
 
         } catch (JSONException e) { e.printStackTrace(); }
