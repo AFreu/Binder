@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 
 import com.mobilecomputing.binder.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,6 +45,8 @@ public class MatchesAdapter extends ArrayAdapter {
         TextView matchName = (TextView) convertView.findViewById(R.id.match_name);
         TextView matchPercent = (TextView) convertView.findViewById(R.id.match_percent);
         ImageView matchPicture = (ImageView) convertView.findViewById(R.id.match_picture);
+
+        Picasso.with(getContext()).load(match.pictureUrl).into(matchPicture);
 
         matchName.setText(match.name);
         //TODO fix this
