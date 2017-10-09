@@ -25,10 +25,6 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -37,24 +33,15 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.gson.Gson;
 import com.mobilecomputing.binder.Fragments.CardFragment;
 import com.mobilecomputing.binder.Fragments.MatchesFragment;
 import com.mobilecomputing.binder.Fragments.ProfileFragment;
-import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
-import com.mobilecomputing.binder.Views.BookBottomSheet;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import jp.wasabeef.blurry.Blurry;
 
 public class HomeActivity extends BasicActivity
         implements GoogleApiClient.OnConnectionFailedListener {
@@ -133,11 +120,11 @@ public class HomeActivity extends BasicActivity
             public boolean onPreDraw() {
                 back.getViewTreeObserver().removeOnPreDrawListener(this);
 
-                Blurry.with(HomeActivity.this).radius(25)
+                /*Blurry.with(HomeActivity.this).radius(25)
                         .sampling(2)
                         .async()
                         .animate(300)
-                        .onto((ViewGroup)back.getParent());
+                        .onto((ViewGroup)back.getParent());*/
                 return false;
             }
         });
