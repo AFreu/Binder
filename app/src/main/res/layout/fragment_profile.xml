@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="35dp"
-                android:textColor="#882399"
+                android:textColor="@color/colorAccent"
                 android:textStyle="bold"
                 android:textAlignment="center"
                 android:text="Name" />

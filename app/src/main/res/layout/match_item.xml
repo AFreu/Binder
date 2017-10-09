@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:textColor="#882399"
+                android:textColor="@color/colorAccent"
                 android:textStyle="bold"
                 android:text="Name" />
 
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="15dp"
-                android:textColor="#115566"
+                android:textColor="@color/colorSecondaryText"
                 android:textStyle="bold"
                 android:text="% match" />
 

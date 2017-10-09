@@ -2,11 +2,8 @@ package com.mobilecomputing.binder.Activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -26,7 +23,6 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -40,8 +36,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.gson.Gson;
 import com.mobilecomputing.binder.Fragments.CardFragment;
 import com.mobilecomputing.binder.Fragments.MatchesFragment;
@@ -49,6 +43,7 @@ import com.mobilecomputing.binder.Fragments.ProfileFragment;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+import com.mobilecomputing.binder.Views.BookBottomSheet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,7 +54,8 @@ import java.util.List;
 
 import jp.wasabeef.blurry.Blurry;
 
-public class HomeActivity extends BasicActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class HomeActivity extends BasicActivity
+        implements GoogleApiClient.OnConnectionFailedListener {
 
     private GridView gridView;
     private LinearLayout appBody;
@@ -117,6 +113,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         appBody = (LinearLayout) findViewById(R.id.app_body);
         ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.image_layout);
         gridView = (GridView) findViewById(R.id.background_grid);
+        imageAdapter.setBackgroundGridMode();
         gridView.setAdapter(imageAdapter);
         gridView.setOnTouchListener((v, event) -> event.getAction() == MotionEvent.ACTION_MOVE);
 
@@ -124,7 +121,6 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         // sets first fragment to booksfragment
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.content, cardFragment).commit();
-        getSupportActionBar().setTitle(getString(R.string.title_books));
 
         initSignIn();
 

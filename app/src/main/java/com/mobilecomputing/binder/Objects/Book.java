@@ -1,9 +1,7 @@
 package com.mobilecomputing.binder.Objects;
 
-import android.os.Debug;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +12,7 @@ import org.json.JSONObject;
 public class Book {
     private  String key;
     private String title, author, genre, imageUrl;
+    private String description = "Tom Sawyer is a boy of about 12 years of age, who resides in the fictional town of St. Petersburg, Missouri, in about the year 1845. Tom Sawyer's best friends include Joe Harper and Huckleberry Finn. In The Adventures of Tom Sawyer, Tom's infatuation with classmate Becky Thatcher is apparent as he tries to intrigue her with his strength, boldness, and handsome looks.";
 
     public Book(String jsonString) {
         JSONObject json;
@@ -26,10 +25,19 @@ public class Book {
             if(json != null) {
                 JSONObject authorJson = (JSONObject) json.getJSONArray("authors").get(0);
                 author = authorJson.get("name").toString();
+
+                Log.d("CardFragment", author);
+
                 title = json.get("title").toString();
 
+                Log.d("CardFragment", title);
+
+                imageUrl = "http://covers.openlibrary.org/b/ID/" + json.get("cover_id") + "-L.jpg";
+
+                Log.d("CardFragment", imageUrl);
+
             } else {
-                Log.d("CardFragment", "no works..");
+                Log.d("CardFragment", "No json found");
             }
 
         } catch (JSONException e) { e.printStackTrace(); }
@@ -88,5 +96,9 @@ public class Book {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +22,7 @@ import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+import com.mobilecomputing.binder.Views.BookBottomSheet;
 import com.squareup.picasso.Picasso;
 import com.yuyakaido.android.cardstackview.CardStackView;
 
@@ -30,18 +30,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.System.in;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CardFragment extends BasicFragment {
+public class CardFragment extends BasicFragment
+    implements ImageAdapter.ImageAdapterListener{
 
     private GoogleSignInAccount userAccount;
     private List<Book> books;
@@ -49,6 +46,10 @@ public class CardFragment extends BasicFragment {
     private ImageView profileImage;
     private TextView profileName;
     private CardStackView cardStack;
+
+    private BookBottomSheet bookBottomSheet;
+
+    private ImageAdapter imageAdapter;
 
     public CardFragment() {
         // Required empty public constructor
@@ -72,11 +73,11 @@ public class CardFragment extends BasicFragment {
         profileImage = view.findViewById(R.id.card_profile_image);
         profileName = view.findViewById(R.id.card_text_name);
         cardStack = view.findViewById(R.id.card_stack);
-        ImageAdapter imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
-
-        //fetchData(new ArrayList<>());
-        //imageAdapter.setImageUrls(fetchData(null).forEach(book -> book.getGenre()));
+        imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
+        imageAdapter.setImageAdapterListener(this);
         cardStack.setAdapter(imageAdapter);
+
+        fetchData(new ArrayList<>());
 
         populateUI();
     }
@@ -87,7 +88,7 @@ public class CardFragment extends BasicFragment {
      * @return list of books
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public List<Book> fetchData(List<String> ignoreGenres) {
+    public void fetchData(List<String> ignoreGenres) {
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String urlPrefix = "https://openlibrary.org/subjects/";
@@ -110,9 +111,9 @@ public class CardFragment extends BasicFragment {
 
                                 if(worksArray != null) {
 
-                                    // TODO add all books from a genre and not only the first one
-                                    books.add(new Book(worksArray.get(0).toString()));
-                                    Log.d("CardFragment", "num of books: " + books.size());
+                                    // TODO filter what books to fetch in some way..
+                                    for(int j = 0; j < worksArray.length(); j++)
+                                        books.add(new Book(worksArray.get(j).toString()));
 
                                 } else {
                                     Log.d("CardFragment", "no works found..");
@@ -128,7 +129,9 @@ public class CardFragment extends BasicFragment {
             queue.add(stringRequest);
         });
 
-        return new ArrayList<>();
+        queue.addRequestFinishedListener(listener -> {
+            imageAdapter.setBooks(books);
+        });
     }
 
     public void populateUI() {
@@ -161,7 +164,7 @@ public class CardFragment extends BasicFragment {
                         json = new JSONObject(response);
 
 
-                        if(json != null) {
+                        if (json != null) {
 
                             // TODO add all books from a genre and not only the first one
                             books.add(0, new Book(json.toString()));
@@ -171,7 +174,9 @@ public class CardFragment extends BasicFragment {
                             Log.d("CardFragment", "no works found..");
                         }
 
-                    } catch (JSONException e) { e.printStackTrace(); }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                 }, error -> {
             Log.d("CardFragment", "That didn't work..");
@@ -180,6 +185,13 @@ public class CardFragment extends BasicFragment {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
+    }
+
+    @Override
+    public void onLearnMoreClick(Book b) {
+        bookBottomSheet = new BookBottomSheet();
+        bookBottomSheet.setBook(b);
+        bookBottomSheet.show(getActivity().getSupportFragmentManager(), bookBottomSheet.getTag());
     }
 
 }

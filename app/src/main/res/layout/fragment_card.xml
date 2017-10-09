@@ -59,7 +59,6 @@
     </RelativeLayout>
 
     <com.yuyakaido.android.cardstackview.CardStackView
-        app:visibleCount="3"
         android:id="@+id/card_stack"
         app:swipeThreshold="0.4"
         app:swipeDirection="horizontal"

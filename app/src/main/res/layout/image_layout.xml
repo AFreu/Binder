@@ -5,11 +5,49 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/image_layout_image"
+        android:id="@+id/book_card_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/ic_book" />
+        app:srcCompat="@color/colorAccent" />
 
+    <LinearLayout
+        android:id="@+id/book_card_action_area"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:background="@color/colorSemiBlack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:padding="@dimen/margin_medium"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/book_card_title"
+                android:text="Title"
+                style="@style/BookCardTitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/book_card_author"
+                android:text="Author"
+                style="@style/BookCardAuthorStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/book_card_button"
+            android:layout_gravity="bottom"
+            android:text="@string/button_learn_more"
+            android:textColor="@color/white"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </RelativeLayout>

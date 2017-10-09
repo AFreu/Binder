@@ -12,11 +12,14 @@
     </style>
 
     <style name="TitleStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">24dip</item>
         <item name="android:textStyle">bold</item>
+    </style>
 
+    <style name="TitleStyleLight" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">24dip</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -28,6 +31,21 @@
         <item name="android:textSize">32dip</item>
         <item name="android:textStyle">bold</item>
 
+    </style>
+
+    <style name="BookCardTitleStyle" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorCardTextPrimary</item>
+        <item name="android:textSize">24dip</item>
+    </style>
+
+    <style name="BookCardAuthorStyle" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorCardTextSecondary</item>
+        <item name="android:textSize">14dip</item>
+    </style>
+
+    <style name="BookBottomSheetAuthorStyle" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">14dip</item>
     </style>
 
     <style name="PrimaryTextStyle" parent="@style/TextAppearance.AppCompat">
