@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 
 import com.mobilecomputing.binder.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class MatchesAdapter extends ArrayAdapter {
 
         matchName.setText(match.name + " " + match.age);
         matchPercent.setText(match.percent + " % match");
+        Picasso.with(getContext()).load(match.pictureUrl).into(matchPicture);
 
 
         return convertView;

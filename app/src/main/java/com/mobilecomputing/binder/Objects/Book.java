@@ -10,7 +10,9 @@ import org.json.JSONObject;
  */
 
 public class Book {
+    private  String key;
     private String title, author, genre, imageUrl;
+    private String description = "Tom Sawyer is a boy of about 12 years of age, who resides in the fictional town of St. Petersburg, Missouri, in about the year 1845. Tom Sawyer's best friends include Joe Harper and Huckleberry Finn. In The Adventures of Tom Sawyer, Tom's infatuation with classmate Becky Thatcher is apparent as he tries to intrigue her with his strength, boldness, and handsome looks.";
 
     public Book(String jsonString) {
         JSONObject json;
@@ -48,6 +50,14 @@ public class Book {
         this.imageUrl = imageUrl;
     }
 
+    public Book(String title, String author, String genre, String imageUrl, String key) {
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.imageUrl = imageUrl;
+        this.key = key;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -78,5 +88,17 @@ public class Book {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

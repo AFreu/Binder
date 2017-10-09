@@ -43,6 +43,7 @@ import com.mobilecomputing.binder.Fragments.ProfileFragment;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+import com.mobilecomputing.binder.Views.BookBottomSheet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +54,8 @@ import java.util.List;
 
 import jp.wasabeef.blurry.Blurry;
 
-public class HomeActivity extends BasicActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class HomeActivity extends BasicActivity
+        implements GoogleApiClient.OnConnectionFailedListener {
 
     private GridView gridView;
     private LinearLayout appBody;
@@ -214,80 +216,17 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         else if(requestCode == RC_OCR_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
-                    String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
+                    String text = data.getStringExtra("bookResult");
                     Log.d(TAG, "Text read: " + text);
 
-                    fetchBookFromText(text);
+                    ((CardFragment)cardFragment).addBookToTop(text);
+
                 } else {
                     Log.d(TAG, "No Text captured, intent data is null");
                 }
             } else {
             }
         }
-    }
-
-    private String removeLastChar(String str) {
-        return str.substring(0, str.length() - 1);
-    }
-
-    List<Book> books = new ArrayList<>();
-    private void fetchBookFromText(String text) {
-        String[] words = text.split("\\W+");
-        String searchString = "";
-        for (String word : words) {
-            searchString += word+"+";
-        }
-        searchString = removeLastChar(searchString);
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String urlPrefix = "https://openlibrary.org/search.json?";
-        String urlSufix = "q="+searchString;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                urlPrefix + urlSufix,
-                response -> {
-
-                    JSONObject json;
-
-                    try {
-                        json = new JSONObject(response);
-
-                        JSONArray worksArray = json.getJSONArray("docs");
-
-                        if(worksArray != null) {
-                            for (int i = 0; i < worksArray.length(); i++)
-                            {
-                                JSONObject obj = (JSONObject) worksArray.get(i);
-                                String str = "";
-                                try {
-                                    str = obj.getString("subtitle") != null ? obj.getString("subtitle") : "";
-                                } catch (JSONException e) { e.printStackTrace(); }
-
-                                String author = "";
-                                try {
-                                    author = obj.getString("author_name") != null ? obj.getString("author_name") : "";
-                                } catch (JSONException e) { e.printStackTrace(); }
-
-                                Book book = new Book(obj.getString("title") + str,
-                                                     author, "", "");
-                                books.add(book);
-
-                            }
-                            Log.d("HomeActivity", "num of books: " + books.size());
-
-                            Intent intent = new Intent(this, SearchResultActivity.class);
-                            String strBooks = new Gson().toJson(books);
-                            intent.putExtra("books", strBooks);
-                            startActivityForResult(intent, CHOOSE_BOOK_ACTIVITY);
-
-                        } else {
-                            Log.d("HomeActivity", "no books found..");
-                        }
-
-                    } catch (JSONException e) { e.printStackTrace(); }
-
-                }, error -> {
-            Log.d("HomeActivity", "That didn't work..");
-        });
-        queue.add(stringRequest);
     }
 
 

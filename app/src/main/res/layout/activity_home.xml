@@ -74,8 +74,6 @@
             app:itemTextColor="@drawable/bottom_nav_item_color_selector"
             app:menu="@menu/navigation" />
 
-
-
     </LinearLayout>
 
 

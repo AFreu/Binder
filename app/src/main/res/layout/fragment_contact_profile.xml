@@ -22,16 +22,16 @@
 
 
             <android.support.v7.widget.CardView
-                android:layout_width="@dimen/profile_image_size"
-                android:layout_height="@dimen/profile_image_size"
+                android:layout_width="@dimen/match_profile_image_size"
+                android:layout_height="@dimen/match_profile_image_size"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/default_margin"
-                app:cardCornerRadius="40dp">
+                app:cardCornerRadius="62dp">
 
                 <ImageView
                     android:id="@+id/contact_profile_image"
-                    android:layout_width="@dimen/profile_image_size"
-                    android:layout_height="@dimen/profile_image_size"
+                    android:layout_width="@dimen/match_profile_image_size"
+                    android:layout_height="@dimen/match_profile_image_size"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/ic_profile" />
             </android.support.v7.widget.CardView>
@@ -44,7 +44,7 @@
 
                 <TextView
                     android:id="@+id/contact_profile_name"
-                    style="@style/TitleStyle"
+                    style="@style/PrimaryHeaderStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/default_margin"

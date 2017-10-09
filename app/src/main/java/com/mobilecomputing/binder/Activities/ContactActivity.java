@@ -29,6 +29,9 @@ public class ContactActivity extends BasicActivity {
         Match contact = (Match)intent.getSerializableExtra("contact");
 
 
+        Toolbar toolBar = (Toolbar)findViewById(R.id.contact_toolbar);
+        toolBar.setTitle("Match");
+        setSupportActionBar(toolBar);
         mContactPagerAdapter = new ContactPagerAdapter(getSupportFragmentManager(), this, contact);
 
         mViewPager = (ViewPager) findViewById(R.id.container);

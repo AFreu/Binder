@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobilecomputing.binder.Objects.Book;
@@ -24,6 +23,13 @@ import java.util.Random;
  */
 
 public class ImageAdapter extends ArrayAdapter {
+
+
+    public interface ImageAdapterListener {
+        void onLearnMoreClick(Book book);
+    }
+
+    private ImageAdapterListener imageAdapterListener;
 
     private List<Book> books = new ArrayList<>();
     private int layoutResource;
@@ -45,6 +51,10 @@ public class ImageAdapter extends ArrayAdapter {
         }
 
         this.books = urls;*/
+    }
+
+    public void setImageAdapterListener(ImageAdapterListener imageAdapterListener) {
+        this.imageAdapterListener = imageAdapterListener;
     }
 
     /**
@@ -110,6 +120,12 @@ public class ImageAdapter extends ArrayAdapter {
         } else {
             ((TextView)v.findViewById(R.id.book_card_author)).setText(books.get(position).getAuthor());
             ((TextView)v.findViewById(R.id.book_card_title)).setText(books.get(position).getTitle());
+            v.findViewById(R.id.book_card_button).setOnClickListener(listener -> {
+
+                if(imageAdapterListener != null)
+                    imageAdapterListener.onLearnMoreClick(books.get(position));
+
+            });
         }
 
         return v;

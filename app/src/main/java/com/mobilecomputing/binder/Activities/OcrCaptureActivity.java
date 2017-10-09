@@ -38,17 +38,29 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
+import com.google.gson.Gson;
+import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.camera.CameraSource;
 import com.mobilecomputing.binder.camera.CameraSourcePreview;
 import com.mobilecomputing.binder.camera.GraphicOverlay;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activity for the multi-tracker app.  This app detects text and displays the value with the
@@ -60,9 +72,12 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     // Intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
+    private static final int RC_OCR_CAPTURE = 9003;
 
     // Permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
+    private static final int CHOOSE_BOOK_ACTIVITY = 1435;
+
 
     // Constants used to pass extra data in the intent
     public static final String AutoFocus = "AutoFocus";
@@ -326,10 +341,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         if (graphic != null) {
             text = graphic.getTextBlock();
             if (text != null && text.getValue() != null) {
-                Intent data = new Intent();
-                data.putExtra(TextBlockObject, text.getValue());
-                setResult(CommonStatusCodes.SUCCESS, data);
-                finish();
+                fetchBookFromText(text.getValue());
             }
             else {
                 Log.d(TAG, "text data is null");
@@ -340,6 +352,114 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         }
         return text != null;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == CHOOSE_BOOK_ACTIVITY) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
+                    Log.d(TAG, "Text read: " + text);
+                    String strBook = data.getStringExtra("bookResult");
+                    Intent intent = new Intent();
+                    intent.putExtra("bookResult", strBook);
+                    setResult(CommonStatusCodes.SUCCESS, intent);
+                    finish();
+                } else {
+                    Log.d(TAG, "No Text captured, intent data is null");
+                }
+            } else {
+                finish();
+            }
+        }
+    }
+
+
+    private String removeLastChar(String str) {
+        return str.substring(0, str.length() - 1);
+    }
+
+    List<Book> books = new ArrayList<>();
+    private void fetchBookFromText(String text) {
+        String[] words = text.split("\\W+");
+        String searchString = "";
+        for (String word : words) {
+            searchString += word+"+";
+        }
+        searchString = removeLastChar(searchString);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String urlPrefix = "https://openlibrary.org/search.json?";
+        String urlSufix = "q="+searchString;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                urlPrefix + urlSufix,
+                response -> {
+
+                    JSONObject json;
+
+                    try {
+                        json = new JSONObject(response);
+
+                        JSONArray worksArray = json.getJSONArray("docs");
+
+                        if(worksArray != null) {
+                            for (int i = 0; i < worksArray.length(); i++)
+                            {
+                                JSONObject obj = (JSONObject) worksArray.get(i);
+                                String str = "";
+                                try {
+                                    str = obj.getString("subtitle") != null ? obj.getString("subtitle") : "";
+                                } catch (JSONException e) { e.printStackTrace(); }
+
+                                String author = "";
+                                try {
+                                    author = obj.getString("author_name") != null ? buildAuthors(obj.getJSONArray("author_name")) : "";
+                                } catch (JSONException e) { e.printStackTrace(); }
+
+                                String image = "";
+                                try {
+                                    image = obj.getString("cover_i") != null ? obj.getString("cover_i") : "";
+                                } catch (JSONException e) { e.printStackTrace(); }
+
+                                Book book = new Book(obj.getString("title") + str,
+                                        author, "", image, obj.getString("key"));
+                                books.add(book);
+
+                            }
+                            Log.d("HomeActivity", "num of books: " + books.size());
+
+                            Intent intent = new Intent(this, SearchResultActivity.class);
+                            String strBooks = new Gson().toJson(books);
+                            intent.putExtra("books", strBooks);
+                            startActivityForResult(intent, CHOOSE_BOOK_ACTIVITY);
+
+                        } else {
+                            Log.d("HomeActivity", "no books found..");
+                        }
+
+                    } catch (JSONException e) { e.printStackTrace(); }
+
+                }, error -> {
+            Log.d("HomeActivity", "That didn't work..");
+        });
+        queue.add(stringRequest);
+    }
+
+    private String buildAuthors(JSONArray author_name) {
+        String str = "";
+        for(int i = 0; i < author_name.length(); i++)
+        {
+            try {
+                str += author_name.getString(i) + ", ";
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        removeLastChar(str);
+        return str;
+    }
+
 
     private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {
 
