@@ -235,22 +235,18 @@ public class HomeActivity extends BasicActivity
 
         switch (content){
             case "CardFragment":
-                setScanMenu();
                 fragment = cardFragment;
                 title = getString(R.string.title_books);
                 break;
             case "MatchesFragment":
-                setMainMenu();
                 fragment = matchesFragment;
                 title = getString(R.string.title_matches);
                 break;
             case "ProfileFragment":
-                setMainMenu();
                 fragment = profileFragment;
                 title = getString(R.string.title_profile);
                 break;
             default:
-                setMainMenu();
                 fragment = cardFragment;
                 title = getString(R.string.title_books);
                 break;
@@ -311,11 +307,6 @@ public class HomeActivity extends BasicActivity
         menu.clear();
     }
 
-    public void setMainMenu() {
-        menu.clear();
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-    }
-
     public void setScanMenu() {
         menu.clear();
         getMenuInflater().inflate(R.menu.scan_menu, menu);
@@ -327,7 +318,9 @@ public class HomeActivity extends BasicActivity
         this.menu = menu;
 
         // defaults to scanMenu
-        setScanMenu();
+        if(isSignedIn && this.menu != null)
+            setScanMenu();
+
         return true;
     }
 
@@ -336,7 +329,7 @@ public class HomeActivity extends BasicActivity
 
         switch (item.getItemId()){
             case R.id.action_signout:
-                logOutGoogle();
+                logOut();
                 return true;
             case R.id.action_scan:
                 int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
@@ -355,11 +348,11 @@ public class HomeActivity extends BasicActivity
         }
     }
 
-    public void logOutGoogle() {
+    public void logOut() {
 
         isSignedIn = sharedPreferences.getBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), false);
 
-        if(isSignedIn && googleApiClient != null) {
+        if(isSignedIn) {
 
             Log.d("HomeActivity", "signing out..");
             setEmptyMenu();
@@ -368,7 +361,7 @@ public class HomeActivity extends BasicActivity
             editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), false).apply();
             isSignedIn = false;
 
-            if(googleApiClient.isConnected())
+            if(googleApiClient != null && googleApiClient.isConnected())
                 googleApiClient.disconnect();
 
             setVisibilityOfSignIn();
