@@ -18,8 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -95,6 +93,17 @@ public class HomeActivity extends BasicActivity
         addAllGenres();
         initGoogleApiClient();
 
+        initUI();
+
+        createFragments();
+
+        // sets first fragment to booksfragment
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.content, cardFragment).commit();
+
+    }
+
+    public void initUI() {
         Toolbar toolBar = (Toolbar)findViewById(R.id.home_toolbar);
         setSupportActionBar(toolBar);
 
@@ -107,27 +116,6 @@ public class HomeActivity extends BasicActivity
         imageAdapter.setBackgroundGridMode();
         gridView.setAdapter(imageAdapter);
         gridView.setOnTouchListener((v, event) -> event.getAction() == MotionEvent.ACTION_MOVE);
-
-        createFragments();
-        // sets first fragment to booksfragment
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.content, cardFragment).commit();
-
-        RelativeLayout back = (RelativeLayout) findViewById(R.id.home_gradient_background);
-        // blurs the background on sign in
-        back.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                back.getViewTreeObserver().removeOnPreDrawListener(this);
-
-                /*Blurry.with(HomeActivity.this).radius(25)
-                        .sampling(2)
-                        .async()
-                        .animate(300)
-                        .onto((ViewGroup)back.getParent());*/
-                return false;
-            }
-        });
 
         signInBackground = (RelativeLayout) findViewById(R.id.sign_in_background);
 
@@ -159,11 +147,6 @@ public class HomeActivity extends BasicActivity
             User user = new User(
                 sharedPreferences.getString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME), ""),
                 sharedPreferences.getString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL), ""));
-
-            ((CardFragment) cardFragment).setUserAccount(user);
-            ((ProfileFragment) profileFragment).setUserAccount(user);
-        } else {
-            User user = new User("Lasse","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDEJYUv2Ky1il0cACL2SotVuUSU5Dc53FnE2pAraqZWNRkRPaQ4Q");
 
             ((CardFragment) cardFragment).setUserAccount(user);
             ((ProfileFragment) profileFragment).setUserAccount(user);
@@ -290,21 +273,6 @@ public class HomeActivity extends BasicActivity
             setScanMenu();
             setVisibilityOfSignIn();
 
-            // blurs the background on sign in
-            /*gridView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-                    gridView.getViewTreeObserver().removeOnPreDrawListener(this);
-
-                    Blurry.with(HomeActivity.this).radius(8)
-                            .sampling(2)
-                            .async()
-                            .animate(300)
-                            .onto((ViewGroup)gridView.getParent());
-                    return false;
-                }
-            });*/
-
             if(sharedPreferences == null)
                 sharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
 
@@ -356,15 +324,15 @@ public class HomeActivity extends BasicActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.scan_menu, menu);
         this.menu = menu;
+
+        // defaults to scanMenu
+        setScanMenu();
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        Log.d("HomeActivity", "Item id: " + item.getItemId());
 
         switch (item.getItemId()){
             case R.id.action_signout:
