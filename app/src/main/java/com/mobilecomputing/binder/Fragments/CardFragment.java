@@ -22,6 +22,7 @@ import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.BookBottomSheet;
 import com.squareup.picasso.Picasso;
 import com.yuyakaido.android.cardstackview.CardStackView;
@@ -40,7 +41,7 @@ import java.util.List;
 public class CardFragment extends BasicFragment
     implements ImageAdapter.ImageAdapterListener{
 
-    private GoogleSignInAccount userAccount;
+    private User userAccount;
     private List<Book> books;
 
     private ImageView profileImage;
@@ -138,11 +139,11 @@ public class CardFragment extends BasicFragment
 
         if(userAccount != null && profileImage != null) {
             profileName.setText(userAccount.getGivenName() + ".");
-            Picasso.with(getContext()).load(userAccount.getPhotoUrl()).into(profileImage);
+            Picasso.with(getContext()).load(userAccount.getImageUrl()).into(profileImage);
         }
     }
 
-    public void setUserAccount(GoogleSignInAccount userAccount) {
+    public void setUserAccount(User userAccount) {
         this.userAccount = userAccount;
 
         populateUI();

@@ -3,6 +3,7 @@ package com.mobilecomputing.binder.Activities;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -43,6 +44,7 @@ import com.mobilecomputing.binder.Fragments.ProfileFragment;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.BookBottomSheet;
 
 import org.json.JSONArray;
@@ -78,6 +80,7 @@ public class HomeActivity extends BasicActivity
     private static final int CHOOSE_BOOK_ACTIVITY = 1435;
 
     private Menu menu;
+    private SharedPreferences sharedPreferences;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -103,6 +106,7 @@ public class HomeActivity extends BasicActivity
         setContentView(R.layout.activity_home);
 
         addAllGenres();
+        initGoogleApiClient();
 
         Toolbar toolBar = (Toolbar)findViewById(R.id.home_toolbar);
         setSupportActionBar(toolBar);
@@ -122,10 +126,6 @@ public class HomeActivity extends BasicActivity
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.content, cardFragment).commit();
 
-        initSignIn();
-
-        setVisibilityOfSignIn();
-
         RelativeLayout back = (RelativeLayout) findViewById(R.id.home_gradient_background);
         // blurs the background on sign in
         back.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -141,6 +141,48 @@ public class HomeActivity extends BasicActivity
                 return false;
             }
         });
+
+        signInBackground = (RelativeLayout) findViewById(R.id.sign_in_background);
+
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(view -> {
+            signInWithGoogle();
+        });
+
+        signInButtonNoGoogle = (Button) findViewById(R.id.sign_in_button_noGoogle);
+        signInButtonNoGoogle.setOnClickListener(view -> {
+            mockSignIn();
+        });
+    }
+
+    /**
+     * Called after onCreate
+     * Checks if user is signed in..
+     */
+    @Override
+    protected void onStart () {
+        super.onStart();
+
+        if(sharedPreferences == null)
+            sharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
+
+        isSignedIn = sharedPreferences.getBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), false);
+
+        if(isSignedIn) {
+            User user = new User(
+                sharedPreferences.getString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME), ""),
+                sharedPreferences.getString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL), ""));
+
+            ((CardFragment) cardFragment).setUserAccount(user);
+            ((ProfileFragment) profileFragment).setUserAccount(user);
+        } else {
+            User user = new User("Lasse","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDEJYUv2Ky1il0cACL2SotVuUSU5Dc53FnE2pAraqZWNRkRPaQ4Q");
+
+            ((CardFragment) cardFragment).setUserAccount(user);
+            ((ProfileFragment) profileFragment).setUserAccount(user);
+        }
+
+        setVisibilityOfSignIn();
     }
 
     private void addAllGenres() {
@@ -154,8 +196,7 @@ public class HomeActivity extends BasicActivity
         allGenres.add("horror");
     }
 
-    private void initSignIn() {
-        appBody.setVisibility(View.INVISIBLE);
+    private void initGoogleApiClient() {
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -165,18 +206,6 @@ public class HomeActivity extends BasicActivity
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
-        signInBackground = (RelativeLayout) findViewById(R.id.sign_in_background);
-
-        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener(view -> {
-            signInWithGoogle();
-        });
-
-        signInButtonNoGoogle = (Button) findViewById(R.id.sign_in_button_noGoogle);
-        signInButtonNoGoogle.setOnClickListener(view -> {
-            mockSignIn();
-        });
     }
 
     private void createFragments() {
@@ -210,9 +239,8 @@ public class HomeActivity extends BasicActivity
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
-
-            setVisibilityOfSignIn();
         }
+
         else if(requestCode == RC_OCR_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
@@ -267,9 +295,10 @@ public class HomeActivity extends BasicActivity
 
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
+            User userAccount = new User(acct.getGivenName(), acct.getPhotoUrl().toString());
             isSignedIn = true;
-            ((ProfileFragment)profileFragment).setUserAccount(acct);
-            ((CardFragment)cardFragment).setUserAccount(acct);
+            ((ProfileFragment)profileFragment).setUserAccount(userAccount);
+            ((CardFragment)cardFragment).setUserAccount(userAccount);
 
             setScanMenu();
             setVisibilityOfSignIn();
@@ -289,11 +318,23 @@ public class HomeActivity extends BasicActivity
                 }
             });*/
 
+            if(sharedPreferences == null)
+                sharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), isSignedIn);
+            editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME), acct.getGivenName());
+            editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL), acct.getPhotoUrl().toString());
+            editor.apply();
+
         } else {
             isSignedIn = false;
             ((ProfileFragment)profileFragment).setUserAccount(null);
             ((CardFragment)cardFragment).setUserAccount(null);
         }
+
+
+        setVisibilityOfSignIn();
     }
 
 
@@ -319,17 +360,25 @@ public class HomeActivity extends BasicActivity
     public void setScanMenu() {
         menu.clear();
         getMenuInflater().inflate(R.menu.scan_menu, menu);
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //getMenuInflater().inflate(R.menu.scan_menu, menu);
         this.menu = menu;
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.d("HomeActivity", "Item id: " + item.getItemId());
+
         switch (item.getItemId()){
+            case R.id.action_signout:
+                logOutGoogle();
+                return true;
             case R.id.action_scan:
                 int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
                 if (rc == PackageManager.PERMISSION_GRANTED) {
@@ -347,6 +396,28 @@ public class HomeActivity extends BasicActivity
         }
     }
 
+    public void logOutGoogle() {
+
+        isSignedIn = sharedPreferences.getBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), false);
+
+        if(isSignedIn && googleApiClient != null) {
+
+            Log.d("HomeActivity", "signing out..");
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), false).apply();
+            isSignedIn = false;
+
+            if(googleApiClient.isConnected())
+                googleApiClient.disconnect();
+
+            setVisibilityOfSignIn();
+        }
+
+        if(sharedPreferences == null)
+            sharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
+
+    }
 
     /**
      * Handles the requesting of the camera permission.  This includes

@@ -36,4 +36,8 @@
     <string name="ocr_failure">No text captured</string>
     <string name="ocr_error">"Error reading text: %1$s"</string>
     <string name="button_learn_more">Learn more</string>
+    <string name="SHARED_PREFS_USER_DATA_TAG">com.mobilecomputing.binder.USER_DATA</string>
+    <string name="SHARED_PREFS_USER_DATA_TAG_SIGNED_IN">SIGNED_IN</string>
+    <string name="SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME">DISPLAY_NAME</string>
+    <string name="SHARED_PREFS_USER_DATA_TAG_PHOTO_URL">PHOTO_URL</string>
 </resources>
