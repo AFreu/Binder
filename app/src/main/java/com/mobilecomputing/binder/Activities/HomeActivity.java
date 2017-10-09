@@ -352,6 +352,10 @@ public class HomeActivity extends BasicActivity
 
     }
 
+    public void setEmptyMenu() {
+        menu.clear();
+    }
+
     public void setMainMenu() {
         menu.clear();
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -403,6 +407,7 @@ public class HomeActivity extends BasicActivity
         if(isSignedIn && googleApiClient != null) {
 
             Log.d("HomeActivity", "signing out..");
+            setEmptyMenu();
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), false).apply();
