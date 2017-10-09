@@ -12,6 +12,7 @@ import org.json.JSONObject;
  */
 
 public class Book {
+    private  String key;
     private String title, author, genre, imageUrl;
 
     public Book(String jsonString) {
@@ -39,6 +40,14 @@ public class Book {
         this.author = author;
         this.genre = genre;
         this.imageUrl = imageUrl;
+    }
+
+    public Book(String title, String author, String genre, String imageUrl, String key) {
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.imageUrl = imageUrl;
+        this.key = key;
     }
 
     public String getTitle() {
@@ -71,5 +80,13 @@ public class Book {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

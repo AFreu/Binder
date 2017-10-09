@@ -8,11 +8,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Utils.BooksAdapter;
 import com.mobilecomputing.binder.Utils.MatchesAdapter;
 
 import org.json.JSONObject;
@@ -23,8 +25,8 @@ import java.util.List;
 public class SearchResultActivity extends AppCompatActivity {
 
     ListView list;
-    MatchesAdapter matches;
-    private ArrayList<Match> matchList;
+    BooksAdapter books;
+    private ArrayList<Book> bookList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,26 +38,29 @@ public class SearchResultActivity extends AppCompatActivity {
 
         list = (ListView) findViewById(R.id.searchResults);
 
-        matchList = new ArrayList<Match>();
+        bookList = new ArrayList<Book>();
 
         JsonArray bookArr = new Gson().fromJson(getIntent().getStringExtra("books"), JsonArray.class);
-        matchList.add(new Match("Lovisa", 26, null, null, null, 55));
-        matchList.add(new Match("Mikael", 24, null, null, null, 67));
+
         for (int i = 0; i < bookArr.size();  i++)
         {
             Book book = new Gson().fromJson(bookArr.get(i), Book.class);
-            Match match = new Match(book.getTitle(), 0, book.getAuthor(),null,null,0);
-            matchList.add(match);
+            bookList.add(book);
         }
-        matches = new MatchesAdapter(this, R.layout.match_item, matchList);
+        books = new BooksAdapter(this, R.layout.book_list_item, bookList);
 
-        list.setAdapter(matches);
+        list.setAdapter(books);
 
         list.setClickable(true);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Book book = (Book)list.getItemAtPosition(position);
+                String strBook = new Gson().toJson(book);
+                Intent data = new Intent();
+                data.putExtra("bookResult", strBook);
+                setResult(CommonStatusCodes.SUCCESS, data);
+                finish();
             }
         });
 

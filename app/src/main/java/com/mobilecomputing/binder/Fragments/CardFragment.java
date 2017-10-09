@@ -18,6 +18,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.gson.Gson;
 import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
@@ -142,6 +143,43 @@ public class CardFragment extends BasicFragment {
         this.userAccount = userAccount;
 
         populateUI();
+    }
+
+    public void addBookToTop(String strBook) {
+        Book book = new Gson().fromJson(strBook, Book.class);
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        String urlPrefix = "https://openlibrary.org";
+        String urlSufix = ".json";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                urlPrefix + book.getKey() + urlSufix,
+                response -> {
+
+                    JSONObject json;
+
+                    try {
+                        json = new JSONObject(response);
+
+
+                        if(json != null) {
+
+                            // TODO add all books from a genre and not only the first one
+                            books.add(0, new Book(json.toString()));
+                            Log.d("CardFragment", "num of books: " + books.size());
+
+                        } else {
+                            Log.d("CardFragment", "no works found..");
+                        }
+
+                    } catch (JSONException e) { e.printStackTrace(); }
+
+                }, error -> {
+            Log.d("CardFragment", "That didn't work..");
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
     }
 
 }
