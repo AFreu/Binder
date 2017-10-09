@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
@@ -27,6 +29,8 @@ public class ImageAdapter extends ArrayAdapter {
     private int layoutResource;
     private Context context;
 
+    private boolean hideActionArea = false;
+
     public ImageAdapter(@NonNull Context context, int layoutResource) {
         super(context, layoutResource);
 
@@ -43,7 +47,15 @@ public class ImageAdapter extends ArrayAdapter {
         this.books = urls;*/
     }
 
-    public void mockData() {
+    /**
+     * Sets the mode of the adapter for images to be that of a background grid of images
+     */
+    public void setBackgroundGridMode() {
+        hideActionArea = true;
+        mockData();
+    }
+
+    private void mockData() {
 
         Random r = new Random();
         for(int i = 1; i < 13; i++) {
@@ -91,10 +103,16 @@ public class ImageAdapter extends ArrayAdapter {
         //r.setTag(holder);
 
         String url = books.get(position).getImageUrl();
-        Picasso.with(context).load(url).into((ImageView)v.findViewById(R.id.image_layout_image));
+        Picasso.with(context).load(url).into((ImageView)v.findViewById(R.id.book_card_image));
+
+        if(hideActionArea) {
+            v.findViewById(R.id.book_card_action_area).setVisibility(View.INVISIBLE);
+        } else {
+            ((TextView)v.findViewById(R.id.book_card_author)).setText(books.get(position).getAuthor());
+            ((TextView)v.findViewById(R.id.book_card_title)).setText(books.get(position).getTitle());
+        }
 
         return v;
-
     }
 
     @Override

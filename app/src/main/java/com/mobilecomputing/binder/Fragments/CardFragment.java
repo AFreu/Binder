@@ -113,7 +113,7 @@ public class CardFragment extends BasicFragment {
                                     // TODO filter what books to fetch in some way..
                                     for(int j = 0; j < worksArray.length(); j++)
                                         books.add(new Book(worksArray.get(j).toString()));
-                                    
+
                                 } else {
                                     Log.d("CardFragment", "no works found..");
                                 }

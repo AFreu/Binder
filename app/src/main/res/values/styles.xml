@@ -30,6 +30,16 @@
 
     </style>
 
+    <style name="BookCardTitleStyle" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorCardTextPrimary</item>
+        <item name="android:textSize">24dip</item>
+    </style>
+
+    <style name="BookCardAuthorStyle" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorCardTextSecondary</item>
+        <item name="android:textSize">14dip</item>
+    </style>
+
     <style name="PrimaryTextStyle" parent="@style/TextAppearance.AppCompat">
         <item name="android:textColor">@color/colorPrimaryText</item>
         <item name="android:textSize">20dip</item>

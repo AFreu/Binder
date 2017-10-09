@@ -16,4 +16,7 @@
     <color name="color_gradient_start">#EFEFF4</color>
     <color name="color_gradient_end">#99E0BDFF</color>
 
+    <color name="colorCardTextPrimary">#FFFFFF</color>
+    <color name="colorCardTextSecondary">#E0E0E0</color>
+
 </resources>

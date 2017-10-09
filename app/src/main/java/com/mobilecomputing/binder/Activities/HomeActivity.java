@@ -111,7 +111,7 @@ public class HomeActivity extends BasicActivity implements GoogleApiClient.OnCon
         appBody = (LinearLayout) findViewById(R.id.app_body);
         ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.image_layout);
         gridView = (GridView) findViewById(R.id.background_grid);
-        imageAdapter.mockData();
+        imageAdapter.setBackgroundGridMode();
         gridView.setAdapter(imageAdapter);
         gridView.setOnTouchListener((v, event) -> event.getAction() == MotionEvent.ACTION_MOVE);
 
