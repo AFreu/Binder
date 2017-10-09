@@ -59,8 +59,7 @@
                 android:layout_weight="1"
                 android:textSize="15dp"
                 android:textColor="@color/colorSecondaryText"
-                android:textStyle="bold"
-                android:text="% match" />
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
