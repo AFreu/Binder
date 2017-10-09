@@ -43,6 +43,7 @@ import com.mobilecomputing.binder.Fragments.ProfileFragment;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+import com.mobilecomputing.binder.Views.BookBottomSheet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +54,8 @@ import java.util.List;
 
 import jp.wasabeef.blurry.Blurry;
 
-public class HomeActivity extends BasicActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class HomeActivity extends BasicActivity
+        implements GoogleApiClient.OnConnectionFailedListener {
 
     private GridView gridView;
     private LinearLayout appBody;

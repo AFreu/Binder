@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,7 @@ import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+import com.mobilecomputing.binder.Views.BookBottomSheet;
 import com.squareup.picasso.Picasso;
 import com.yuyakaido.android.cardstackview.CardStackView;
 
@@ -29,18 +29,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.System.in;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CardFragment extends BasicFragment {
+public class CardFragment extends BasicFragment
+    implements ImageAdapter.ImageAdapterListener{
 
     private GoogleSignInAccount userAccount;
     private List<Book> books;
@@ -48,6 +45,8 @@ public class CardFragment extends BasicFragment {
     private ImageView profileImage;
     private TextView profileName;
     private CardStackView cardStack;
+
+    private BookBottomSheet bookBottomSheet;
 
     private ImageAdapter imageAdapter;
 
@@ -74,6 +73,7 @@ public class CardFragment extends BasicFragment {
         profileName = view.findViewById(R.id.card_text_name);
         cardStack = view.findViewById(R.id.card_stack);
         imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
+        imageAdapter.setImageAdapterListener(this);
         cardStack.setAdapter(imageAdapter);
 
         fetchData(new ArrayList<>());
@@ -145,6 +145,13 @@ public class CardFragment extends BasicFragment {
         this.userAccount = userAccount;
 
         populateUI();
+    }
+
+    @Override
+    public void onLearnMoreClick(Book b) {
+        bookBottomSheet = new BookBottomSheet();
+        bookBottomSheet.setBook(b);
+        bookBottomSheet.show(getActivity().getSupportFragmentManager(), bookBottomSheet.getTag());
     }
 
 }
