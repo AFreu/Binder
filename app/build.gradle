@@ -45,7 +45,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:9.0.0'
     compile 'com.github.stfalcon:chatkit:0.2.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'jp.wasabeef:blurry:2.1.1'
     compile 'com.yuyakaido.android:card-stack-view:1.0.0-beta5'
     compile 'com.wefika:flowlayout:0.4.1'
     compile 'com.google.android.gms:play-services-vision:9.0.0'
