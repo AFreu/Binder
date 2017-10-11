@@ -29,6 +29,9 @@
         <activity
             android:name=".Activities.OcrCaptureActivity"
             android:label="Read Text" />
+        <activity
+            android:name=".Activities.BarcodeCaptureActivity"
+            android:label="Scan code" />
         <activity android:name=".Activities.SearchResultActivity"></activity>
     </application>
 

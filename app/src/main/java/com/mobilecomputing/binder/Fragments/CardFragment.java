@@ -200,6 +200,13 @@ public class CardFragment extends BasicFragment
 
     }
 
+    public void addBookToTop2(String strBook) {
+        Book book = new Gson().fromJson(strBook, Book.class);
+        books.add(0, new Book(book.getTitle(), book.getAuthor(), "", book.getImageUrl(), book.getKey()));
+
+        imageAdapter.setBooks(books);
+    }
+
     @Override
     public void onLearnMoreClick(Book b) {
         bookBottomSheet = new BookBottomSheet();

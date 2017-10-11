@@ -31,9 +31,12 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.gson.Gson;
 import com.mobilecomputing.binder.Fragments.CardFragment;
 import com.mobilecomputing.binder.Fragments.MatchesFragment;
 import com.mobilecomputing.binder.Fragments.ProfileFragment;
+import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
@@ -60,6 +63,8 @@ public class HomeActivity extends BasicActivity
     private RelativeLayout signInBackground;
 
     private static final int RC_OCR_CAPTURE = 9003;
+    private static final int RC_BARCODE_CAPTURE = 9001;
+
     private static final String TAG = "MainActivity";
 
     private static final int CHOOSE_BOOK_ACTIVITY = 1435;
@@ -227,6 +232,26 @@ public class HomeActivity extends BasicActivity
             } else {
             }
         }
+        else if(requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    //statusMessage.setText(R.string.barcode_success);
+                    //barcodeValue.setText(barcode.displayValue);
+
+                    Book book = new Book(barcode.displayValue, "By Barcode scanner",
+                            "", "http://book5s.com/wp-content/uploads/2016/07/Linguaforum-Toefl-Ibt-Test-Book-I-4-Audio-CDs-362x480.jpg", "codeScanner");
+
+                    String strBook = new Gson().toJson(book);
+                    ((CardFragment)cardFragment).addBookToTop2(strBook);
+                    switchContent("CardFragment");
+
+                } else {
+                    Log.d(TAG, "No Text captured, intent data is null");
+                }
+            } else {
+            }
+        }
     }
 
 
@@ -336,7 +361,7 @@ public class HomeActivity extends BasicActivity
             case R.id.action_signout:
                 logOut();
                 return true;
-            case R.id.action_scan:
+            case R.id.action_scan_dropdown1:
                 int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
                 if (rc == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(this, OcrCaptureActivity.class);
@@ -348,6 +373,15 @@ public class HomeActivity extends BasicActivity
                     requestCameraPermission();
                 }
                 return true;
+            case R.id.action_scan_dropdown2:
+                int rc2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+                if (rc2 == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(this, BarcodeCaptureActivity.class);
+                    intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                    intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+                    startActivityForResult(intent, RC_BARCODE_CAPTURE);
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }

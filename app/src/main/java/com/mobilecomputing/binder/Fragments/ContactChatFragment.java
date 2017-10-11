@@ -1,7 +1,6 @@
 package com.mobilecomputing.binder.Fragments;
 
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.mobilecomputing.binder.Modules.Author;
-import com.mobilecomputing.binder.Modules.ChatImage;
-import com.mobilecomputing.binder.Modules.Message;
+import com.mobilecomputing.binder.Objects.Author;
+import com.mobilecomputing.binder.Objects.Message;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.stfalcon.chatkit.commons.ImageLoader;
@@ -21,10 +19,9 @@ import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import android.os.Handler;
+
 import com.squareup.picasso.Picasso;
 
 
