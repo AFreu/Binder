@@ -27,6 +27,7 @@ import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.BookBottomSheet;
 import com.squareup.picasso.Picasso;
 import com.yuyakaido.android.cardstackview.CardStackView;
+import com.yuyakaido.android.cardstackview.SwipeDirection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +44,17 @@ import java.util.Set;
  */
 public class CardFragment extends BasicFragment
     implements ImageAdapter.ImageAdapterListener{
+
+    public interface CardFragmentListener {
+        void bookLiked(Book book);
+        void bookDisiked(Book book);
+    }
+
+    private CardFragmentListener cardFragmentListener;
+
+    public void setCardFragmentListener(CardFragmentListener cardFragmentListener) {
+        this.cardFragmentListener = cardFragmentListener;
+    }
 
     private User userAccount;
     private List<Book> books;
@@ -81,6 +93,42 @@ public class CardFragment extends BasicFragment
         imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
         imageAdapter.setImageAdapterListener(this);
         cardStack.setAdapter(imageAdapter);
+        cardStack.setCardEventListener(new CardStackView.CardEventListener() {
+            @Override
+            public void onCardDragging(float percentX, float percentY) {
+
+            }
+
+            @Override
+            public void onCardSwiped(SwipeDirection direction) {
+
+                switch (direction) {
+                    case Right:
+                        if(cardFragmentListener != null)
+                            cardFragmentListener.bookLiked(books.get(cardStack.getTopIndex()-1));
+                        break;
+                    case Left:
+                        if(cardFragmentListener != null)
+                            cardFragmentListener.bookDisiked(books.get(cardStack.getTopIndex()-1));
+                        break;
+                }
+            }
+
+            @Override
+            public void onCardReversed() {
+
+            }
+
+            @Override
+            public void onCardMovedToOrigin() {
+
+            }
+
+            @Override
+            public void onCardClicked(int index) {
+
+            }
+        });
 
         fetchData(ignoreGenres);
 

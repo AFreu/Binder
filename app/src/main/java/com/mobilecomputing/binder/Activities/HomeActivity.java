@@ -34,6 +34,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.mobilecomputing.binder.Fragments.CardFragment;
 import com.mobilecomputing.binder.Fragments.MatchesFragment;
 import com.mobilecomputing.binder.Fragments.ProfileFragment;
+import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
@@ -44,7 +45,9 @@ import java.util.List;
 import java.util.Set;
 
 public class HomeActivity extends BasicActivity
-        implements GoogleApiClient.OnConnectionFailedListener, ProfileFragment.ProfileFragmentListener{
+        implements GoogleApiClient.OnConnectionFailedListener,
+        ProfileFragment.ProfileFragmentListener,
+        CardFragment.CardFragmentListener {
 
     private GridView gridView;
     private LinearLayout appBody;
@@ -53,6 +56,8 @@ public class HomeActivity extends BasicActivity
     private static final int RC_SIGN_IN = 300;
     public static List<String> allGenres = new ArrayList<>();
 
+    private Set<Book> likedBooks = new HashSet<>();
+    private Set<Book> dislikedBooks = new HashSet<>();
     private Fragment profileFragment;
     private Fragment cardFragment;
     private Fragment matchesFragment;
@@ -181,6 +186,7 @@ public class HomeActivity extends BasicActivity
         profileFragment = new ProfileFragment();
         ((ProfileFragment) profileFragment).setProfileFragmentListener(this);
         cardFragment = new CardFragment();
+        ((CardFragment) cardFragment).setCardFragmentListener(this);
         matchesFragment = new MatchesFragment();
     }
 
@@ -457,5 +463,17 @@ public class HomeActivity extends BasicActivity
         editor.apply();
 
         ((CardFragment)cardFragment).getIgnoreGenres().remove(genre);
+    }
+
+    @Override
+    public void bookLiked(Book book) {
+        likedBooks.add(book);
+        dislikedBooks.remove(book);
+    }
+
+    @Override
+    public void bookDisiked(Book book) {
+        dislikedBooks.add(book);
+        likedBooks.remove(book);
     }
 }
