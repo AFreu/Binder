@@ -9,7 +9,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_thumb_down"
-        android:tint="#e55e47"
+        android:tint="@color/colorRed"
         android:layout_width="84dp"
         android:layout_height="84dp" />
 
