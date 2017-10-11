@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Libra on 11/10/17.
  */
 
-public class BookAdapter extends ArrayAdapter {
+public class BookAdapter extends ArrayAdapter<Book> {
 
     private Context mContext;
 
@@ -37,7 +37,7 @@ public class BookAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View v, @NonNull ViewGroup parent) {
 
 
-        Book book = (Book) getItem(position);
+        Book book = getItem(position);
 
         if (v == null){
             v = LayoutInflater.from(getContext()).inflate(R.layout.book_item, parent, false);

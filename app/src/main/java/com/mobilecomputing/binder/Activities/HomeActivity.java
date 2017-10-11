@@ -59,8 +59,8 @@ public class HomeActivity extends BasicActivity
     private static final int RC_SIGN_IN = 300;
     public static List<String> allGenres = new ArrayList<>();
 
-    private Set<Book> likedBooks = new HashSet<>();
-    private Set<Book> dislikedBooks = new HashSet<>();
+    private List<Book> likedBooks = new ArrayList<>();
+    private List<Book> dislikedBooks = new ArrayList<>();
     private Fragment profileFragment;
     private Fragment cardFragment;
     private Fragment matchesFragment;
@@ -142,7 +142,7 @@ public class HomeActivity extends BasicActivity
         appBody = (LinearLayout) findViewById(R.id.app_body);
         ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.image_layout);
         gridView = (GridView) findViewById(R.id.background_grid);
-        imageAdapter.setLessInfo();
+        imageAdapter.hideActionArea();
         imageAdapter.mockData();
         gridView.setAdapter(imageAdapter);
         gridView.setOnTouchListener((v, event) -> event.getAction() == MotionEvent.ACTION_MOVE);

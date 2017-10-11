@@ -8,18 +8,18 @@
     android:paddingLeft="5dp"
     android:paddingRight="5dp">
 
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-
     <ImageView
         android:id="@+id/book_item_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/ic_book" />
+        app:srcCompat="@drawable/ic_book"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
 
-    <Button
+    <TextView
         android:id="@+id/book_item_button"
         style="@style/Base.Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
@@ -30,7 +30,10 @@
         android:layout_gravity="bottom"
         android:background="@color/colorSemiBlack"
         android:text="@string/button_learn_more"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
 
 
 </RelativeLayout>

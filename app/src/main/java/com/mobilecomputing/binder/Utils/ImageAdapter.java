@@ -36,9 +36,7 @@ public class ImageAdapter extends ArrayAdapter {
     private List<Book> books = new ArrayList<>();
     private int layoutResource;
     private Context context;
-
     private boolean hideActionArea = false;
-    private boolean lessInfo = false;
 
     public ImageAdapter(@NonNull Context context, int layoutResource) {
         super(context, layoutResource);
@@ -52,13 +50,6 @@ public class ImageAdapter extends ArrayAdapter {
     }
 
     /**
-     * Sets the mode of the adapter for images to not show title or author in grid
-     */
-    public void setLessInfo(){
-        lessInfo = true;
-    }
-
-    /**
      * Mocks data for this image adapter. Used for background grid..
      */
     public void mockData() {
@@ -69,6 +60,13 @@ public class ImageAdapter extends ArrayAdapter {
             books.add(new Book("", "", "", "http://covers.openlibrary.org/b/ID/" + rand + "-L.jpg"));
         }
 
+    }
+
+    /**
+     * Hides the action area of all the images. Used for background grid...
+     */
+    public void hideActionArea(){
+        hideActionArea = true;
     }
 
     /**
@@ -106,23 +104,10 @@ public class ImageAdapter extends ArrayAdapter {
         ((TextView)v.findViewById(R.id.book_card_title)).setText(title);
         ((TextView)v.findViewById(R.id.book_card_author)).setText(author);
 
-        //v.findViewById(R.id.book_card_info).setVisibility(View.GONE);
-
-        if(lessInfo) {
-            v.setOnClickListener(listener -> {
-
-                if(imageAdapterListener != null)
-                    imageAdapterListener.onLearnMoreClick(books.get(position));
-
-            });
-        }
-
 
         LinearLayout actionArea = (LinearLayout) v.findViewById(R.id.book_card_action_area);
 
-
-        if(lessInfo)
-            actionArea.setVisibility(View.INVISIBLE);
+        if(hideActionArea) actionArea.setVisibility(View.INVISIBLE);
 
         v.findViewById(R.id.book_card_button).setOnClickListener(listener -> {
 

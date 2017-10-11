@@ -60,13 +60,13 @@ public class MatchesFragment extends BasicFragment {
     ArrayList<Match> matchList;
 
     ArrayList<Book> booksToAdd = new ArrayList<>();
-    private Set<Book> likedBooks  = new HashSet<>();;
+    private List<Book> likedBooks  = new ArrayList<>();;
 
     public MatchesFragment() {
         // Required empty public constructor
     }
     // called from HomeActivity when user swipes on a book
-    public void setLikedBooks(Set<Book> likedBooks) {
+    public void setLikedBooks(List<Book> likedBooks) {
         this.likedBooks = likedBooks;
     }
 

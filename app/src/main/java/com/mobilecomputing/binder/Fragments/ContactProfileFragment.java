@@ -3,6 +3,7 @@ package com.mobilecomputing.binder.Fragments;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -106,7 +107,12 @@ public class ContactProfileFragment extends BasicFragment {
         book_grid_1.setAdapter(bookAdapter1);
         book_grid_2.setAdapter(bookAdapter2);
 
-
+        book_grid_1.setOnItemClickListener((parent, view, position, id) -> {
+            onLearnMoreClick(bookAdapter1.getItem(position));
+        });
+        book_grid_2.setOnItemClickListener((parent, view, position, id) -> {
+            onLearnMoreClick(bookAdapter2.getItem(position));
+        });
 
     }
 
@@ -117,6 +123,8 @@ public class ContactProfileFragment extends BasicFragment {
         gridSplit.setText("Other books that " + mContact.name.split("\\s+")[0] + " loves");
         Picasso.with(getContext()).load(mContact.pictureUrl).into(profileImage);
     }
+
+
 
 
 }
