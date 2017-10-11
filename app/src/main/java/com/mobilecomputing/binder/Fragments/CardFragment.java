@@ -48,6 +48,18 @@ public class CardFragment extends BasicFragment
     implements ImageAdapter.ImageAdapterListener{
 
     private NewMatch newMatch;
+
+    public interface CardFragmentListener {
+        void bookLiked(Book book);
+        void bookDisiked(Book book);
+    }
+
+    private CardFragmentListener cardFragmentListener;
+
+    public void setCardFragmentListener(CardFragmentListener cardFragmentListener) {
+        this.cardFragmentListener = cardFragmentListener;
+    }
+
     private User userAccount;
     private List<Book> books;
     private Set<String> ignoreGenres = new HashSet<>();
@@ -87,10 +99,51 @@ public class CardFragment extends BasicFragment
         cardStack.setAdapter(imageAdapter);
         newMatch = new NewMatch();
         
+        cardStack.setCardEventListener(new CardStackView.CardEventListener() {
+            @Override
+            public void onCardDragging(float percentX, float percentY) {
+
+            }
+
+            @Override
+            public void onCardSwiped(SwipeDirection direction) {
+
+                switch (direction) {
+                    case Right:
+                        if(cardFragmentListener != null)
+                            cardFragmentListener.bookLiked(books.get(cardStack.getTopIndex()-1));
+                        break;
+                    case Left:
+                        if(cardFragmentListener != null)
+                            cardFragmentListener.bookDisiked(books.get(cardStack.getTopIndex()-1));
+                        break;
+                }
+            }
+
+            @Override
+            public void onCardReversed() {
+
+            }
+
+            @Override
+            public void onCardMovedToOrigin() {
+
+            }
+
+            @Override
+            public void onCardClicked(int index) {
+
+            }
+        });
 
         fetchData(ignoreGenres);
 
         populateUI();
+    }
+
+    // Loads disliked genres from local storage
+    public void refreshIgnoreGenres(Set<String> ignores) {
+        ignoreGenres.addAll(ignores);
     }
 
     /**
@@ -101,8 +154,6 @@ public class CardFragment extends BasicFragment
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void fetchData(Set<String> genresToIgnore) {
 
-        Log.d("CardFragment", "fetching..");
-
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String urlPrefix = "https://openlibrary.org/subjects/";
         String urlSufix = ".json#sort=edition_count&ebooks=true";
@@ -110,8 +161,8 @@ public class CardFragment extends BasicFragment
         genresToIgnore.forEach(g -> Log.d("CardFragment", "ignore genre: " + g));
 
         HomeActivity.allGenres.forEach(genre -> {
+
             if(!genresToIgnore.contains(genre)) {
-                Log.d("CardFragment", "Request for: " + genre);
 
                 // Request a string response from the provided URL.
                 StringRequest stringRequest = new StringRequest(Request.Method.GET,
@@ -131,15 +182,11 @@ public class CardFragment extends BasicFragment
                                     for(int j = 0; j < worksArray.length(); j++)
                                         books.add(new Book(worksArray.get(j).toString()));
 
-                                } else {
-                                    Log.d("CardFragment", "no works found..");
                                 }
 
                             } catch (JSONException e) { e.printStackTrace(); }
 
-                        }, error -> {
-                    Log.d("CardFragment", "That didn't work..");
-                });
+                        }, error -> Log.d("CardFragment", "That didn't work.."));
 
                 // Add the request to the RequestQueue.
                 queue.add(stringRequest);

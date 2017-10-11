@@ -2,8 +2,11 @@ package com.mobilecomputing.binder.Fragments;
 
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +16,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.mobilecomputing.binder.Activities.ContactActivity;
+import com.mobilecomputing.binder.Activities.HomeActivity;
+import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.MatchesAdapter;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -39,11 +53,13 @@ public class MatchesFragment extends BasicFragment {
     MatchesAdapter matches;
     ArrayList<Match> matchList;
 
+    ArrayList<Book> booksToAdd = new ArrayList<>();
+
     public MatchesFragment() {
         // Required empty public constructor
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,8 +67,13 @@ public class MatchesFragment extends BasicFragment {
         View view = inflater.inflate(R.layout.fragment_matches, container, false);
 
         list = view.findViewById(R.id.matches_list);
+        list.setEnabled(false);
+
 
         matchList = new ArrayList<>();
+
+
+        fetchData(1);
 
         matchList.add(new Match("Lovisa", 26, null, null, "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg", 55));
         matchList.add(new Match("Mikael", 24, null, null, "https://www.aceshowbiz.com/images/photo/ryan_gosling.jpg", 67));
@@ -68,6 +89,7 @@ public class MatchesFragment extends BasicFragment {
         nameText = view.findViewById(R.id.profile_name);
         profileImage = view.findViewById(R.id.profile_picture);
         list.setAdapter(matches);
+
         populateUI();
     }
 
@@ -76,7 +98,6 @@ public class MatchesFragment extends BasicFragment {
      */
     public void populateUI() {
 
-        list.setClickable(true);
         list.setOnItemClickListener((parent, view, position, id) -> {
 
             Intent intent = new Intent(getActivity(), ContactActivity.class);
@@ -85,8 +106,59 @@ public class MatchesFragment extends BasicFragment {
             getActivity().startActivity(intent);
 
         });
-        //nameText.setText();
-        //Picasso.with(getContext()).load();
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void fetchData(int max) {
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        String urlPrefix = "https://openlibrary.org/subjects/";
+        String urlSufix = ".json#sort=edition_count&ebooks=true";
+
+        HomeActivity.allGenres.stream().forEach(genre -> {
+
+            // Request a string response from the provided URL.
+            StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                    urlPrefix + genre + urlSufix,
+                    response -> {
+
+                        JSONObject json;
+
+                        try {
+                            json = new JSONObject(response);
+
+                            JSONArray worksArray = json.getJSONArray("works");
+
+                            if(worksArray != null) {
+
+                                // TODO filter what books to fetch in some way..
+                                for(int j = 0; j < worksArray.length(); j++){
+                                    if(j >= max) break;
+                                    booksToAdd.add(new Book(worksArray.get(j).toString()));
+                                }
+
+
+                            } else {
+                                Log.d("CardFragment", "no works found..");
+                            }
+
+                        } catch (JSONException e) { e.printStackTrace(); }
+
+                    }, error -> {
+                Log.d("CardFragment", "That didn't work..");
+            });
+
+            // Add the request to the RequestQueue.
+            queue.add(stringRequest);
+        });
+
+        queue.addRequestFinishedListener(listener -> {
+            for (Match m: matchList){
+                m.setBooks(booksToAdd);
+            }
+            list.setEnabled(true);
+        });
     }
 
 }
