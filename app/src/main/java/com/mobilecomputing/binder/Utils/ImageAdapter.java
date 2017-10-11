@@ -110,12 +110,14 @@ public class ImageAdapter extends ArrayAdapter {
 
         v.findViewById(R.id.book_card_info).setVisibility(View.GONE);
 
-        /*v.setOnClickListener(listener -> {
+        if(lessInfo) {
+            v.setOnClickListener(listener -> {
 
-            if(imageAdapterListener != null)
-                imageAdapterListener.onLearnMoreClick(books.get(position));
+                if(imageAdapterListener != null)
+                    imageAdapterListener.onLearnMoreClick(books.get(position));
 
-        });*/
+            });
+        }
 
 
         LinearLayout actionArea = (LinearLayout) v.findViewById(R.id.book_card_action_area);
