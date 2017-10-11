@@ -4,6 +4,7 @@ package com.mobilecomputing.binder.Fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobilecomputing.binder.Activities.HomeActivity;
+import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.BottomSheet;
 import com.mobilecomputing.binder.Views.ChipButton;
 import com.mobilecomputing.binder.Views.ChipView;
+import com.mobilecomputing.binder.Views.ExpandableHeightGridView;
 import com.squareup.picasso.Picasso;
 import com.wefika.flowlayout.FlowLayout;
 
@@ -52,7 +56,10 @@ public class ProfileFragment extends BasicFragment {
 
     private List<String> availableGenres = new ArrayList<>();
     private Set<String> ignoredGenres = new HashSet<>();
+    private Set<Book> likedBooks = new HashSet<>();
     private ChipButton chipButton;
+    private ExpandableHeightGridView likedBooksGrid;
+    private ImageAdapter imageAdapter;
 
     private View.OnClickListener clickRemoveListener;
     private AdapterView.OnItemClickListener clickGenreListener;
@@ -63,7 +70,7 @@ public class ProfileFragment extends BasicFragment {
     }
 
 
-
+    // This is run when user jumps to this fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,7 +88,20 @@ public class ProfileFragment extends BasicFragment {
         availableGenres.removeAll(ignores);
     }
 
+    // called from HomeActivity when user swipes on a book
+    public void setLikedBooks(Set<Book> likedBooks) {
+        this.likedBooks = likedBooks;
+    }
+
     public void initUI(View view) {
+
+        likedBooksGrid = view.findViewById(R.id.profile_liked_books);
+        likedBooksGrid.setExpanded(true);
+
+        imageAdapter = new ImageAdapter(getContext(), R.layout.image_layout);
+        imageAdapter.setLessInfo();
+        imageAdapter.setBooks(new ArrayList<>(likedBooks));
+        likedBooksGrid.setAdapter(imageAdapter);
 
         // removes an ignored genre
         clickRemoveListener = view13 -> {

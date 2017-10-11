@@ -509,11 +509,13 @@ public class HomeActivity extends BasicActivity
     public void bookLiked(Book book) {
         likedBooks.add(book);
         dislikedBooks.remove(book);
+        ((ProfileFragment)profileFragment).setLikedBooks(likedBooks);
     }
 
     @Override
     public void bookDisliked(Book book) {
         dislikedBooks.add(book);
         likedBooks.remove(book);
+        ((ProfileFragment)profileFragment).setLikedBooks(likedBooks);
     }
 }
