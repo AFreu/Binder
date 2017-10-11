@@ -38,8 +38,10 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 
 /**
@@ -58,9 +60,14 @@ public class MatchesFragment extends BasicFragment {
     ArrayList<Match> matchList;
 
     ArrayList<Book> booksToAdd = new ArrayList<>();
+    private Set<Book> likedBooks  = new HashSet<>();;
 
     public MatchesFragment() {
         // Required empty public constructor
+    }
+    // called from HomeActivity when user swipes on a book
+    public void setLikedBooks(Set<Book> likedBooks) {
+        this.likedBooks = likedBooks;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -99,6 +106,7 @@ public class MatchesFragment extends BasicFragment {
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private int calculateMatchProcent(Match match) {
         List<List<String>> likedBooks = new ArrayList<List<String>>();
         String list1[] = {"/works/OL13101191W", "/works/OL13101191W","/works/OL20600W","/works/OL362703W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W", "/works/OL10279W", "/works/OL262758W", "/works/OL362703W", "/works/OL20600W"};
@@ -122,11 +130,11 @@ public class MatchesFragment extends BasicFragment {
         return myLikedBooks.stream().filter(likedBooks.get(id)::contains).collect(toList());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private List<String> myLikedBooks() {
-        List<String> myBooks =  new ArrayList<String>();
-        String list1[] = {"/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W", "/works/OL10279W", "/works/OL262758W", "/works/OL362703W", "/works/OL20600W"};
-
-        return Arrays.asList(list1);
+        //String list1[] = {"/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W", "/works/OL10279W", "/works/OL262758W", "/works/OL362703W", "/works/OL20600W"};
+        List<String> list2 = likedBooks.stream().map(book -> {return book.getKey();}).collect(toList());
+        return list2;
     }
 
     public void initUI(View view) {

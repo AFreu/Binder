@@ -511,6 +511,8 @@ public class HomeActivity extends BasicActivity
         likedBooks.add(book);
         dislikedBooks.remove(book);
         ((ProfileFragment)profileFragment).setLikedBooks(likedBooks);
+        ((MatchesFragment)matchesFragment).setLikedBooks(likedBooks);
+
     }
 
     @Override
@@ -518,5 +520,7 @@ public class HomeActivity extends BasicActivity
         dislikedBooks.add(book);
         likedBooks.remove(book);
         ((ProfileFragment)profileFragment).setLikedBooks(likedBooks);
+        ((MatchesFragment)matchesFragment).setLikedBooks(likedBooks);
+
     }
 }
