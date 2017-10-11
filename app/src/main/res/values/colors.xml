@@ -19,4 +19,7 @@
     <color name="colorCardTextPrimary">#FFFFFF</color>
     <color name="colorCardTextSecondary">#E0E0E0</color>
 
+    <color name="colorGreen">#41ba7d</color>
+    <color name="colorRed">#e55e47</color>
+
 </resources>

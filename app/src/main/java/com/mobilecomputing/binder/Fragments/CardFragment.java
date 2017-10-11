@@ -50,7 +50,7 @@ public class CardFragment extends BasicFragment {
 
     public interface CardFragmentListener {
         void bookLiked(Book book);
-        void bookDisiked(Book book);
+        void bookDisliked(Book book);
     }
 
     private CardFragmentListener cardFragmentListener;
@@ -122,7 +122,7 @@ public class CardFragment extends BasicFragment {
                         dislikedBooks.add(books.get(cardStack.getTopIndex()-1));
 
                         if(cardFragmentListener != null)
-                            cardFragmentListener.bookDisiked(books.get(cardStack.getTopIndex()-1));
+                            cardFragmentListener.bookDisliked(books.get(cardStack.getTopIndex()-1));
 
                         books.remove(cardStack.getTopIndex()-1);
                         break;
