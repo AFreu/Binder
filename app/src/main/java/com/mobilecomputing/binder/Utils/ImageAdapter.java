@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobilecomputing.binder.Objects.Book;
@@ -36,8 +38,7 @@ public class ImageAdapter extends ArrayAdapter {
     private Context context;
 
     private boolean hideActionArea = false;
-    private boolean hideTitle = false;
-    private boolean hideAuthor = false;
+    private boolean lessInfo = false;
 
     public ImageAdapter(@NonNull Context context, int layoutResource) {
         super(context, layoutResource);
@@ -51,22 +52,16 @@ public class ImageAdapter extends ArrayAdapter {
     }
 
     /**
-     * Sets the mode of the adapter for images to be that of a background grid of images
-     */
-    public void setBackgroundGridMode() {
-        hideActionArea = true;
-        mockData();
-    }
-
-    /**
      * Sets the mode of the adapter for images to not show title or author in grid
      */
     public void setLessInfo(){
-        hideTitle = true;
-        hideAuthor = true;
+        lessInfo = true;
     }
 
-    private void mockData() {
+    /**
+     * Mocks data for this image adapter. Used for background grid..
+     */
+    public void mockData() {
 
         Random r = new Random();
         for(int i = 1; i < 13; i++) {
@@ -106,35 +101,43 @@ public class ImageAdapter extends ArrayAdapter {
         String url = books.get(position).getImageUrl();
         Picasso.with(context).load(url).into((ImageView)v.findViewById(R.id.book_card_image));
 
-        if(hideActionArea) {
-            v.findViewById(R.id.book_card_action_area).setVisibility(View.INVISIBLE);
+        String title = books.get(position).getTitle();
+        String author = books.get(position).getAuthor();
+        TextView titleText = v.findViewById(R.id.book_card_title);
+        TextView authorText = v.findViewById(R.id.book_card_author);
+        titleText.setText(title);
+        authorText.setText(author);
+
+        v.findViewById(R.id.book_card_info).setVisibility(View.GONE);
+
+        /*v.setOnClickListener(listener -> {
+
+            if(imageAdapterListener != null)
+                imageAdapterListener.onLearnMoreClick(books.get(position));
+
+        });*/
+
+
+        LinearLayout actionArea = (LinearLayout) v.findViewById(R.id.book_card_action_area);
+        TextView titleTextView = ((TextView)v.findViewById(R.id.book_card_title));
+        TextView authorTextView = ((TextView)v.findViewById(R.id.book_card_author));
+
+
+        if(!lessInfo){
+            title = books.get(position).getTitle();
+            author = books.get(position).getAuthor();
+            ((TextView)v.findViewById(R.id.book_card_author)).setText(author);
+            ((TextView)v.findViewById(R.id.book_card_title)).setText(title);
         } else {
-            String title = books.get(position).getTitle();
-            String author = books.get(position).getAuthor();
-            TextView titleText = v.findViewById(R.id.book_card_title);
-            TextView authorText = v.findViewById(R.id.book_card_author);
-            titleText.setText(title);
-            authorText.setText(author);
-
-            if(hideTitle && hideAuthor){
-               v.findViewById(R.id.book_card_info).setVisibility(View.GONE);
-                v.setOnClickListener(listener -> {
-
-                    if(imageAdapterListener != null)
-                        imageAdapterListener.onLearnMoreClick(books.get(position));
-
-                });
-            }
-
-            v.findViewById(R.id.book_card_button).setOnClickListener(listener -> {
-
-                if(imageAdapterListener != null)
-                    imageAdapterListener.onLearnMoreClick(books.get(position));
-
-            });
-
-
+            actionArea.setVisibility(View.INVISIBLE);
         }
+
+        v.findViewById(R.id.book_card_button).setOnClickListener(listener -> {
+
+            if(imageAdapterListener != null)
+                imageAdapterListener.onLearnMoreClick(books.get(position));
+
+        });
 
         return v;
     }

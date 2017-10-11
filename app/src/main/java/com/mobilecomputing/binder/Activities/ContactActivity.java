@@ -34,7 +34,8 @@ public class ContactActivity extends BasicActivity {
 
         gridView = (GridView) findViewById(R.id.background_grid);
         ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.image_layout);
-        imageAdapter.setBackgroundGridMode();
+        imageAdapter.setLessInfo();
+        imageAdapter.mockData();
         gridView.setAdapter(imageAdapter);
         gridView.setOnTouchListener((v, event) -> event.getAction() == MotionEvent.ACTION_MOVE);
 
