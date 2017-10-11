@@ -18,7 +18,6 @@ import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
-import com.mobilecomputing.binder.Views.BookBottomSheet;
 import com.mobilecomputing.binder.Views.ExpandableHeightGridView;
 import com.squareup.picasso.Picasso;
 
@@ -29,7 +28,7 @@ import java.util.Random;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactProfileFragment extends BasicFragment implements ImageAdapter.ImageAdapterListener {
+public class ContactProfileFragment extends BasicFragment  {
 
     String TAG = "ContactProfileFragment";
 
@@ -48,8 +47,6 @@ public class ContactProfileFragment extends BasicFragment implements ImageAdapte
     TextView gridSplit;
 
     ImageView profileImage;
-
-    private BookBottomSheet bookBottomSheet;
 
 
     public ContactProfileFragment() {
@@ -71,13 +68,7 @@ public class ContactProfileFragment extends BasicFragment implements ImageAdapte
         mContact = (Match)getArguments().getSerializable("contact");
 
         mBooksToAdd = new ArrayList<>();
-
         mBooksToAdd.addAll(mContact.getBooks());
-        /*Random r = new Random();
-        for(int i = 1; i < 9; i++) {
-            int rand = r.nextInt(1000 - 1) + 1;
-            mBooksToAdd.add(new Book ("", "", "", "http://covers.openlibrary.org/b/ID/" + rand + "-L.jpg"));
-        }*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -87,16 +78,22 @@ public class ContactProfileFragment extends BasicFragment implements ImageAdapte
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact_profile, container, false);
 
-
         profileImage = view.findViewById(R.id.contact_profile_image);
         profileMatchInfo = view.findViewById(R.id.contact_profile_match_info);
         profileName = view.findViewById(R.id.contact_profile_name);
         gridSplit = view.findViewById(R.id.contact_profile_grid_split);
 
-        updateContactInfo();
-
         book_grid_1 = view.findViewById(R.id.book_grid_1);
         book_grid_2 = view.findViewById(R.id.book_grid_2);
+
+
+        populateUI();
+        return view;
+    }
+
+    private void populateUI(){
+
+        updateContactInfo();
 
         book_grid_1.setExpanded(true);
         book_grid_2.setExpanded(true);
@@ -107,24 +104,15 @@ public class ContactProfileFragment extends BasicFragment implements ImageAdapte
         imageAdapter1.setLessInfo();
         imageAdapter2.setLessInfo();
 
-        book_grid_1.setAdapter(imageAdapter1);
-        book_grid_2.setAdapter(imageAdapter2);
-
-
-
-        Log.d(TAG,"Number of images 1: " + imageAdapter1.getCount() + " ");
-        Log.d(TAG,"Number of images 2: " + imageAdapter2.getCount() + " ");
-
-
-
-        imageAdapter1.setBooks(mBooksToAdd.subList(3,6));
+        imageAdapter1.setBooks(mBooksToAdd.subList(1,3));
         imageAdapter2.setBooks(mBooksToAdd);
 
         imageAdapter1.setImageAdapterListener(this);
         imageAdapter2.setImageAdapterListener(this);
 
+        book_grid_1.setAdapter(imageAdapter1);
+        book_grid_2.setAdapter(imageAdapter2);
 
-        return view;
     }
 
     private void updateContactInfo(){
@@ -135,10 +123,4 @@ public class ContactProfileFragment extends BasicFragment implements ImageAdapte
         Picasso.with(getContext()).load(mContact.pictureUrl).into(profileImage);
     }
 
-    @Override
-    public void onLearnMoreClick(Book book) {
-        bookBottomSheet = new BookBottomSheet();
-        bookBottomSheet.setBook(book);
-        bookBottomSheet.show(getActivity().getSupportFragmentManager(), bookBottomSheet.getTag());
-    }
 }
