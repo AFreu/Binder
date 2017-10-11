@@ -44,15 +44,6 @@ public class ImageAdapter extends ArrayAdapter {
 
         this.context = context;
         this.layoutResource = layoutResource;
-
-        /*ArrayList<String> urls = new ArrayList<>();
-        Random r = new Random();
-        for(int i = 1; i < 13; i++) {
-            int rand = r.nextInt(1000 - 1) + 1;
-            urls.add("http://covers.openlibrary.org/b/ID/" + rand + "-L.jpg");
-        }
-
-        this.books = urls;*/
     }
 
     public void setImageAdapterListener(ImageAdapterListener imageAdapterListener) {
@@ -112,35 +103,37 @@ public class ImageAdapter extends ArrayAdapter {
             v = inflater.inflate(layoutResource, parent, false);
         }
 
-        //holder.image = r.findViewById(R.id.image_layout_image);
-        //r.setTag(holder);
-
         String url = books.get(position).getImageUrl();
         Picasso.with(context).load(url).into((ImageView)v.findViewById(R.id.book_card_image));
 
         if(hideActionArea) {
             v.findViewById(R.id.book_card_action_area).setVisibility(View.INVISIBLE);
         } else {
-            String title = "";
-            String author = "";
+            String title = books.get(position).getTitle();
+            String author = books.get(position).getAuthor();
+            TextView titleText = v.findViewById(R.id.book_card_title);
+            TextView authorText = v.findViewById(R.id.book_card_author);
+            titleText.setText(title);
+            authorText.setText(author);
 
-            if(!hideTitle){
-                title = books.get(position).getTitle();
+            if(hideTitle && hideAuthor){
+               v.findViewById(R.id.book_card_info).setVisibility(View.GONE);
+                v.setOnClickListener(listener -> {
+
+                    if(imageAdapterListener != null)
+                        imageAdapterListener.onLearnMoreClick(books.get(position));
+
+                });
             }
 
-            if(!hideAuthor){
-                author = books.get(position).getAuthor();
-            }
-
-
-            ((TextView)v.findViewById(R.id.book_card_author)).setText(author);
-            ((TextView)v.findViewById(R.id.book_card_title)).setText(title);
             v.findViewById(R.id.book_card_button).setOnClickListener(listener -> {
 
                 if(imageAdapterListener != null)
                     imageAdapterListener.onLearnMoreClick(books.get(position));
 
             });
+
+
         }
 
         return v;

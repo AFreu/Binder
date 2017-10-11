@@ -68,7 +68,8 @@
             style="@style/BookGridStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/image_layout" />
+            android:stretchMode="columnWidth"
+            tools:listitem="@layout/image_layout"/>
 
         <TextView
             android:id="@+id/contact_profile_grid_split"
@@ -80,9 +81,10 @@
 
         <com.mobilecomputing.binder.Views.ExpandableHeightGridView
             android:id="@+id/book_grid_2"
+            style="@style/BookGridStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/BookGridStyle"
+            android:stretchMode="columnWidth"
             tools:listitem="@layout/image_layout" />
 
     </LinearLayout>

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ import java.util.Random;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactProfileFragment extends BasicFragment  {
+public class ContactProfileFragment extends BasicFragment {
 
     String TAG = "ContactProfileFragment";
 
@@ -104,7 +105,8 @@ public class ContactProfileFragment extends BasicFragment  {
         imageAdapter1.setLessInfo();
         imageAdapter2.setLessInfo();
 
-        imageAdapter1.setBooks(mBooksToAdd.subList(1,3));
+        if(mBooksToAdd.size() > 3)
+            imageAdapter1.setBooks(mBooksToAdd.subList(1,3));
         imageAdapter2.setBooks(mBooksToAdd);
 
         imageAdapter1.setImageAdapterListener(this);
@@ -122,5 +124,6 @@ public class ContactProfileFragment extends BasicFragment  {
         gridSplit.setText("Other books that " + mContact.name.split("\\s+")[0] + " loves");
         Picasso.with(getContext()).load(mContact.pictureUrl).into(profileImage);
     }
+
 
 }
