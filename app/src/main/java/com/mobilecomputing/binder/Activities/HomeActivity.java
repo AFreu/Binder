@@ -79,17 +79,20 @@ public class HomeActivity extends BasicActivity
     private Menu menu;
     private SharedPreferences sharedPreferences;
 
+    private String idFragment = "CardFragment";
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
-
                 switch (item.getItemId()) {
                     case R.id.navigation_books:
+                        idFragment = "CardFragment";
                         switchContent("CardFragment");
                         return true;
                     case R.id.navigation_matches:
+                        idFragment = "MatchesFragment";
                         switchContent("MatchesFragment");
                         return true;
                     case R.id.navigation_profile:
+                        idFragment = "ProfileFragment";
                         switchContent("ProfileFragment");
                         return true;
                 }
@@ -114,7 +117,19 @@ public class HomeActivity extends BasicActivity
         // sets first fragment to booksfragment
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.content, cardFragment).commit();
+        // recovering the instance state
+        if (savedInstanceState != null) {
+            switchContent(savedInstanceState.getString("SelectedFragment"));
+        }
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("SelectedFragment", idFragment);
+
+        // call superclass to save any view hierarchy
+        super.onSaveInstanceState(outState);
     }
 
     public void initUI() {
