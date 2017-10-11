@@ -23,6 +23,7 @@ public class Book implements Serializable {
 
             if(json != null) {
                 JSONObject authorJson = (JSONObject) json.getJSONArray("authors").get(0);
+                key = json.getString("key");
                 author = authorJson.get("name").toString();
                 title = json.get("title").toString();
                 imageUrl = "http://covers.openlibrary.org/b/ID/" + json.get("cover_id") + "-L.jpg";

@@ -1,6 +1,7 @@
 package com.mobilecomputing.binder.Fragments;
 
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.MatchesAdapter;
 import com.squareup.picasso.Picasso;
+import static java.util.stream.Collectors.toList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,8 +36,12 @@ import org.json.JSONObject;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 
 /**
@@ -54,9 +60,14 @@ public class MatchesFragment extends BasicFragment {
     ArrayList<Match> matchList;
 
     ArrayList<Book> booksToAdd = new ArrayList<>();
+    private Set<Book> likedBooks  = new HashSet<>();;
 
     public MatchesFragment() {
         // Required empty public constructor
+    }
+    // called from HomeActivity when user swipes on a book
+    public void setLikedBooks(Set<Book> likedBooks) {
+        this.likedBooks = likedBooks;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -75,14 +86,55 @@ public class MatchesFragment extends BasicFragment {
 
         fetchData(1);
 
-        matchList.add(new Match("Lovisa", 26, null, null, "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg", 55));
-        matchList.add(new Match("Mikael", 24, null, null, "https://www.aceshowbiz.com/images/photo/ryan_gosling.jpg", 67));
-        matchList.add(new Match("Anton", 73, null, null, "http://akns-images.eonline.com/eol_images/Entire_Site/20161129/rs_300x300-161229151358-ap.jpg?downsize=300:*&crop=300:300;left,top", 88));
-        matchList.add(new Match("Jimmy", 45, null, null, "http://3.bp.blogspot.com/-a71LPYXKmYs/T5KQLsCOQNI/AAAAAAAAErw/vyC3o5j7JoA/s1600/Orlando+Bloom+(1).jpg", 100));
+        Match match1 = new Match("Lovisa", 26, null, 0, "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg", 0);
+        match1.percent = calculateMatchProcent(match1);
+        matchList.add(match1);
+        Match match2 = new Match("Mikael", 24, null, 1, "https://www.aceshowbiz.com/images/photo/ryan_gosling.jpg", 0);
+        match2.percent = calculateMatchProcent(match2);
+        matchList.add(match2);
+        Match match3 = new Match("Anton", 73, null, 2, "http://akns-images.eonline.com/eol_images/Entire_Site/20161129/rs_300x300-161229151358-ap.jpg?downsize=300:*&crop=300:300;left,top", 0);
+        match3.percent = calculateMatchProcent(match3);
+        matchList.add(match3);
+        Match match4 = new Match("Jimmy", 45, null, 3, "http://3.bp.blogspot.com/-a71LPYXKmYs/T5KQLsCOQNI/AAAAAAAAErw/vyC3o5j7JoA/s1600/Orlando+Bloom+(1).jpg", 100);
+        match4.percent = calculateMatchProcent(match4);
+        matchList.add(match4);
+
+        Collections.sort(matchList, new Match());
 
         matches = new MatchesAdapter(getContext(), R.layout.match_item, matchList);
         initUI(view);
         return view;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private int calculateMatchProcent(Match match) {
+        List<List<String>> likedBooks = new ArrayList<List<String>>();
+        String list1[] = {"/works/OL13101191W", "/works/OL13101191W","/works/OL20600W","/works/OL362703W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W", "/works/OL10279W", "/works/OL262758W", "/works/OL362703W", "/works/OL20600W"};
+        String list2[] = {"/works/OL13101191W","/works/OL20600W","/works/OL362703W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W"};
+        String list3[] = {"/works/OL13101191W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W"};
+        String list4[] = {"/works/OL13101191W","/works/OL362703W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W"};
+
+        likedBooks.add(Arrays.asList(list1));
+        likedBooks.add(Arrays.asList(list2));
+        likedBooks.add(Arrays.asList(list3));
+        likedBooks.add(Arrays.asList(list4));
+        List<String> myLikedBooks = myLikedBooks();
+        List<String> matchBooks = getLikedBooks(match.id, likedBooks, myLikedBooks);
+
+        return (int) (((float)matchBooks.size()/ (float)myLikedBooks.size()) * 100);
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    private List<String> getLikedBooks(int id, List<List<String>> likedBooks, List<String> myLikedBooks) {
+
+        return myLikedBooks.stream().filter(likedBooks.get(id)::contains).collect(toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private List<String> myLikedBooks() {
+        //String list1[] = {"/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W", "/works/OL10279W", "/works/OL262758W", "/works/OL362703W", "/works/OL20600W"};
+        List<String> list2 = likedBooks.stream().map(book -> {return book.getKey();}).collect(toList());
+        return list2;
     }
 
     public void initUI(View view) {

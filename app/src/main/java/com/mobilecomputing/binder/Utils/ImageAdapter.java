@@ -103,12 +103,10 @@ public class ImageAdapter extends ArrayAdapter {
 
         String title = books.get(position).getTitle();
         String author = books.get(position).getAuthor();
-        TextView titleText = v.findViewById(R.id.book_card_title);
-        TextView authorText = v.findViewById(R.id.book_card_author);
-        titleText.setText(title);
-        authorText.setText(author);
+        ((TextView)v.findViewById(R.id.book_card_title)).setText(title);
+        ((TextView)v.findViewById(R.id.book_card_author)).setText(author);
 
-        v.findViewById(R.id.book_card_info).setVisibility(View.GONE);
+        //v.findViewById(R.id.book_card_info).setVisibility(View.GONE);
 
         if(lessInfo) {
             v.setOnClickListener(listener -> {
@@ -121,18 +119,10 @@ public class ImageAdapter extends ArrayAdapter {
 
 
         LinearLayout actionArea = (LinearLayout) v.findViewById(R.id.book_card_action_area);
-        TextView titleTextView = ((TextView)v.findViewById(R.id.book_card_title));
-        TextView authorTextView = ((TextView)v.findViewById(R.id.book_card_author));
 
 
-        if(!lessInfo){
-            title = books.get(position).getTitle();
-            author = books.get(position).getAuthor();
-            ((TextView)v.findViewById(R.id.book_card_author)).setText(author);
-            ((TextView)v.findViewById(R.id.book_card_title)).setText(title);
-        } else {
+        if(lessInfo)
             actionArea.setVisibility(View.INVISIBLE);
-        }
 
         v.findViewById(R.id.book_card_button).setOnClickListener(listener -> {
 
