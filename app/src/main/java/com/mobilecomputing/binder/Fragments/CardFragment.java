@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.ArraySet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +27,16 @@ import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.BookBottomSheet;
 import com.squareup.picasso.Picasso;
 import com.yuyakaido.android.cardstackview.CardStackView;
+import com.yuyakaido.android.cardstackview.SwipeDirection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -41,8 +45,20 @@ import java.util.List;
 public class CardFragment extends BasicFragment
     implements ImageAdapter.ImageAdapterListener{
 
+    public interface CardFragmentListener {
+        void bookLiked(Book book);
+        void bookDisiked(Book book);
+    }
+
+    private CardFragmentListener cardFragmentListener;
+
+    public void setCardFragmentListener(CardFragmentListener cardFragmentListener) {
+        this.cardFragmentListener = cardFragmentListener;
+    }
+
     private User userAccount;
     private List<Book> books;
+    private Set<String> ignoreGenres = new HashSet<>();
 
     private ImageView profileImage;
     private TextView profileName;
@@ -77,26 +93,70 @@ public class CardFragment extends BasicFragment
         imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
         imageAdapter.setImageAdapterListener(this);
         cardStack.setAdapter(imageAdapter);
+        cardStack.setCardEventListener(new CardStackView.CardEventListener() {
+            @Override
+            public void onCardDragging(float percentX, float percentY) {
 
-        fetchData(new ArrayList<>());
+            }
+
+            @Override
+            public void onCardSwiped(SwipeDirection direction) {
+
+                switch (direction) {
+                    case Right:
+                        if(cardFragmentListener != null)
+                            cardFragmentListener.bookLiked(books.get(cardStack.getTopIndex()-1));
+                        break;
+                    case Left:
+                        if(cardFragmentListener != null)
+                            cardFragmentListener.bookDisiked(books.get(cardStack.getTopIndex()-1));
+                        break;
+                }
+            }
+
+            @Override
+            public void onCardReversed() {
+
+            }
+
+            @Override
+            public void onCardMovedToOrigin() {
+
+            }
+
+            @Override
+            public void onCardClicked(int index) {
+
+            }
+        });
+
+        fetchData(ignoreGenres);
 
         populateUI();
     }
 
+    // Loads disliked genres from local storage
+    public void refreshIgnoreGenres(Set<String> ignores) {
+        ignoreGenres.addAll(ignores);
+    }
+
     /**
      * Retrieves data from book api and ignores books of any genre found in ignoreGenres
-     * @param ignoreGenres genres to ignore
+     * @param genresToIgnore genres to ignore
      * @return list of books
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void fetchData(List<String> ignoreGenres) {
+    public void fetchData(Set<String> genresToIgnore) {
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String urlPrefix = "https://openlibrary.org/subjects/";
         String urlSufix = ".json#sort=edition_count&ebooks=true";
 
-        HomeActivity.allGenres.stream().filter(g ->
-            !ignoreGenres.contains(g)).forEach(genre -> {
+        genresToIgnore.forEach(g -> Log.d("CardFragment", "ignore genre: " + g));
+
+        HomeActivity.allGenres.forEach(genre -> {
+
+            if(!genresToIgnore.contains(genre)) {
 
                 // Request a string response from the provided URL.
                 StringRequest stringRequest = new StringRequest(Request.Method.GET,
@@ -116,23 +176,18 @@ public class CardFragment extends BasicFragment
                                     for(int j = 0; j < worksArray.length(); j++)
                                         books.add(new Book(worksArray.get(j).toString()));
 
-                                } else {
-                                    Log.d("CardFragment", "no works found..");
                                 }
 
                             } catch (JSONException e) { e.printStackTrace(); }
 
-                        }, error -> {
-                            Log.d("CardFragment", "That didn't work..");
-                });
+                        }, error -> Log.d("CardFragment", "That didn't work.."));
 
-            // Add the request to the RequestQueue.
-            queue.add(stringRequest);
+                // Add the request to the RequestQueue.
+                queue.add(stringRequest);
+            }
         });
 
-        queue.addRequestFinishedListener(listener -> {
-            imageAdapter.setBooks(books);
-        });
+        queue.addRequestFinishedListener(listener -> imageAdapter.setBooks(books));
     }
 
     public void populateUI() {
@@ -168,7 +223,8 @@ public class CardFragment extends BasicFragment
                         if (json != null) {
 
                             // TODO add all books from a genre and not only the first one
-                            books.add(0, new Book(json.toString()));
+                            String imgUrl = "http://covers.openlibrary.org/b/id/" + book.getImageUrl() + "-L.jpg";
+                            books.add(0, new Book(book.getTitle(), book.getAuthor(), "", imgUrl, book.getKey()));
                             Log.d("CardFragment", "num of books: " + books.size());
 
                         } else {
@@ -185,6 +241,9 @@ public class CardFragment extends BasicFragment
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
+        queue.addRequestFinishedListener(listener -> {
+            imageAdapter.setBooks(books);
+        });
 
     }
 
@@ -195,4 +254,7 @@ public class CardFragment extends BasicFragment
         bookBottomSheet.show(getActivity().getSupportFragmentManager(), bookBottomSheet.getTag());
     }
 
+    public Set<String> getIgnoreGenres() {
+        return ignoreGenres;
+    }
 }

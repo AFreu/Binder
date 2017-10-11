@@ -34,15 +34,20 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.mobilecomputing.binder.Fragments.CardFragment;
 import com.mobilecomputing.binder.Fragments.MatchesFragment;
 import com.mobilecomputing.binder.Fragments.ProfileFragment;
+import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class HomeActivity extends BasicActivity
-        implements GoogleApiClient.OnConnectionFailedListener {
+        implements GoogleApiClient.OnConnectionFailedListener,
+        ProfileFragment.ProfileFragmentListener,
+        CardFragment.CardFragmentListener {
 
     private GridView gridView;
     private LinearLayout appBody;
@@ -51,6 +56,8 @@ public class HomeActivity extends BasicActivity
     private static final int RC_SIGN_IN = 300;
     public static List<String> allGenres = new ArrayList<>();
 
+    private Set<Book> likedBooks = new HashSet<>();
+    private Set<Book> dislikedBooks = new HashSet<>();
     private Fragment profileFragment;
     private Fragment cardFragment;
     private Fragment matchesFragment;
@@ -96,6 +103,7 @@ public class HomeActivity extends BasicActivity
         initUI();
 
         createFragments();
+        loadIgnoreGenres();
 
         // sets first fragment to booksfragment
         FragmentManager manager = getSupportFragmentManager();
@@ -120,14 +128,10 @@ public class HomeActivity extends BasicActivity
         signInBackground = (RelativeLayout) findViewById(R.id.sign_in_background);
 
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener(view -> {
-            signInWithGoogle();
-        });
+        signInButton.setOnClickListener(view -> signInWithGoogle());
 
         signInButtonNoGoogle = (Button) findViewById(R.id.sign_in_button_noGoogle);
-        signInButtonNoGoogle.setOnClickListener(view -> {
-            mockSignIn();
-        });
+        signInButtonNoGoogle.setOnClickListener(view -> mockSignIn());
     }
 
     /**
@@ -180,7 +184,9 @@ public class HomeActivity extends BasicActivity
 
     private void createFragments() {
         profileFragment = new ProfileFragment();
+        ((ProfileFragment) profileFragment).setProfileFragmentListener(this);
         cardFragment = new CardFragment();
+        ((CardFragment) cardFragment).setCardFragmentListener(this);
         matchesFragment = new MatchesFragment();
     }
 
@@ -218,11 +224,11 @@ public class HomeActivity extends BasicActivity
                     Log.d(TAG, "Text read: " + text);
 
                     ((CardFragment)cardFragment).addBookToTop(text);
+                    switchContent("CardFragment");
 
                 } else {
                     Log.d(TAG, "No Text captured, intent data is null");
                 }
-            } else {
             }
         }
     }
@@ -261,7 +267,9 @@ public class HomeActivity extends BasicActivity
 
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            User userAccount = new User(acct.getGivenName(), acct.getPhotoUrl().toString());
+            User userAccount = new User(acct.getGivenName(),
+                    acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() :
+                            "https://cdn3.iconfinder.com/data/icons/black-easy/512/538642-user_512x512.png");
             isSignedIn = true;
             ((ProfileFragment)profileFragment).setUserAccount(userAccount);
             ((CardFragment)cardFragment).setUserAccount(userAccount);
@@ -275,7 +283,8 @@ public class HomeActivity extends BasicActivity
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), isSignedIn);
             editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME), acct.getGivenName());
-            editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL), acct.getPhotoUrl().toString());
+            editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL),
+                    acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "ic_profile.xml");
             editor.apply();
 
         } else {
@@ -354,7 +363,6 @@ public class HomeActivity extends BasicActivity
 
         if(isSignedIn) {
 
-            Log.d("HomeActivity", "signing out..");
             setEmptyMenu();
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -392,18 +400,80 @@ public class HomeActivity extends BasicActivity
 
         final Activity thisActivity = this;
 
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ActivityCompat.requestPermissions(thisActivity, permissions,
-                        RC_HANDLE_CAMERA_PERM);
-            }
-        };
+        View.OnClickListener listener = view -> ActivityCompat.requestPermissions(thisActivity, permissions,
+                RC_HANDLE_CAMERA_PERM);
 
         View view = findViewById(R.id.container);
         Snackbar.make(view, "permission_camera_rationale",
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction("ok", listener)
                 .show();
+    }
+
+    // Loads disliked genres from local storage
+    public void loadIgnoreGenres() {
+        if(sharedPreferences == null)
+            sharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
+
+        Set<String> ignoreGenres = sharedPreferences.getStringSet(getString(R.string.SHARED_PREFS_USER_DATA_TAG_IGNORE_GENRES), new HashSet<>());
+
+        ((ProfileFragment)profileFragment).refreshIgnoreGenres(ignoreGenres);
+        ((CardFragment)cardFragment).refreshIgnoreGenres(ignoreGenres);
+    }
+
+    @Override
+    public void onDislikedGenreAdded(String genre) {
+
+        if(sharedPreferences == null)
+            sharedPreferences = getSharedPreferences(getString(
+                    R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
+
+        Set<String> ignoreGenresOld = sharedPreferences.getStringSet(
+                getString(R.string.SHARED_PREFS_USER_DATA_TAG_IGNORE_GENRES), new HashSet<>());
+
+        Set<String> ignoreGenresNew = new HashSet<>();
+        ignoreGenresNew.addAll(ignoreGenresOld);
+        ignoreGenresNew.add(genre);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putStringSet(
+                getString(R.string.SHARED_PREFS_USER_DATA_TAG_IGNORE_GENRES),
+                ignoreGenresNew);
+        editor.apply();
+
+        ((CardFragment)cardFragment).getIgnoreGenres().add(genre);
+    }
+
+    @Override
+    public void onDislikedGenreRemoved(String genre) {
+
+        if(sharedPreferences == null)
+            sharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
+
+        Set<String> ignoreGenresOld = sharedPreferences.getStringSet(getString(R.string.SHARED_PREFS_USER_DATA_TAG_IGNORE_GENRES), new HashSet<>());
+
+        Set<String> ignoreGenresNew = new HashSet<>();
+        ignoreGenresNew.addAll(ignoreGenresOld);
+        ignoreGenresNew.remove(genre);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putStringSet(
+                getString(R.string.SHARED_PREFS_USER_DATA_TAG_IGNORE_GENRES),
+                ignoreGenresNew);
+        editor.apply();
+
+        ((CardFragment)cardFragment).getIgnoreGenres().remove(genre);
+    }
+
+    @Override
+    public void bookLiked(Book book) {
+        likedBooks.add(book);
+        dislikedBooks.remove(book);
+    }
+
+    @Override
+    public void bookDisiked(Book book) {
+        dislikedBooks.add(book);
+        likedBooks.remove(book);
     }
 }
