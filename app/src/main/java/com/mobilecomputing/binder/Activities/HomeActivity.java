@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends BasicActivity
-        implements GoogleApiClient.OnConnectionFailedListener {
+        implements GoogleApiClient.OnConnectionFailedListener, ProfileFragment.ProfileFragmentListener{
 
     private GridView gridView;
     private LinearLayout appBody;
@@ -180,6 +180,7 @@ public class HomeActivity extends BasicActivity
 
     private void createFragments() {
         profileFragment = new ProfileFragment();
+        ((ProfileFragment) profileFragment).setProfileFragmentListener(this);
         cardFragment = new CardFragment();
         matchesFragment = new MatchesFragment();
     }
@@ -409,5 +410,15 @@ public class HomeActivity extends BasicActivity
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction("ok", listener)
                 .show();
+    }
+
+    @Override
+    public void onDislikedGenreAdded(String genre) {
+        ((CardFragment)cardFragment).getIgnoreGenres().add(genre);
+    }
+
+    @Override
+    public void onDislikedGenreRemoved(String genre) {
+        ((CardFragment)cardFragment).getIgnoreGenres().remove(genre);
     }
 }

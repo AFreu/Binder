@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.ArraySet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -43,6 +46,7 @@ public class CardFragment extends BasicFragment
 
     private User userAccount;
     private List<Book> books;
+    private Set<String> ignoreGenres = new HashSet<>();
 
     private ImageView profileImage;
     private TextView profileName;
@@ -78,25 +82,30 @@ public class CardFragment extends BasicFragment
         imageAdapter.setImageAdapterListener(this);
         cardStack.setAdapter(imageAdapter);
 
-        fetchData(new ArrayList<>());
+        fetchData(ignoreGenres);
 
         populateUI();
     }
 
     /**
      * Retrieves data from book api and ignores books of any genre found in ignoreGenres
-     * @param ignoreGenres genres to ignore
+     * @param genresToIgnore genres to ignore
      * @return list of books
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void fetchData(List<String> ignoreGenres) {
+    public void fetchData(Set<String> genresToIgnore) {
+
+        Log.d("CardFragment", "fetching..");
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String urlPrefix = "https://openlibrary.org/subjects/";
         String urlSufix = ".json#sort=edition_count&ebooks=true";
 
-        HomeActivity.allGenres.stream().filter(g ->
-            !ignoreGenres.contains(g)).forEach(genre -> {
+        genresToIgnore.forEach(g -> Log.d("CardFragment", "ignore genre: " + g));
+
+        HomeActivity.allGenres.forEach(genre -> {
+            if(!genresToIgnore.contains(genre)) {
+                Log.d("CardFragment", "Request for: " + genre);
 
                 // Request a string response from the provided URL.
                 StringRequest stringRequest = new StringRequest(Request.Method.GET,
@@ -123,17 +132,15 @@ public class CardFragment extends BasicFragment
                             } catch (JSONException e) { e.printStackTrace(); }
 
                         }, error -> {
-                            Log.d("CardFragment", "That didn't work..");
+                    Log.d("CardFragment", "That didn't work..");
                 });
 
-            // Add the request to the RequestQueue.
-            queue.add(stringRequest);
+                // Add the request to the RequestQueue.
+                queue.add(stringRequest);
+            }
         });
 
-        queue.addRequestFinishedListener(listener -> {
-            imageAdapter.setBooks(books);
-
-        });
+        queue.addRequestFinishedListener(listener -> imageAdapter.setBooks(books));
     }
 
     public void populateUI() {
@@ -200,4 +207,7 @@ public class CardFragment extends BasicFragment
         bookBottomSheet.show(getActivity().getSupportFragmentManager(), bookBottomSheet.getTag());
     }
 
+    public Set<String> getIgnoreGenres() {
+        return ignoreGenres;
+    }
 }
