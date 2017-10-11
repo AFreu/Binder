@@ -1,6 +1,7 @@
 package com.mobilecomputing.binder.Fragments;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +17,7 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.BottomSheet;
@@ -25,7 +27,11 @@ import com.squareup.picasso.Picasso;
 import com.wefika.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -44,6 +50,8 @@ public class ProfileFragment extends BasicFragment {
         this.profileFragmentListener = profileFragmentListener;
     }
 
+    private SharedPreferences sharedPreferences;
+
     private String TAG = "ProfileFragment";
 
     private User userAccount;
@@ -52,7 +60,8 @@ public class ProfileFragment extends BasicFragment {
     private FlowLayout flowLayout;
     private BottomSheet bottomSheet = new BottomSheet();
 
-    private List<String> allGenres;
+    private List<String> availableGenres = new ArrayList<>();
+    private Set<String> ignoredGenres = new HashSet<>();
     private ChipButton chipButton;
 
     private View.OnClickListener clickRemoveListener;
@@ -61,16 +70,7 @@ public class ProfileFragment extends BasicFragment {
 
     public ProfileFragment() {
         // Required empty public constructor
-        allGenres = new ArrayList<>();
-        allGenres.add("science");
-        allGenres.add("biography");
-        allGenres.add("drama");
-        allGenres.add("sci-fi");
-        allGenres.add("romance");
-        allGenres.add("fantasy");
-        allGenres.add("action");
-        allGenres.add("horror");
-
+        availableGenres.addAll(HomeActivity.allGenres);
     }
 
 
@@ -80,59 +80,61 @@ public class ProfileFragment extends BasicFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        clickRemoveListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                ChipView c = (ChipView) view;
+        // removes an ignored genre
+        clickRemoveListener = view13 -> {
 
-                ((FlowLayout)c.getParent()).removeView(c);
+            ChipView c = (ChipView) view13;
 
-                allGenres.add(c.getText());
+            ((FlowLayout)c.getParent()).removeView(c);
 
-                chipButton.setVisibility(View.VISIBLE);
+            chipButton.setVisibility(View.VISIBLE);
 
-                // notifies listener about the genre to ignore
-                if(profileFragmentListener != null)
-                    profileFragmentListener.onDislikedGenreRemoved(c.getText());
+            ignoredGenres.remove(c.getText());
+            availableGenres.add(c.getText());
 
-            }
+            // notifies listener about the genre to ignore
+            if(profileFragmentListener != null)
+                profileFragmentListener.onDislikedGenreRemoved(c.getText());
+
         };
 
-        clickAddListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.addToBackStack(null);
+        clickAddListener = view12 -> {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.addToBackStack(null);
 
-                bottomSheet.setGenres(allGenres);
-                bottomSheet.setOnItemClickListener(clickGenreListener);
-                bottomSheet.show(ft, "dialog");
-            }
+            bottomSheet.setGenres(availableGenres);
+            bottomSheet.setOnItemClickListener(clickGenreListener);
+            bottomSheet.show(ft, "dialog");
         };
 
-        clickGenreListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(TAG, "clicking genre");
+        // when a genre to ignore is clicked
+        clickGenreListener = (adapterView, view1, i, l) -> {
 
-                addDislikedGenre((String)adapterView.getAdapter().getItem(i));
+            addDislikedGenre((String)adapterView.getAdapter().getItem(i));
+            ignoredGenres.add((String)adapterView.getAdapter().getItem(i));
 
-                // notifies listener about the genre to ignore
-                if(profileFragmentListener != null)
-                    profileFragmentListener.onDislikedGenreAdded((String)adapterView.getAdapter().getItem(i));
+            // notifies listener about the genre to ignore
+            if(profileFragmentListener != null)
+                profileFragmentListener.onDislikedGenreAdded((String)adapterView.getAdapter().getItem(i));
 
-                allGenres.remove(adapterView.getAdapter().getItem(i));
-                bottomSheet.dismiss();
+            availableGenres.remove((String)adapterView.getAdapter().getItem(i));
 
-                if(allGenres.isEmpty())
-                    chipButton.setVisibility(View.INVISIBLE);
-            }
+            bottomSheet.dismiss();
+
+            if(availableGenres.isEmpty())
+                chipButton.setVisibility(View.INVISIBLE);
         };
 
         initUI(view);
 
         return view;
+    }
+
+    // Loads disliked genres from local storage
+    public void refreshIgnoreGenres(Set<String> ignores) {
+        ignoredGenres.addAll(ignores);
+        availableGenres.removeAll(ignores);
     }
 
     public void initUI(View view) {
@@ -162,12 +164,15 @@ public class ProfileFragment extends BasicFragment {
             nameText.setText(userAccount.getGivenName());
             Picasso.with(getContext()).load(userAccount.getImageUrl()).into(profileImage);
         }
+
+        // adds all disliked genres to UI
+        for(String genre : ignoredGenres)
+            addDislikedGenre(genre);
     }
 
     public void setUserAccount(User userAccount) {
         this.userAccount = userAccount;
-
-        populateUI();
+//        populateUI();
     }
 
     private void addDislikedGenre(String name){
@@ -178,7 +183,6 @@ public class ProfileFragment extends BasicFragment {
         c.setLayoutParams(new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,FlowLayout.LayoutParams.WRAP_CONTENT));
 
         flowLayout.addView(c, flowLayout.getChildCount() - 1);
-
 
     }
 

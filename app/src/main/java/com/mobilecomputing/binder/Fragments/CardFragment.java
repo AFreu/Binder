@@ -87,6 +87,11 @@ public class CardFragment extends BasicFragment
         populateUI();
     }
 
+    // Loads disliked genres from local storage
+    public void refreshIgnoreGenres(Set<String> ignores) {
+        ignoreGenres.addAll(ignores);
+    }
+
     /**
      * Retrieves data from book api and ignores books of any genre found in ignoreGenres
      * @param genresToIgnore genres to ignore

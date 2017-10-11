@@ -39,7 +39,9 @@ import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class HomeActivity extends BasicActivity
         implements GoogleApiClient.OnConnectionFailedListener, ProfileFragment.ProfileFragmentListener{
@@ -96,6 +98,7 @@ public class HomeActivity extends BasicActivity
         initUI();
 
         createFragments();
+        loadIgnoreGenres();
 
         // sets first fragment to booksfragment
         FragmentManager manager = getSupportFragmentManager();
@@ -412,13 +415,60 @@ public class HomeActivity extends BasicActivity
                 .show();
     }
 
+    // Loads disliked genres from local storage
+    public void loadIgnoreGenres() {
+        if(sharedPreferences == null)
+            sharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
+
+        Set<String> ignoreGenres = sharedPreferences.getStringSet(getString(R.string.SHARED_PREFS_USER_DATA_TAG_IGNORE_GENRES), new HashSet<>());
+
+        ((ProfileFragment)profileFragment).refreshIgnoreGenres(ignoreGenres);
+        ((CardFragment)cardFragment).refreshIgnoreGenres(ignoreGenres);
+    }
+
     @Override
     public void onDislikedGenreAdded(String genre) {
+
+        Log.d("CardFragment", "disliking genre..");
+
+        if(sharedPreferences == null)
+            sharedPreferences = getSharedPreferences(getString(
+                    R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
+
+        Set<String> ignoreGenresOld = sharedPreferences.getStringSet(
+                getString(R.string.SHARED_PREFS_USER_DATA_TAG_IGNORE_GENRES), new HashSet<>());
+
+        Set<String> ignoreGenresNew = new HashSet<>();
+        ignoreGenresNew.addAll(ignoreGenresOld);
+        ignoreGenresNew.add(genre);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putStringSet(
+                getString(R.string.SHARED_PREFS_USER_DATA_TAG_IGNORE_GENRES),
+                ignoreGenresNew);
+        editor.apply();
+
         ((CardFragment)cardFragment).getIgnoreGenres().add(genre);
     }
 
     @Override
     public void onDislikedGenreRemoved(String genre) {
+
+        if(sharedPreferences == null)
+            sharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
+
+        Set<String> ignoreGenresOld = sharedPreferences.getStringSet(getString(R.string.SHARED_PREFS_USER_DATA_TAG_IGNORE_GENRES), new HashSet<>());
+
+        Set<String> ignoreGenresNew = new HashSet<>();
+        ignoreGenresNew.addAll(ignoreGenresOld);
+        ignoreGenresNew.remove(genre);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putStringSet(
+                getString(R.string.SHARED_PREFS_USER_DATA_TAG_IGNORE_GENRES),
+                ignoreGenresNew);
+        editor.apply();
+
         ((CardFragment)cardFragment).getIgnoreGenres().remove(genre);
     }
 }
