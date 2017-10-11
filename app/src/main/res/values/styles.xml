@@ -28,9 +28,8 @@
 
     <style name="PrimaryHeaderStyle" parent="@style/TextAppearance.AppCompat">
         <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textSize">32dip</item>
+        <item name="android:textSize">34dip</item>
         <item name="android:textStyle">bold</item>
-
     </style>
 
     <style name="BookCardTitleStyle" parent="@style/TextAppearance.AppCompat">

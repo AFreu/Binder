@@ -19,8 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimaryText"
-            android:textStyle="bold"
-            android:textSize="32sp"
+            style="@style/PrimaryHeaderStyle"
             android:text="@string/hello" />
 
         <TextView
@@ -28,9 +27,7 @@
             android:layout_toEndOf="@+id/card_text_hello"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textStyle="bold"
-            android:textSize="32sp"
+            style="@style/PrimaryHeaderStyle"
             android:text="Josefine." />
 
         <TextView
