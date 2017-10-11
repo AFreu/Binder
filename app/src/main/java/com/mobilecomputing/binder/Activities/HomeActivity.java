@@ -262,7 +262,9 @@ public class HomeActivity extends BasicActivity
 
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            User userAccount = new User(acct.getGivenName(), acct.getPhotoUrl().toString());
+            User userAccount = new User(acct.getGivenName(),
+                    acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() :
+                            "https://cdn3.iconfinder.com/data/icons/black-easy/512/538642-user_512x512.png");
             isSignedIn = true;
             ((ProfileFragment)profileFragment).setUserAccount(userAccount);
             ((CardFragment)cardFragment).setUserAccount(userAccount);
@@ -276,7 +278,8 @@ public class HomeActivity extends BasicActivity
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), isSignedIn);
             editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME), acct.getGivenName());
-            editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL), acct.getPhotoUrl().toString());
+            editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL),
+                    acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "ic_profile.xml");
             editor.apply();
 
         } else {
