@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">@color/actionBarColor</color>
     <color name="colorPrimaryDark">@color/actionBarColor</color>
-    <color name="colorAccent">#9013FE</color>
+    <color name="colorAccent">#9013fe</color>
 
     <color name="colorPrimaryText">#000000</color>
     <color name="colorSecondaryText">#424242</color>
