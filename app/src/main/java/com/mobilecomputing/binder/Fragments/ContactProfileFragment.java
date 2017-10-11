@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Utils.BookAdapter;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Views.ExpandableHeightGridView;
 import com.squareup.picasso.Picasso;
@@ -40,8 +41,8 @@ public class ContactProfileFragment extends BasicFragment {
     ExpandableHeightGridView book_grid_1;
     ExpandableHeightGridView book_grid_2;
 
-    ImageAdapter imageAdapter1;
-    ImageAdapter imageAdapter2;
+    BookAdapter bookAdapter1;
+    BookAdapter bookAdapter2;
 
     TextView profileName;
     TextView profileMatchInfo;
@@ -99,21 +100,13 @@ public class ContactProfileFragment extends BasicFragment {
         book_grid_1.setExpanded(true);
         book_grid_2.setExpanded(true);
 
-        imageAdapter1 = new ImageAdapter(getContext(), R.layout.image_layout);
-        imageAdapter2 = new ImageAdapter(getContext(), R.layout.image_layout);
+        bookAdapter1 = new BookAdapter(getContext(), R.layout.book_item, mBooksToAdd.subList(1,3));
+        bookAdapter2 = new BookAdapter(getContext(), R.layout.book_item, mBooksToAdd);
 
-        imageAdapter1.setLessInfo();
-        imageAdapter2.setLessInfo();
+        book_grid_1.setAdapter(bookAdapter1);
+        book_grid_2.setAdapter(bookAdapter2);
 
-        if(mBooksToAdd.size() > 3)
-            imageAdapter1.setBooks(mBooksToAdd.subList(1,3));
-        imageAdapter2.setBooks(mBooksToAdd);
 
-        imageAdapter1.setImageAdapterListener(this);
-        imageAdapter2.setImageAdapterListener(this);
-
-        book_grid_1.setAdapter(imageAdapter1);
-        book_grid_2.setAdapter(imageAdapter2);
 
     }
 
