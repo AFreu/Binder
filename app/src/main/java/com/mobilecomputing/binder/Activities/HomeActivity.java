@@ -220,6 +220,7 @@ public class HomeActivity extends BasicActivity
                     Log.d(TAG, "Text read: " + text);
 
                     ((CardFragment)cardFragment).addBookToTop(text);
+                    switchContent("CardFragment");
 
                 } else {
                     Log.d(TAG, "No Text captured, intent data is null");

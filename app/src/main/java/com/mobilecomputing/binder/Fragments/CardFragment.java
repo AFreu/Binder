@@ -131,6 +131,7 @@ public class CardFragment extends BasicFragment
 
         queue.addRequestFinishedListener(listener -> {
             imageAdapter.setBooks(books);
+
         });
     }
 
@@ -167,7 +168,8 @@ public class CardFragment extends BasicFragment
                         if (json != null) {
 
                             // TODO add all books from a genre and not only the first one
-                            books.add(0, new Book(json.toString()));
+                            String imgUrl = "http://covers.openlibrary.org/b/id/" + book.getImageUrl() + "-L.jpg";
+                            books.add(0, new Book(book.getTitle(), book.getAuthor(), "", imgUrl, book.getKey()));
                             Log.d("CardFragment", "num of books: " + books.size());
 
                         } else {
@@ -184,6 +186,9 @@ public class CardFragment extends BasicFragment
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
+        queue.addRequestFinishedListener(listener -> {
+            imageAdapter.setBooks(books);
+        });
 
     }
 
