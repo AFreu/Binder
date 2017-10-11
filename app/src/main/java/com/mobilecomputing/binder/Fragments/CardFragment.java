@@ -42,8 +42,7 @@ import java.util.Set;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CardFragment extends BasicFragment
-    implements ImageAdapter.ImageAdapterListener{
+public class CardFragment extends BasicFragment {
 
     public interface CardFragmentListener {
         void bookLiked(Book book);
@@ -245,13 +244,6 @@ public class CardFragment extends BasicFragment
             imageAdapter.setBooks(books);
         });
 
-    }
-
-    @Override
-    public void onLearnMoreClick(Book b) {
-        bookBottomSheet = new BookBottomSheet();
-        bookBottomSheet.setBook(b);
-        bookBottomSheet.show(getActivity().getSupportFragmentManager(), bookBottomSheet.getTag());
     }
 
     public Set<String> getIgnoreGenres() {
