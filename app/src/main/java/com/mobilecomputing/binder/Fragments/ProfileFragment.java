@@ -33,6 +33,17 @@ import java.util.List;
  */
 public class ProfileFragment extends BasicFragment {
 
+    public interface ProfileFragmentListener {
+        void onDislikedGenreAdded(String genre);
+        void onDislikedGenreRemoved(String genre);
+    }
+
+    private ProfileFragmentListener profileFragmentListener;
+
+    public void setProfileFragmentListener(ProfileFragmentListener profileFragmentListener) {
+        this.profileFragmentListener = profileFragmentListener;
+    }
+
     private String TAG = "ProfileFragment";
 
     private User userAccount;
@@ -81,6 +92,10 @@ public class ProfileFragment extends BasicFragment {
 
                 chipButton.setVisibility(View.VISIBLE);
 
+                // notifies listener about the genre to ignore
+                if(profileFragmentListener != null)
+                    profileFragmentListener.onDislikedGenreRemoved(c.getText());
+
             }
         };
 
@@ -102,21 +117,20 @@ public class ProfileFragment extends BasicFragment {
                 Log.d(TAG, "clicking genre");
 
                 addDislikedGenre((String)adapterView.getAdapter().getItem(i));
+
+                // notifies listener about the genre to ignore
+                if(profileFragmentListener != null)
+                    profileFragmentListener.onDislikedGenreAdded((String)adapterView.getAdapter().getItem(i));
+
                 allGenres.remove(adapterView.getAdapter().getItem(i));
                 bottomSheet.dismiss();
 
-                if(allGenres.isEmpty()){
+                if(allGenres.isEmpty())
                     chipButton.setVisibility(View.INVISIBLE);
-                }
-
             }
         };
+
         initUI(view);
-
-
-
-
-
 
         return view;
     }
