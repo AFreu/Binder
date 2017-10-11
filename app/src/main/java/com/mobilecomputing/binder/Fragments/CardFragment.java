@@ -100,8 +100,6 @@ public class CardFragment extends BasicFragment
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void fetchData(Set<String> genresToIgnore) {
 
-        Log.d("CardFragment", "fetching..");
-
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String urlPrefix = "https://openlibrary.org/subjects/";
         String urlSufix = ".json#sort=edition_count&ebooks=true";
@@ -109,8 +107,8 @@ public class CardFragment extends BasicFragment
         genresToIgnore.forEach(g -> Log.d("CardFragment", "ignore genre: " + g));
 
         HomeActivity.allGenres.forEach(genre -> {
+
             if(!genresToIgnore.contains(genre)) {
-                Log.d("CardFragment", "Request for: " + genre);
 
                 // Request a string response from the provided URL.
                 StringRequest stringRequest = new StringRequest(Request.Method.GET,
@@ -130,15 +128,11 @@ public class CardFragment extends BasicFragment
                                     for(int j = 0; j < worksArray.length(); j++)
                                         books.add(new Book(worksArray.get(j).toString()));
 
-                                } else {
-                                    Log.d("CardFragment", "no works found..");
                                 }
 
                             } catch (JSONException e) { e.printStackTrace(); }
 
-                        }, error -> {
-                    Log.d("CardFragment", "That didn't work..");
-                });
+                        }, error -> Log.d("CardFragment", "That didn't work.."));
 
                 // Add the request to the RequestQueue.
                 queue.add(stringRequest);
