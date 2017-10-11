@@ -37,9 +37,10 @@
 
     <ImageView
         android:id="@+id/book_bottom_sheet_image"
-        android:scaleType="fitXY"
-        android:layout_alignParentEnd="true"
         android:layout_width="160dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:minHeight="300dp"
+        android:scaleType="fitStart" />
 
 </RelativeLayout>

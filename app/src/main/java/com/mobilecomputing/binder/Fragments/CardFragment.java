@@ -44,14 +44,13 @@ import java.util.Set;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CardFragment extends BasicFragment
-    implements ImageAdapter.ImageAdapterListener{
+public class CardFragment extends BasicFragment {
 
     private NewMatch newMatch;
 
     public interface CardFragmentListener {
         void bookLiked(Book book);
-        void bookDisiked(Book book);
+        void bookDisliked(Book book);
     }
 
     private CardFragmentListener cardFragmentListener;
@@ -123,7 +122,7 @@ public class CardFragment extends BasicFragment
                         dislikedBooks.add(books.get(cardStack.getTopIndex()-1));
 
                         if(cardFragmentListener != null)
-                            cardFragmentListener.bookDisiked(books.get(cardStack.getTopIndex()-1));
+                            cardFragmentListener.bookDisliked(books.get(cardStack.getTopIndex()-1));
 
                         books.remove(cardStack.getTopIndex()-1);
                         break;
@@ -288,12 +287,6 @@ public class CardFragment extends BasicFragment
         imageAdapter.setBooks(books);
     }
 
-    @Override
-    public void onLearnMoreClick(Book b) {
-        bookBottomSheet = new BookBottomSheet();
-        bookBottomSheet.setBook(b);
-        bookBottomSheet.show(getActivity().getSupportFragmentManager(), bookBottomSheet.getTag());
-    }
 
     public Set<String> getIgnoreGenres() {
         return ignoreGenres;

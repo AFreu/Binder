@@ -28,9 +28,8 @@
 
     <style name="PrimaryHeaderStyle" parent="@style/TextAppearance.AppCompat">
         <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textSize">32dip</item>
+        <item name="android:textSize">34dip</item>
         <item name="android:textStyle">bold</item>
-
     </style>
 
     <style name="BookCardTitleStyle" parent="@style/TextAppearance.AppCompat">
@@ -90,10 +89,8 @@
         <item name="android:focusable">true</item>
         <item name="android:isScrollContainer">false</item>
         <item name="android:numColumns">3</item>
-        <item name="android:stretchMode">columnWidth</item>
         <item name="android:verticalSpacing">@dimen/grid_spacing</item>
         <item name="android:horizontalSpacing">@dimen/grid_spacing</item>
-        <item name="android:gravity">center</item>
         <item name="android:layout_margin">@dimen/default_margin</item>
     </style>
 

@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -75,7 +75,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ListView
                 android:id="@+id/profile_genre_list"
@@ -83,21 +83,45 @@
                 android:layout_height="match_parent"
                 tools:listitem="@layout/add_genre" />
 
-            <ScrollView
+            <RelativeLayout
                 android:id="@+id/profile_dislikes_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <com.wefika.flowlayout.FlowLayout
                     android:id="@+id/profile_flowlayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-
                 </com.wefika.flowlayout.FlowLayout>
-            </ScrollView>
+
+                <TextView
+                    android:id="@+id/profile_dislikes_title"
+                    style="@style/SecondaryTextStyle"
+                    android:layout_below="@id/profile_flowlayout"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Your liked books:" />
+
+                <ScrollView
+                    android:layout_below="@id/profile_dislikes_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.mobilecomputing.binder.Views.ExpandableHeightGridView
+                        android:id="@+id/profile_liked_books"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/BookGridStyle"
+                        tools:listitem="@layout/image_layout" />
+
+                </ScrollView>
+            </RelativeLayout>
+
+
         </FrameLayout>
 
     </LinearLayout>
 
-</FrameLayout>
+</android.support.v4.widget.NestedScrollView>

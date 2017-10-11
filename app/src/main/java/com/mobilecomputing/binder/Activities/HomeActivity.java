@@ -127,7 +127,8 @@ public class HomeActivity extends BasicActivity
         appBody = (LinearLayout) findViewById(R.id.app_body);
         ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.image_layout);
         gridView = (GridView) findViewById(R.id.background_grid);
-        imageAdapter.setBackgroundGridMode();
+        imageAdapter.setLessInfo();
+        imageAdapter.mockData();
         gridView.setAdapter(imageAdapter);
         gridView.setOnTouchListener((v, event) -> event.getAction() == MotionEvent.ACTION_MOVE);
 
@@ -509,11 +510,13 @@ public class HomeActivity extends BasicActivity
     public void bookLiked(Book book) {
         likedBooks.add(book);
         dislikedBooks.remove(book);
+        ((ProfileFragment)profileFragment).setLikedBooks(likedBooks);
     }
 
     @Override
-    public void bookDisiked(Book book) {
+    public void bookDisliked(Book book) {
         dislikedBooks.add(book);
         likedBooks.remove(book);
+        ((ProfileFragment)profileFragment).setLikedBooks(likedBooks);
     }
 }
