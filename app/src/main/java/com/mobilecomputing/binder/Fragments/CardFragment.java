@@ -21,12 +21,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.gson.Gson;
 import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.Objects.Book;
+import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.BookBottomSheet;
+import com.mobilecomputing.binder.Views.NewMatch;
 import com.squareup.picasso.Picasso;
 import com.yuyakaido.android.cardstackview.CardStackView;
+import com.yuyakaido.android.cardstackview.SwipeDirection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +47,7 @@ import java.util.Set;
 public class CardFragment extends BasicFragment
     implements ImageAdapter.ImageAdapterListener{
 
+    private NewMatch newMatch;
     private User userAccount;
     private List<Book> books;
     private Set<String> ignoreGenres = new HashSet<>();
@@ -81,6 +85,8 @@ public class CardFragment extends BasicFragment
         imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
         imageAdapter.setImageAdapterListener(this);
         cardStack.setAdapter(imageAdapter);
+        newMatch = new NewMatch();
+        
 
         fetchData(ignoreGenres);
 
