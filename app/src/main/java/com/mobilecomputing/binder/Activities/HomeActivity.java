@@ -103,6 +103,7 @@ public class HomeActivity extends BasicActivity
         initUI();
 
         createFragments();
+        loadLikesAndDisliked();
         loadIgnoreGenres();
 
         // sets first fragment to booksfragment
@@ -408,6 +409,11 @@ public class HomeActivity extends BasicActivity
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction("ok", listener)
                 .show();
+    }
+
+    // Loads liked and disliked books to be
+    public void loadLikesAndDisliked() {
+        // TODO implement this..
     }
 
     // Loads disliked genres from local storage

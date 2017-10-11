@@ -62,6 +62,8 @@ public class CardFragment extends BasicFragment
 
     private User userAccount;
     private List<Book> books;
+    private Set<Book> likedBooks = new HashSet<>();
+    private Set<Book> dislikedBooks = new HashSet<>();;
     private Set<String> ignoreGenres = new HashSet<>();
 
     private ImageView profileImage;
@@ -110,12 +112,20 @@ public class CardFragment extends BasicFragment
 
                 switch (direction) {
                     case Right:
+                        likedBooks.add(books.get(cardStack.getTopIndex()-1));
+
                         if(cardFragmentListener != null)
                             cardFragmentListener.bookLiked(books.get(cardStack.getTopIndex()-1));
+
+                        books.remove(cardStack.getTopIndex()-1);
                         break;
                     case Left:
+                        dislikedBooks.add(books.get(cardStack.getTopIndex()-1));
+
                         if(cardFragmentListener != null)
                             cardFragmentListener.bookDisiked(books.get(cardStack.getTopIndex()-1));
+
+                        books.remove(cardStack.getTopIndex()-1);
                         break;
                 }
             }
@@ -179,8 +189,18 @@ public class CardFragment extends BasicFragment
                                 if(worksArray != null) {
 
                                     // TODO filter what books to fetch in some way..
-                                    for(int j = 0; j < worksArray.length(); j++)
-                                        books.add(new Book(worksArray.get(j).toString()));
+                                    for(int j = 0; j < worksArray.length(); j++) {
+                                        Book b = new Book(worksArray.get(j).toString());
+                                        b.setGenre(genre);
+
+                                        boolean contains = likedBooks.contains(b)
+                                                || dislikedBooks.contains(b);
+
+                                        // if the user haven't seen the book before, add it to books
+                                        if(!contains)
+                                            books.add(b);
+
+                                    }
 
                                 }
 
@@ -202,6 +222,14 @@ public class CardFragment extends BasicFragment
             profileName.setText(userAccount.getGivenName() + ".");
             Picasso.with(getContext()).load(userAccount.getImageUrl()).into(profileImage);
         }
+    }
+
+    public void setLikedBooks(Set<Book> likedBooks) {
+        this.likedBooks = likedBooks;
+    }
+
+    public void setDislikedBooks(Set<Book> dislikedBooks) {
+        this.dislikedBooks = dislikedBooks;
     }
 
     public void setUserAccount(User userAccount) {
