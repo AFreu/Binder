@@ -207,7 +207,7 @@ public class MatchesFragment extends BasicFragment {
 
         queue.addRequestFinishedListener(listener -> {
             for (Match m: matchList){
-                m.setBooks(booksToAdd);
+                m.setBooks(booksToAdd, likedBooks);
             }
             list.setEnabled(true);
         });

@@ -37,8 +37,6 @@ public class ContactProfileFragment extends BasicFragment {
 
     Match mContact;
 
-    ArrayList<Book> mBooksToAdd;
-
     ExpandableHeightGridView book_grid_1;
     ExpandableHeightGridView book_grid_2;
 
@@ -70,8 +68,6 @@ public class ContactProfileFragment extends BasicFragment {
 
         mContact = (Match)getArguments().getSerializable("contact");
 
-        mBooksToAdd = new ArrayList<>();
-        mBooksToAdd.addAll(mContact.getBooks());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -101,8 +97,8 @@ public class ContactProfileFragment extends BasicFragment {
         book_grid_1.setExpanded(true);
         book_grid_2.setExpanded(true);
 
-        bookAdapter1 = new BookAdapter(getContext(), R.layout.book_item, mBooksToAdd.subList(1,3));
-        bookAdapter2 = new BookAdapter(getContext(), R.layout.book_item, mBooksToAdd);
+        bookAdapter1 = new BookAdapter(getContext(), R.layout.book_item, mContact.getMatchingBooks());
+        bookAdapter2 = new BookAdapter(getContext(), R.layout.book_item, mContact.getBooks());
 
         book_grid_1.setAdapter(bookAdapter1);
         book_grid_2.setAdapter(bookAdapter2);

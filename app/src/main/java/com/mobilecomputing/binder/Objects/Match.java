@@ -18,6 +18,7 @@ public class Match implements Serializable, Comparator<Match> {
     public String pictureUrl;
     public Integer percent;
     public List<Book> books = new ArrayList<>();
+    public List<Book> matchingBooks = new ArrayList<>();
 
     public Match(){}
 
@@ -30,12 +31,18 @@ public class Match implements Serializable, Comparator<Match> {
         this.percent = percent;
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setBooks(List<Book> matchBooks, List<Book> userBooks) {
+        this.books = matchBooks;
+        matchingBooks.clear();
+        for(Book b : userBooks) if(books.contains(b)) matchingBooks.add(b);
     }
-
     public List<Book> getBooks() {
         return books;
+    }
+
+    public List<Book> getMatchingBooks() {
+
+        return matchingBooks;
     }
 
     public int compare(Match left, Match right) {
