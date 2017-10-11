@@ -9,8 +9,8 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_thumb_up"
-        android:tint="@color/white"
-        android:layout_width="64dp"
-        android:layout_height="64dp" />
+        android:tint="#41ba7d"
+        android:layout_width="84dp"
+        android:layout_height="84dp" />
 
 </RelativeLayout>
