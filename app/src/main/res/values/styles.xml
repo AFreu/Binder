@@ -62,4 +62,26 @@
 
     </style>
 
+    <style name="ButtonTextStyle" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorSemiBlack</item>
+        <item name="android:textSize">14dip</item>
+        <item name="android:textStyle">normal</item>
+
+    </style>
+
+    <style name="ButtonTextStylePurple" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">14dip</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="GenreTextStyle" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">24dip</item>
+        <item name="android:textStyle">normal</item>
+
+    </style>
+
+
 </resources>

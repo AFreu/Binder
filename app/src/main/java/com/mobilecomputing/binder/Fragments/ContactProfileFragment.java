@@ -103,8 +103,8 @@ public class ContactProfileFragment extends BasicFragment {
             booksToAdd.add(new Book ("", "", "", "http://covers.openlibrary.org/b/ID/" + rand + "-L.jpg"));
         }
 
-        imageAdapter1.setContent(booksToAdd.subList(3,6));
-        imageAdapter2.setContent(booksToAdd);
+        imageAdapter1.setBooks(booksToAdd.subList(3,6));
+        imageAdapter2.setBooks(booksToAdd);
 
 
         return view;

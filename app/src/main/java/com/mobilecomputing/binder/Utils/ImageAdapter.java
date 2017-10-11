@@ -75,13 +75,6 @@ public class ImageAdapter extends ArrayAdapter {
 
     }
 
-    public void setContent(List<Book> books){
-        books.clear();
-        books.addAll(books);
-
-        notifyDataSetChanged();
-    }
-
     /**
      * Updates data for this adapter and notifies about the changes.
      * @param books data to use.

@@ -3,7 +3,7 @@
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_margin="5dp"
-    android:radius="2dp"
+    android:radius="20dp"
     android:layout_height="36dp"
     android:background="@drawable/background_addedgenre">
 
@@ -11,11 +11,9 @@
         android:id="@+id/genre_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
+        android:layout_marginLeft="10dp"
         android:layout_gravity="center"
-        android:textSize="14dp"
-        android:textColor="#ffffff"
-        android:textStyle="bold"
+        style="@style/ButtonTextStyle"
         android:text="genre"/>
     <TextView
         android:id="@+id/genre_delete"
@@ -24,7 +22,6 @@
         android:layout_margin="5dp"
         android:layout_marginLeft="20dp"
         android:layout_gravity="center"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        android:text="x"/>
+        android:background="@drawable/ic_remove"
+        />
 </LinearLayout>

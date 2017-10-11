@@ -21,6 +21,7 @@
         android:background="@color/warm_grey"/>
 
     <com.stfalcon.chatkit.messages.MessageInput
+        android:background="@color/white"
         android:id="@+id/input"
         app:showAttachmentButton="true"
         app:attachmentButtonDefaultIconColor="@color/blue"

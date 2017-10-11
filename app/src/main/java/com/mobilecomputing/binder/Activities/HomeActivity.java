@@ -3,6 +3,7 @@ package com.mobilecomputing.binder.Activities;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,17 +18,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -36,23 +31,15 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.gson.Gson;
 import com.mobilecomputing.binder.Fragments.CardFragment;
 import com.mobilecomputing.binder.Fragments.MatchesFragment;
 import com.mobilecomputing.binder.Fragments.ProfileFragment;
-import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
-import com.mobilecomputing.binder.Views.BookBottomSheet;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.mobilecomputing.binder.Utils.User;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import jp.wasabeef.blurry.Blurry;
 
 public class HomeActivity extends BasicActivity
         implements GoogleApiClient.OnConnectionFailedListener {
@@ -78,6 +65,7 @@ public class HomeActivity extends BasicActivity
     private static final int CHOOSE_BOOK_ACTIVITY = 1435;
 
     private Menu menu;
+    private SharedPreferences sharedPreferences;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -103,7 +91,19 @@ public class HomeActivity extends BasicActivity
         setContentView(R.layout.activity_home);
 
         addAllGenres();
+        initGoogleApiClient();
 
+        initUI();
+
+        createFragments();
+
+        // sets first fragment to booksfragment
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.content, cardFragment).commit();
+
+    }
+
+    public void initUI() {
         Toolbar toolBar = (Toolbar)findViewById(R.id.home_toolbar);
         setSupportActionBar(toolBar);
 
@@ -117,30 +117,42 @@ public class HomeActivity extends BasicActivity
         gridView.setAdapter(imageAdapter);
         gridView.setOnTouchListener((v, event) -> event.getAction() == MotionEvent.ACTION_MOVE);
 
-        createFragments();
-        // sets first fragment to booksfragment
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.content, cardFragment).commit();
+        signInBackground = (RelativeLayout) findViewById(R.id.sign_in_background);
 
-        initSignIn();
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(view -> {
+            signInWithGoogle();
+        });
+
+        signInButtonNoGoogle = (Button) findViewById(R.id.sign_in_button_noGoogle);
+        signInButtonNoGoogle.setOnClickListener(view -> {
+            mockSignIn();
+        });
+    }
+
+    /**
+     * Called after onCreate
+     * Checks if user is signed in..
+     */
+    @Override
+    protected void onStart () {
+        super.onStart();
+
+        if(sharedPreferences == null)
+            sharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
+
+        isSignedIn = sharedPreferences.getBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), false);
+
+        if(isSignedIn) {
+            User user = new User(
+                sharedPreferences.getString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME), ""),
+                sharedPreferences.getString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL), ""));
+
+            ((CardFragment) cardFragment).setUserAccount(user);
+            ((ProfileFragment) profileFragment).setUserAccount(user);
+        }
 
         setVisibilityOfSignIn();
-
-        RelativeLayout back = (RelativeLayout) findViewById(R.id.home_gradient_background);
-        // blurs the background on sign in
-        back.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                back.getViewTreeObserver().removeOnPreDrawListener(this);
-
-                Blurry.with(HomeActivity.this).radius(25)
-                        .sampling(2)
-                        .async()
-                        .animate(300)
-                        .onto((ViewGroup)back.getParent());
-                return false;
-            }
-        });
     }
 
     private void addAllGenres() {
@@ -154,8 +166,7 @@ public class HomeActivity extends BasicActivity
         allGenres.add("horror");
     }
 
-    private void initSignIn() {
-        appBody.setVisibility(View.INVISIBLE);
+    private void initGoogleApiClient() {
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -165,18 +176,6 @@ public class HomeActivity extends BasicActivity
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
-        signInBackground = (RelativeLayout) findViewById(R.id.sign_in_background);
-
-        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener(view -> {
-            signInWithGoogle();
-        });
-
-        signInButtonNoGoogle = (Button) findViewById(R.id.sign_in_button_noGoogle);
-        signInButtonNoGoogle.setOnClickListener(view -> {
-            mockSignIn();
-        });
     }
 
     private void createFragments() {
@@ -210,9 +209,8 @@ public class HomeActivity extends BasicActivity
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
-
-            setVisibilityOfSignIn();
         }
+
         else if(requestCode == RC_OCR_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
@@ -238,22 +236,18 @@ public class HomeActivity extends BasicActivity
 
         switch (content){
             case "CardFragment":
-                setScanMenu();
                 fragment = cardFragment;
                 title = getString(R.string.title_books);
                 break;
             case "MatchesFragment":
-                setMainMenu();
                 fragment = matchesFragment;
                 title = getString(R.string.title_matches);
                 break;
             case "ProfileFragment":
-                setMainMenu();
                 fragment = profileFragment;
                 title = getString(R.string.title_profile);
                 break;
             default:
-                setMainMenu();
                 fragment = cardFragment;
                 title = getString(R.string.title_books);
                 break;
@@ -268,33 +262,31 @@ public class HomeActivity extends BasicActivity
 
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
+            User userAccount = new User(acct.getGivenName(), acct.getPhotoUrl().toString());
             isSignedIn = true;
-            ((ProfileFragment)profileFragment).setUserAccount(acct);
-            ((CardFragment)cardFragment).setUserAccount(acct);
+            ((ProfileFragment)profileFragment).setUserAccount(userAccount);
+            ((CardFragment)cardFragment).setUserAccount(userAccount);
 
             setScanMenu();
             setVisibilityOfSignIn();
 
-            // blurs the background on sign in
-            /*gridView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-                    gridView.getViewTreeObserver().removeOnPreDrawListener(this);
+            if(sharedPreferences == null)
+                sharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
 
-                    Blurry.with(HomeActivity.this).radius(8)
-                            .sampling(2)
-                            .async()
-                            .animate(300)
-                            .onto((ViewGroup)gridView.getParent());
-                    return false;
-                }
-            });*/
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), isSignedIn);
+            editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME), acct.getGivenName());
+            editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL), acct.getPhotoUrl().toString());
+            editor.apply();
 
         } else {
             isSignedIn = false;
             ((ProfileFragment)profileFragment).setUserAccount(null);
             ((CardFragment)cardFragment).setUserAccount(null);
         }
+
+
+        setVisibilityOfSignIn();
     }
 
 
@@ -312,25 +304,34 @@ public class HomeActivity extends BasicActivity
 
     }
 
-    public void setMainMenu() {
+    public void setEmptyMenu() {
         menu.clear();
-        getMenuInflater().inflate(R.menu.main_menu, menu);
     }
 
     public void setScanMenu() {
         menu.clear();
         getMenuInflater().inflate(R.menu.scan_menu, menu);
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
-        return super.onCreateOptionsMenu(menu);
+
+        // defaults to scanMenu
+        if(isSignedIn && this.menu != null)
+            setScanMenu();
+
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()){
+            case R.id.action_signout:
+                logOut();
+                return true;
             case R.id.action_scan:
                 int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
                 if (rc == PackageManager.PERMISSION_GRANTED) {
@@ -348,6 +349,29 @@ public class HomeActivity extends BasicActivity
         }
     }
 
+    public void logOut() {
+
+        isSignedIn = sharedPreferences.getBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), false);
+
+        if(isSignedIn) {
+
+            Log.d("HomeActivity", "signing out..");
+            setEmptyMenu();
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), false).apply();
+            isSignedIn = false;
+
+            if(googleApiClient != null && googleApiClient.isConnected())
+                googleApiClient.disconnect();
+
+            setVisibilityOfSignIn();
+        }
+
+        if(sharedPreferences == null)
+            sharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
+
+    }
 
     /**
      * Handles the requesting of the camera permission.  This includes

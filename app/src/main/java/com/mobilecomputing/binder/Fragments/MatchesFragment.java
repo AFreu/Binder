@@ -52,11 +52,12 @@ public class MatchesFragment extends BasicFragment {
 
         list = view.findViewById(R.id.matches_list);
 
-        matchList = new ArrayList<Match>();
+        matchList = new ArrayList<>();
 
-        matchList.add(new Match("Lovisa", 26, null, null, null, 55));
-        matchList.add(new Match("Mikael", 24, null, null, null, 67));
-
+        matchList.add(new Match("Lovisa", 26, null, null, "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg", 55));
+        matchList.add(new Match("Mikael", 24, null, null, "https://www.aceshowbiz.com/images/photo/ryan_gosling.jpg", 67));
+        matchList.add(new Match("Anton", 73, null, null, "http://akns-images.eonline.com/eol_images/Entire_Site/20161129/rs_300x300-161229151358-ap.jpg?downsize=300:*&crop=300:300;left,top", 88));
+        matchList.add(new Match("Jimmy", 45, null, null, "http://3.bp.blogspot.com/-a71LPYXKmYs/T5KQLsCOQNI/AAAAAAAAErw/vyC3o5j7JoA/s1600/Orlando+Bloom+(1).jpg", 100));
 
         matches = new MatchesAdapter(getContext(), R.layout.match_item, matchList);
         initUI(view);
@@ -76,16 +77,13 @@ public class MatchesFragment extends BasicFragment {
     public void populateUI() {
 
         list.setClickable(true);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        list.setOnItemClickListener((parent, view, position, id) -> {
 
-                Intent intent = new Intent(getActivity(), ContactActivity.class);
-                intent.putExtra("contact", matchList.get(position));
-                System.out.println("List object clicked" + intent.getExtras());
-                getActivity().startActivity(intent);
+            Intent intent = new Intent(getActivity(), ContactActivity.class);
+            intent.putExtra("contact", matchList.get(position));
+            System.out.println("List object clicked" + intent.getExtras());
+            getActivity().startActivity(intent);
 
-            }
         });
         //nameText.setText();
         //Picasso.with(getContext()).load();

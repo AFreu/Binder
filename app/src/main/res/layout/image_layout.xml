@@ -1,53 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="@dimen/cardview_default_elevation"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/book_card_image"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        app:srcCompat="@color/colorAccent" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/book_card_action_area"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:background="@color/colorSemiBlack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/book_card_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            app:srcCompat="@color/colorAccent" />
 
         <LinearLayout
-            android:padding="@dimen/margin_medium"
+            android:id="@+id/book_card_action_area"
+            android:layout_alignParentBottom="true"
             android:orientation="vertical"
+            android:background="@color/colorSemiBlack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/book_card_title"
-                android:text="Title"
-                style="@style/BookCardTitleStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:padding="@dimen/margin_medium"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/book_card_author"
-                android:text="Author"
-                style="@style/BookCardAuthorStyle"
+                <TextView
+                    android:id="@+id/book_card_title"
+                    android:text="Title"
+                    style="@style/BookCardTitleStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/book_card_author"
+                    android:text="Author"
+                    style="@style/BookCardAuthorStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/book_card_button"
+                android:layout_gravity="bottom"
+                android:text="@string/button_learn_more"
+                android:textColor="@color/white"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/book_card_button"
-            android:layout_gravity="bottom"
-            android:text="@string/button_learn_more"
-            android:textColor="@color/white"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    </RelativeLayout>
 
-</RelativeLayout>
+</android.support.v7.widget.CardView>

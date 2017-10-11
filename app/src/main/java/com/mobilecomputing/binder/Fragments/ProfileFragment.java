@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.BottomSheet;
 import com.mobilecomputing.binder.Views.ChipButton;
 import com.mobilecomputing.binder.Views.ChipView;
@@ -34,7 +35,7 @@ public class ProfileFragment extends BasicFragment {
 
     private String TAG = "ProfileFragment";
 
-    private GoogleSignInAccount userAccount;
+    private User userAccount;
     private TextView nameText;
     private ImageView profileImage;
     private FlowLayout flowLayout;
@@ -141,13 +142,15 @@ public class ProfileFragment extends BasicFragment {
      */
     public void populateUI() {
 
+        Log.d("HomeActivity", "populating..");
+
         if(userAccount != null && nameText != null) {
-            nameText.setText(userAccount.getDisplayName());
-            Picasso.with(getContext()).load(userAccount.getPhotoUrl()).into(profileImage);
+            nameText.setText(userAccount.getGivenName());
+            Picasso.with(getContext()).load(userAccount.getImageUrl()).into(profileImage);
         }
     }
 
-    public void setUserAccount(GoogleSignInAccount userAccount) {
+    public void setUserAccount(User userAccount) {
         this.userAccount = userAccount;
 
         populateUI();

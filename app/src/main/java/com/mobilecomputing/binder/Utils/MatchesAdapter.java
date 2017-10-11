@@ -4,6 +4,11 @@ import com.mobilecomputing.binder.Objects.Match;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +21,7 @@ import android.widget.TextView;
 
 
 import com.mobilecomputing.binder.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -45,9 +51,10 @@ public class MatchesAdapter extends ArrayAdapter {
         TextView matchPercent = (TextView) convertView.findViewById(R.id.match_percent);
         ImageView matchPicture = (ImageView) convertView.findViewById(R.id.match_picture);
 
-        matchName.setText(match.name);
-        //TODO fix this
-        matchPercent.setText(match.percent + " %" + match);
+        matchName.setText(match.name + " " + match.age);
+        matchPercent.setText(match.percent + " % match");
+        Picasso.with(getContext()).load(match.pictureUrl).into(matchPicture);
+
 
         return convertView;
     }
