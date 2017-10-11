@@ -512,7 +512,7 @@ public class HomeActivity extends BasicActivity
     }
 
     @Override
-    public void bookDisiked(Book book) {
+    public void bookDisliked(Book book) {
         dislikedBooks.add(book);
         likedBooks.remove(book);
     }
