@@ -34,14 +34,13 @@ public class Match implements Serializable, Comparator<Match> {
     public void setBooks(List<Book> matchBooks, List<Book> userBooks) {
         this.books = matchBooks;
         matchingBooks.clear();
-        for(Book b : userBooks) if(books.contains(b)) matchingBooks.add(b);
+        userBooks.stream().forEach(b -> {if(books.contains(b)) matchingBooks.add(b);});
     }
     public List<Book> getBooks() {
         return books;
     }
 
     public List<Book> getMatchingBooks() {
-
         return matchingBooks;
     }
 
