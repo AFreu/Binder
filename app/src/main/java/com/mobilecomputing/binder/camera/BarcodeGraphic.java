@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mobilecomputing.binder.Activities;
+package com.mobilecomputing.binder.camera;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
