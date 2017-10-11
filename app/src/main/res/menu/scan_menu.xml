@@ -6,7 +6,16 @@
         android:id="@+id/action_scan"
         android:icon="@drawable/ic_camera"
         android:title="Books"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom|withText">
+        <menu>
+            <item
+                android:id="@+id/action_scan_dropdown1"
+                android:title="@string/scan_text"/>
+            <item
+                android:id="@+id/action_scan_dropdown2"
+                android:title="@string/scan_bar_qr_code"/>
+        </menu>
+    </item>
 
     <!-- Settings, should always be in the overflow -->
     <item android:id="@+id/action_signout"

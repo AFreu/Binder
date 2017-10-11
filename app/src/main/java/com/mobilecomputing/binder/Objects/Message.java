@@ -1,8 +1,5 @@
-package com.mobilecomputing.binder.Modules;
+package com.mobilecomputing.binder.Objects;
 
-import android.media.Image;
-
-import com.google.android.gms.auth.api.proxy.ProxyRequest;
 import com.stfalcon.chatkit.commons.models.IMessage;
 import com.stfalcon.chatkit.commons.models.MessageContentType;
 

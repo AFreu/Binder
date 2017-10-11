@@ -21,10 +21,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.gson.Gson;
 import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.Objects.Book;
+import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.BookBottomSheet;
+import com.mobilecomputing.binder.Views.NewMatch;
 import com.squareup.picasso.Picasso;
 import com.yuyakaido.android.cardstackview.CardStackView;
 import com.yuyakaido.android.cardstackview.SwipeDirection;
@@ -44,6 +46,8 @@ import java.util.Set;
  */
 public class CardFragment extends BasicFragment {
 
+    private NewMatch newMatch;
+
     public interface CardFragmentListener {
         void bookLiked(Book book);
         void bookDisiked(Book book);
@@ -57,6 +61,8 @@ public class CardFragment extends BasicFragment {
 
     private User userAccount;
     private List<Book> books;
+    private Set<Book> likedBooks = new HashSet<>();
+    private Set<Book> dislikedBooks = new HashSet<>();;
     private Set<String> ignoreGenres = new HashSet<>();
 
     private ImageView profileImage;
@@ -92,6 +98,8 @@ public class CardFragment extends BasicFragment {
         imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
         imageAdapter.setImageAdapterListener(this);
         cardStack.setAdapter(imageAdapter);
+        newMatch = new NewMatch();
+        
         cardStack.setCardEventListener(new CardStackView.CardEventListener() {
             @Override
             public void onCardDragging(float percentX, float percentY) {
@@ -103,12 +111,20 @@ public class CardFragment extends BasicFragment {
 
                 switch (direction) {
                     case Right:
+                        likedBooks.add(books.get(cardStack.getTopIndex()-1));
+
                         if(cardFragmentListener != null)
                             cardFragmentListener.bookLiked(books.get(cardStack.getTopIndex()-1));
+
+                        books.remove(cardStack.getTopIndex()-1);
                         break;
                     case Left:
+                        dislikedBooks.add(books.get(cardStack.getTopIndex()-1));
+
                         if(cardFragmentListener != null)
                             cardFragmentListener.bookDisiked(books.get(cardStack.getTopIndex()-1));
+
+                        books.remove(cardStack.getTopIndex()-1);
                         break;
                 }
             }
@@ -172,8 +188,18 @@ public class CardFragment extends BasicFragment {
                                 if(worksArray != null) {
 
                                     // TODO filter what books to fetch in some way..
-                                    for(int j = 0; j < worksArray.length(); j++)
-                                        books.add(new Book(worksArray.get(j).toString()));
+                                    for(int j = 0; j < worksArray.length(); j++) {
+                                        Book b = new Book(worksArray.get(j).toString());
+                                        b.setGenre(genre);
+
+                                        boolean contains = likedBooks.contains(b)
+                                                || dislikedBooks.contains(b);
+
+                                        // if the user haven't seen the book before, add it to books
+                                        if(!contains)
+                                            books.add(b);
+
+                                    }
 
                                 }
 
@@ -195,6 +221,14 @@ public class CardFragment extends BasicFragment {
             profileName.setText(userAccount.getGivenName() + ".");
             Picasso.with(getContext()).load(userAccount.getImageUrl()).into(profileImage);
         }
+    }
+
+    public void setLikedBooks(Set<Book> likedBooks) {
+        this.likedBooks = likedBooks;
+    }
+
+    public void setDislikedBooks(Set<Book> dislikedBooks) {
+        this.dislikedBooks = dislikedBooks;
     }
 
     public void setUserAccount(User userAccount) {
@@ -245,6 +279,14 @@ public class CardFragment extends BasicFragment {
         });
 
     }
+
+    public void addBookToTop2(String strBook) {
+        Book book = new Gson().fromJson(strBook, Book.class);
+        books.add(0, new Book(book.getTitle(), book.getAuthor(), "", book.getImageUrl(), book.getKey()));
+
+        imageAdapter.setBooks(books);
+    }
+
 
     public Set<String> getIgnoreGenres() {
         return ignoreGenres;

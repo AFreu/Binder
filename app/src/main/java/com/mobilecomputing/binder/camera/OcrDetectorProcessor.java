@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mobilecomputing.binder.Activities;
+package com.mobilecomputing.binder.camera;
 
 import android.util.SparseArray;
 
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.text.TextBlock;
-import com.mobilecomputing.binder.camera.GraphicOverlay;
 
 /**
  * A very simple Processor which receives detected TextBlocks and adds them to the overlay

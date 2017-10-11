@@ -41,4 +41,8 @@
     <string name="SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME">DISPLAY_NAME</string>
     <string name="SHARED_PREFS_USER_DATA_TAG_PHOTO_URL">PHOTO_URL</string>
     <string name="SHARED_PREFS_USER_DATA_TAG_IGNORE_GENRES">IGNORE_GENRES</string>
+
+    <string name="scan_text">Scan text</string>
+    <string name="scan_bar_qr_code">Scan bar/qr - code</string>
+
 </resources>

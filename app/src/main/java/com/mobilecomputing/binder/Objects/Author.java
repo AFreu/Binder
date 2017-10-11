@@ -1,4 +1,4 @@
-package com.mobilecomputing.binder.Modules;
+package com.mobilecomputing.binder.Objects;
 
 import com.stfalcon.chatkit.commons.models.IUser;
 

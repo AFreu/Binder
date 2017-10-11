@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by mikael on 2017-10-06.
@@ -88,5 +89,18 @@ public class Book implements Serializable {
 
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public boolean equals(Object otherBook) {
+        //if(otherBook.getClass() != Book.class)
+        //    return false;
+
+        return title.equals(((Book)otherBook).getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title);
     }
 }

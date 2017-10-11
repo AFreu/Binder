@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -38,57 +39,46 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.vision.text.TextBlock;
-import com.google.android.gms.vision.text.TextRecognizer;
-import com.google.gson.Gson;
-import com.mobilecomputing.binder.Objects.Book;
+import com.google.android.gms.vision.MultiProcessor;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.camera.BarcodeGraphic;
+import com.mobilecomputing.binder.camera.BarcodeGraphicTracker;
+import com.mobilecomputing.binder.camera.BarcodeTrackerFactory;
 import com.mobilecomputing.binder.camera.CameraSource;
-import com.mobilecomputing.binder.camera.CameraSourcePreview;
-import com.mobilecomputing.binder.camera.GraphicOverlay;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.mobilecomputing.binder.camera.CameraSourceBarQrPreview;
+import com.mobilecomputing.binder.camera.GraphicBarQrOverlay;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Activity for the multi-tracker app.  This app detects text and displays the value with the
+ * Activity for the multi-tracker app.  This app detects barcodes and displays the value with the
  * rear facing camera. During detection overlay graphics are drawn to indicate the position,
- * size, and contents of each TextBlock.
+ * size, and ID of each barcode.
  */
-public final class OcrCaptureActivity extends AppCompatActivity {
-    private static final String TAG = "OcrCaptureActivity";
+public final class BarcodeCaptureActivity extends AppCompatActivity implements BarcodeGraphicTracker.BarcodeUpdateListener {
+    private static final String TAG = "Barcode-reader";
 
-    // Intent request code to handle updating play services if needed.
+    // intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
-    private static final int RC_OCR_CAPTURE = 9003;
 
-    // Permission request codes need to be < 256
+    // permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
-    private static final int CHOOSE_BOOK_ACTIVITY = 1435;
 
-
-    // Constants used to pass extra data in the intent
+    // constants used to pass extra data in the intent
     public static final String AutoFocus = "AutoFocus";
     public static final String UseFlash = "UseFlash";
-    public static final String TextBlockObject = "String";
+    public static final String BarcodeObject = "Barcode";
 
     private CameraSource mCameraSource;
-    private CameraSourcePreview mPreview;
-    private GraphicOverlay<OcrGraphic> mGraphicOverlay;
+    private CameraSourceBarQrPreview mPreview;
+    private GraphicBarQrOverlay<BarcodeGraphic> mGraphicOverlay;
 
-    // Helper objects for detecting taps and pinches.
+    // helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
     private GestureDetector gestureDetector;
 
@@ -98,10 +88,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.ocr_capture);
+        setContentView(R.layout.barcode_capture);
 
-        mPreview = (CameraSourcePreview) findViewById(R.id.preview);
-        mGraphicOverlay = (GraphicOverlay<OcrGraphic>) findViewById(R.id.graphicOverlay);
+        mPreview = (CameraSourceBarQrPreview) findViewById(R.id.preview);
+        mGraphicOverlay = (GraphicBarQrOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
 
         // read parameters from the intent used to launch the activity.
         boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, false);
@@ -150,6 +140,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
             }
         };
 
+        findViewById(R.id.topLayout).setOnClickListener(listener);
         Snackbar.make(mGraphicOverlay, R.string.permission_camera_rationale,
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.ok, listener)
@@ -167,7 +158,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
     /**
      * Creates and starts the camera.  Note that this uses a higher resolution in comparison
-     * to other detection examples to enable the ocr detector to detect small text samples
+     * to other detection examples to enable the barcode detector to detect small barcodes
      * at long distances.
      *
      * Suppressing InlinedApi since there is a check that the minimum version is met before using
@@ -177,18 +168,21 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     private void createCameraSource(boolean autoFocus, boolean useFlash) {
         Context context = getApplicationContext();
 
-        // A text recognizer is created to find text.  An associated processor instance
-        // is set to receive the text recognition results and display graphics for each text block
-        // on screen.
-        TextRecognizer textRecognizer = new TextRecognizer.Builder(context).build();
-        textRecognizer.setProcessor(new OcrDetectorProcessor(mGraphicOverlay));
+        // A barcode detector is created to track barcodes.  An associated multi-processor instance
+        // is set to receive the barcode detection results, track the barcodes, and maintain
+        // graphics for each barcode on screen.  The factory is used by the multi-processor to
+        // create a separate tracker instance for each barcode.
+        BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context).build();
+        BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, this);
+        barcodeDetector.setProcessor(
+                new MultiProcessor.Builder<>(barcodeFactory).build());
 
-        if (!textRecognizer.isOperational()) {
-            // Note: The first time that an app using a Vision API is installed on a
+        if (!barcodeDetector.isOperational()) {
+            // Note: The first time that an app using the barcode or face API is installed on a
             // device, GMS will download a native libraries to the device in order to do detection.
             // Usually this completes before the app is run for the first time.  But if that
-            // download has not yet completed, then the above call will not detect any text,
-            // barcodes, or faces.
+            // download has not yet completed, then the above call will not detect any barcodes
+            // and/or faces.
             //
             // isOperational() can be used to check if the required native libraries are currently
             // available.  The detectors will automatically become operational once the library
@@ -207,14 +201,21 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         }
 
         // Creates and starts the camera.  Note that this uses a higher resolution in comparison
-        // to other detection examples to enable the text recognizer to detect small pieces of text.
-        mCameraSource =
-                new CameraSource.Builder(getApplicationContext(), textRecognizer)
+        // to other detection examples to enable the barcode detector to detect small barcodes
+        // at long distances.
+        CameraSource.Builder builder = new CameraSource.Builder(getApplicationContext(), barcodeDetector)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
-                .setRequestedPreviewSize(1280, 1024)
-                .setRequestedFps(2.0f)
+                .setRequestedPreviewSize(1600, 1024)
+                .setRequestedFps(15.0f);
+
+        // make sure that auto focus is an available option
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            builder = builder.setFocusMode(
+                    autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
+        }
+
+        mCameraSource = builder
                 .setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null)
-                .setFocusMode(autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null)
                 .build();
     }
 
@@ -278,7 +279,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "Camera permission granted - initialize the camera source");
-            // We have permission, so create the camerasource
+            // we have permission, so create the camerasource
             boolean autoFocus = getIntent().getBooleanExtra(AutoFocus,false);
             boolean useFlash = getIntent().getBooleanExtra(UseFlash, false);
             createCameraSource(autoFocus, useFlash);
@@ -307,7 +308,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
      * again when the camera source is created.
      */
     private void startCameraSource() throws SecurityException {
-        // Check that the device has play services available.
+        // check that the device has play services available.
         int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(
                 getApplicationContext());
         if (code != ConnectionResult.SUCCESS) {
@@ -328,141 +329,54 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     }
 
     /**
-     * onTap is called to capture the first TextBlock under the tap location and return it to
-     * the Initializing Activity.
+     * onTap returns the tapped barcode result to the calling Activity.
      *
      * @param rawX - the raw position of the tap
      * @param rawY - the raw position of the tap.
      * @return true if the activity is ending.
      */
     private boolean onTap(float rawX, float rawY) {
-        OcrGraphic graphic = mGraphicOverlay.getGraphicAtLocation(rawX, rawY);
-        TextBlock text = null;
-        if (graphic != null) {
-            text = graphic.getTextBlock();
-            if (text != null && text.getValue() != null) {
-                fetchBookFromText(text.getValue());
+        // Find tap point in preview frame coordinates.
+        int[] location = new int[2];
+        mGraphicOverlay.getLocationOnScreen(location);
+        float x = (rawX - location[0]) / mGraphicOverlay.getWidthScaleFactor();
+        float y = (rawY - location[1]) / mGraphicOverlay.getHeightScaleFactor();
+
+        // Find the barcode whose center is closest to the tapped point.
+        Barcode best = null;
+        float bestDistance = Float.MAX_VALUE;
+        for (BarcodeGraphic graphic : mGraphicOverlay.getGraphics()) {
+            Barcode barcode = graphic.getBarcode();
+            if (barcode.getBoundingBox().contains((int) x, (int) y)) {
+                // Exact hit, no need to keep looking.
+                best = barcode;
+                break;
             }
-            else {
-                Log.d(TAG, "text data is null");
+            float dx = x - barcode.getBoundingBox().centerX();
+            float dy = y - barcode.getBoundingBox().centerY();
+            float distance = (dx * dx) + (dy * dy);  // actually squared distance
+            if (distance < bestDistance) {
+                best = barcode;
+                bestDistance = distance;
             }
         }
-        else {
-            Log.d(TAG,"no text detected");
+
+        if (best != null) {
+            Intent data = new Intent();
+            data.putExtra(BarcodeObject, best);
+            setResult(CommonStatusCodes.SUCCESS, data);
+            finish();
+            return true;
         }
-        return text != null;
+        return false;
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onBarcodeDetected(Barcode barcode) {
 
-        if(requestCode == CHOOSE_BOOK_ACTIVITY) {
-            if (resultCode == CommonStatusCodes.SUCCESS) {
-                if (data != null) {
-                    String text = data.getStringExtra(OcrCaptureActivity.TextBlockObject);
-                    Log.d(TAG, "Text read: " + text);
-                    String strBook = data.getStringExtra("bookResult");
-                    Intent intent = new Intent();
-                    intent.putExtra("bookResult", strBook);
-                    setResult(CommonStatusCodes.SUCCESS, intent);
-                    finish();
-                } else {
-                    Log.d(TAG, "No Text captured, intent data is null");
-                }
-            } else {
-                finish();
-            }
-        }
     }
-
-
-    private String removeLastChar(String str) {
-        return str.substring(0, str.length() - 1);
-    }
-
-    List<Book> books = new ArrayList<>();
-    private void fetchBookFromText(String text) {
-        String[] words = text.split("\\W+");
-        String searchString = "";
-        for (String word : words) {
-            searchString += word+"+";
-        }
-        searchString = removeLastChar(searchString);
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String urlPrefix = "https://openlibrary.org/search.json?";
-        String urlSufix = "q="+searchString;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                urlPrefix + urlSufix,
-                response -> {
-
-                    JSONObject json;
-
-                    try {
-                        json = new JSONObject(response);
-
-                        JSONArray worksArray = json.getJSONArray("docs");
-
-                        if(worksArray != null) {
-                            for (int i = 0; i < worksArray.length(); i++)
-                            {
-                                JSONObject obj = (JSONObject) worksArray.get(i);
-                                String str = "";
-                                try {
-                                    str = obj.getString("subtitle") != null ? obj.getString("subtitle") : "";
-                                } catch (JSONException e) { e.printStackTrace(); }
-
-                                String author = "";
-                                try {
-                                    author = obj.getString("author_name") != null ? buildAuthors(obj.getJSONArray("author_name")) : "";
-                                } catch (JSONException e) { e.printStackTrace(); }
-
-                                String image = "";
-                                try {
-                                    image = obj.getString("cover_i") != null ? obj.getString("cover_i") : "";
-                                } catch (JSONException e) { e.printStackTrace(); }
-
-                                Book book = new Book(obj.getString("title") + str,
-                                        author, "", image, obj.getString("key"));
-                                books.add(book);
-
-                            }
-                            Log.d("HomeActivity", "num of books: " + books.size());
-
-                            Intent intent = new Intent(this, SearchResultActivity.class);
-                            String strBooks = new Gson().toJson(books);
-                            intent.putExtra("books", strBooks);
-                            startActivityForResult(intent, CHOOSE_BOOK_ACTIVITY);
-
-                        } else {
-                            Log.d("HomeActivity", "no books found..");
-                        }
-
-                    } catch (JSONException e) { e.printStackTrace(); }
-
-                }, error -> {
-            Log.d("HomeActivity", "That didn't work..");
-        });
-        queue.add(stringRequest);
-    }
-
-    private String buildAuthors(JSONArray author_name) {
-        String str = "";
-        for(int i = 0; i < author_name.length(); i++)
-        {
-            try {
-                str += author_name.getString(i) + ", ";
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        removeLastChar(str);
-        return str;
-    }
-
 
     private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {
-
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             return onTap(e.getRawX(), e.getRawY()) || super.onSingleTapConfirmed(e);
