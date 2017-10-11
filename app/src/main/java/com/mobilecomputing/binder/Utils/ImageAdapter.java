@@ -36,6 +36,8 @@ public class ImageAdapter extends ArrayAdapter {
     private Context context;
 
     private boolean hideActionArea = false;
+    private boolean hideTitle = false;
+    private boolean hideAuthor = false;
 
     public ImageAdapter(@NonNull Context context, int layoutResource) {
         super(context, layoutResource);
@@ -63,6 +65,14 @@ public class ImageAdapter extends ArrayAdapter {
     public void setBackgroundGridMode() {
         hideActionArea = true;
         mockData();
+    }
+
+    /**
+     * Sets the mode of the adapter for images to not show title or author in grid
+     */
+    public void setLessInfo(){
+        hideTitle = true;
+        hideAuthor = true;
     }
 
     private void mockData() {
@@ -111,8 +121,20 @@ public class ImageAdapter extends ArrayAdapter {
         if(hideActionArea) {
             v.findViewById(R.id.book_card_action_area).setVisibility(View.INVISIBLE);
         } else {
-            ((TextView)v.findViewById(R.id.book_card_author)).setText(books.get(position).getAuthor());
-            ((TextView)v.findViewById(R.id.book_card_title)).setText(books.get(position).getTitle());
+            String title = "";
+            String author = "";
+
+            if(!hideTitle){
+                title = books.get(position).getTitle();
+            }
+
+            if(!hideAuthor){
+                author = books.get(position).getAuthor();
+            }
+
+
+            ((TextView)v.findViewById(R.id.book_card_author)).setText(author);
+            ((TextView)v.findViewById(R.id.book_card_title)).setText(title);
             v.findViewById(R.id.book_card_button).setOnClickListener(listener -> {
 
                 if(imageAdapterListener != null)

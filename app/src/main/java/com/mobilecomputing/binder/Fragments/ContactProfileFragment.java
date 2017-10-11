@@ -18,6 +18,7 @@ import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+import com.mobilecomputing.binder.Views.BookBottomSheet;
 import com.mobilecomputing.binder.Views.ExpandableHeightGridView;
 import com.squareup.picasso.Picasso;
 
@@ -28,11 +29,13 @@ import java.util.Random;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactProfileFragment extends BasicFragment {
+public class ContactProfileFragment extends BasicFragment implements ImageAdapter.ImageAdapterListener {
 
     String TAG = "ContactProfileFragment";
 
     Match mContact;
+
+    ArrayList<Book> mBooksToAdd;
 
     ExpandableHeightGridView book_grid_1;
     ExpandableHeightGridView book_grid_2;
@@ -45,6 +48,8 @@ public class ContactProfileFragment extends BasicFragment {
     TextView gridSplit;
 
     ImageView profileImage;
+
+    private BookBottomSheet bookBottomSheet;
 
 
     public ContactProfileFragment() {
@@ -64,6 +69,15 @@ public class ContactProfileFragment extends BasicFragment {
         super.onCreate(savedInstanceState);
 
         mContact = (Match)getArguments().getSerializable("contact");
+
+        mBooksToAdd = new ArrayList<>();
+
+        mBooksToAdd.addAll(mContact.getBooks());
+        /*Random r = new Random();
+        for(int i = 1; i < 9; i++) {
+            int rand = r.nextInt(1000 - 1) + 1;
+            mBooksToAdd.add(new Book ("", "", "", "http://covers.openlibrary.org/b/ID/" + rand + "-L.jpg"));
+        }*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -90,21 +104,24 @@ public class ContactProfileFragment extends BasicFragment {
         imageAdapter1 = new ImageAdapter(getContext(), R.layout.image_layout);
         imageAdapter2 = new ImageAdapter(getContext(), R.layout.image_layout);
 
+        imageAdapter1.setLessInfo();
+        imageAdapter2.setLessInfo();
+
         book_grid_1.setAdapter(imageAdapter1);
         book_grid_2.setAdapter(imageAdapter2);
+
+
 
         Log.d(TAG,"Number of images 1: " + imageAdapter1.getCount() + " ");
         Log.d(TAG,"Number of images 2: " + imageAdapter2.getCount() + " ");
 
-        ArrayList<Book> booksToAdd = new ArrayList<>();
-        Random r = new Random();
-        for(int i = 1; i < 9; i++) {
-            int rand = r.nextInt(1000 - 1) + 1;
-            booksToAdd.add(new Book ("", "", "", "http://covers.openlibrary.org/b/ID/" + rand + "-L.jpg"));
-        }
 
-        imageAdapter1.setBooks(booksToAdd.subList(3,6));
-        imageAdapter2.setBooks(booksToAdd);
+
+        imageAdapter1.setBooks(mBooksToAdd.subList(3,6));
+        imageAdapter2.setBooks(mBooksToAdd);
+
+        imageAdapter1.setImageAdapterListener(this);
+        imageAdapter2.setImageAdapterListener(this);
 
 
         return view;
@@ -118,4 +135,10 @@ public class ContactProfileFragment extends BasicFragment {
         Picasso.with(getContext()).load(mContact.pictureUrl).into(profileImage);
     }
 
+    @Override
+    public void onLearnMoreClick(Book book) {
+        bookBottomSheet = new BookBottomSheet();
+        bookBottomSheet.setBook(book);
+        bookBottomSheet.show(getActivity().getSupportFragmentManager(), bookBottomSheet.getTag());
+    }
 }
