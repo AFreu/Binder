@@ -1,22 +1,16 @@
 package com.mobilecomputing.binder.Fragments;
 
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.User;
@@ -30,8 +24,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -50,8 +42,6 @@ public class ProfileFragment extends BasicFragment {
         this.profileFragmentListener = profileFragmentListener;
     }
 
-    private SharedPreferences sharedPreferences;
-
     private String TAG = "ProfileFragment";
 
     private User userAccount;
@@ -65,7 +55,6 @@ public class ProfileFragment extends BasicFragment {
     private ChipButton chipButton;
 
     private View.OnClickListener clickRemoveListener;
-    private View.OnClickListener clickAddListener;
     private AdapterView.OnItemClickListener clickGenreListener;
 
     public ProfileFragment() {
@@ -80,6 +69,19 @@ public class ProfileFragment extends BasicFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        initUI(view);
+
+        return view;
+    }
+
+    // Loads disliked genres from local storage
+    public void refreshIgnoreGenres(Set<String> ignores) {
+        ignoredGenres.addAll(ignores);
+        availableGenres.removeAll(ignores);
+    }
+
+    public void initUI(View view) {
 
         // removes an ignored genre
         clickRemoveListener = view13 -> {
@@ -99,7 +101,7 @@ public class ProfileFragment extends BasicFragment {
 
         };
 
-        clickAddListener = view12 -> {
+        View.OnClickListener clickAddListener = view12 -> {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.addToBackStack(null);
 
@@ -118,7 +120,7 @@ public class ProfileFragment extends BasicFragment {
             if(profileFragmentListener != null)
                 profileFragmentListener.onDislikedGenreAdded((String)adapterView.getAdapter().getItem(i));
 
-            availableGenres.remove((String)adapterView.getAdapter().getItem(i));
+            availableGenres.remove(adapterView.getAdapter().getItem(i));
 
             bottomSheet.dismiss();
 
@@ -126,18 +128,6 @@ public class ProfileFragment extends BasicFragment {
                 chipButton.setVisibility(View.INVISIBLE);
         };
 
-        initUI(view);
-
-        return view;
-    }
-
-    // Loads disliked genres from local storage
-    public void refreshIgnoreGenres(Set<String> ignores) {
-        ignoredGenres.addAll(ignores);
-        availableGenres.removeAll(ignores);
-    }
-
-    public void initUI(View view) {
         nameText = view.findViewById(R.id.profile_name);
         profileImage = view.findViewById(R.id.profile_picture);
 
@@ -149,7 +139,6 @@ public class ProfileFragment extends BasicFragment {
         chipButton.setLayoutParams(new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,FlowLayout.LayoutParams.WRAP_CONTENT));
         flowLayout.addView(chipButton);
 
-
         populateUI();
     }
 
@@ -157,8 +146,6 @@ public class ProfileFragment extends BasicFragment {
      * Populates the user interface based on Google user data
      */
     public void populateUI() {
-
-        Log.d("HomeActivity", "populating..");
 
         if(userAccount != null && nameText != null) {
             nameText.setText(userAccount.getGivenName());
@@ -172,7 +159,6 @@ public class ProfileFragment extends BasicFragment {
 
     public void setUserAccount(User userAccount) {
         this.userAccount = userAccount;
-//        populateUI();
     }
 
     private void addDislikedGenre(String name){
@@ -185,16 +171,5 @@ public class ProfileFragment extends BasicFragment {
         flowLayout.addView(c, flowLayout.getChildCount() - 1);
 
     }
-
-
-    private void reLayoutChildren(View view) {
-        view.measure(
-                View.MeasureSpec.makeMeasureSpec(view.getMeasuredWidth(), View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(view.getMeasuredHeight(), View.MeasureSpec.EXACTLY));
-        view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
-    }
-
-
-
 
 }

@@ -123,14 +123,10 @@ public class HomeActivity extends BasicActivity
         signInBackground = (RelativeLayout) findViewById(R.id.sign_in_background);
 
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener(view -> {
-            signInWithGoogle();
-        });
+        signInButton.setOnClickListener(view -> signInWithGoogle());
 
         signInButtonNoGoogle = (Button) findViewById(R.id.sign_in_button_noGoogle);
-        signInButtonNoGoogle.setOnClickListener(view -> {
-            mockSignIn();
-        });
+        signInButtonNoGoogle.setOnClickListener(view -> mockSignIn());
     }
 
     /**
@@ -227,7 +223,6 @@ public class HomeActivity extends BasicActivity
                 } else {
                     Log.d(TAG, "No Text captured, intent data is null");
                 }
-            } else {
             }
         }
     }
@@ -362,7 +357,6 @@ public class HomeActivity extends BasicActivity
 
         if(isSignedIn) {
 
-            Log.d("HomeActivity", "signing out..");
             setEmptyMenu();
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -400,13 +394,8 @@ public class HomeActivity extends BasicActivity
 
         final Activity thisActivity = this;
 
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ActivityCompat.requestPermissions(thisActivity, permissions,
-                        RC_HANDLE_CAMERA_PERM);
-            }
-        };
+        View.OnClickListener listener = view -> ActivityCompat.requestPermissions(thisActivity, permissions,
+                RC_HANDLE_CAMERA_PERM);
 
         View view = findViewById(R.id.container);
         Snackbar.make(view, "permission_camera_rationale",
@@ -428,8 +417,6 @@ public class HomeActivity extends BasicActivity
 
     @Override
     public void onDislikedGenreAdded(String genre) {
-
-        Log.d("CardFragment", "disliking genre..");
 
         if(sharedPreferences == null)
             sharedPreferences = getSharedPreferences(getString(
