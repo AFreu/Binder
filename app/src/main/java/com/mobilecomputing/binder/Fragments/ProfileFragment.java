@@ -101,7 +101,7 @@ public class ProfileFragment extends BasicFragment {
         likedBooksGrid.setAdapter(bookAdapter);
 
         likedBooksGrid.setOnItemClickListener((parent, view1, position, id) -> {
-            showBook(bookAdapter.getItem(position), userAccount);
+            showBook(bookAdapter.getItem(position));
         });
 
         // removes an ignored genre

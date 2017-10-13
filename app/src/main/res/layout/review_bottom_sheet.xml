@@ -5,10 +5,10 @@
     android:padding="@dimen/margin_medium">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginRight="@dimen/margin_small"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_small"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/review_book_bottom_sheet_title"

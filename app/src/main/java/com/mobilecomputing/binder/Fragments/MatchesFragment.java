@@ -27,6 +27,7 @@ import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.MatchesAdapter;
+import com.mobilecomputing.binder.Utils.Review;
 import com.mobilecomputing.binder.Utils.User;
 import com.squareup.picasso.Picasso;
 import static java.util.stream.Collectors.toList;
@@ -153,11 +154,8 @@ public class MatchesFragment extends BasicFragment {
 
         list.setOnItemClickListener((parent, view, position, id) -> {
 
-            Intent intent = new Intent(getActivity(), ContactActivity.class);
-            intent.putExtra("contact", matchList.get(position));
-            intent.putExtra("user", userAccount);
-            System.out.println("List object clicked" + intent.getExtras());
-            getActivity().startActivity(intent);
+            switchToMatch(matchList.get(position));
+
 
         });
     }
@@ -208,11 +206,22 @@ public class MatchesFragment extends BasicFragment {
         });
 
         queue.addRequestFinishedListener(listener -> {
+
             for (Match m: matchList){
                 m.setBooks(booksToAdd, likedBooks);
+                /* Adding one review per book */
+                booksToAdd.stream().forEach(b -> {b.setReviewTextForUser("This book has an awesome story! I like how it is impossible to guess what happens next!", m );});
             }
             list.setEnabled(true);
+
+
         });
+
+
+
+
     }
+
+
 
 }

@@ -7,7 +7,11 @@ import java.io.Serializable;
  */
 
 public class User implements Serializable {
-    private String givenName, imageUrl;
+    protected String givenName, imageUrl;
+
+    public User(){
+
+    }
 
     public User(String givenName, String imageUrl) {
         this.givenName= givenName;

@@ -60,7 +60,6 @@ public class CardFragment extends BasicFragment {
         this.cardFragmentListener = cardFragmentListener;
     }
 
-    private User userAccount;
     private List<Book> books;
     private Set<Book> likedBooks = new HashSet<>();
     private Set<Book> dislikedBooks = new HashSet<>();;
@@ -69,8 +68,6 @@ public class CardFragment extends BasicFragment {
     private ImageView profileImage;
     private TextView profileName;
     private CardStackView cardStack;
-
-    private BookBottomSheet bookBottomSheet;
 
     private ImageAdapter imageAdapter;
 
@@ -151,16 +148,7 @@ public class CardFragment extends BasicFragment {
         populateUI();
     }
 
-    /**
-     * Displays bottom sheet dialog when user swipes right on a book
-     */
-    public void displayReviewBottomSheet(Book book) {
 
-        ReviewBottomSheet reviewBottomSheet = new ReviewBottomSheet();
-        reviewBottomSheet.setBook(book);
-        reviewBottomSheet.setUser(userAccount);
-        reviewBottomSheet.show(getActivity().getSupportFragmentManager(), reviewBottomSheet.getTag());
-    }
 
     // Loads disliked genres from local storage
     public void refreshIgnoreGenres(Set<String> ignores) {

@@ -18,7 +18,7 @@
             app:cardCornerRadius="35dp">
 
             <ImageView
-                android:id="@+id/review_picture"
+                android:id="@+id/review_item_picture"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_profile" />
@@ -26,7 +26,7 @@
         </android.support.v7.widget.CardView>
 
         <TextView
-            android:id="@+id/review_text"
+            android:id="@+id/review_item_text"
             style="@style/BookBottomSheetAuthorStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

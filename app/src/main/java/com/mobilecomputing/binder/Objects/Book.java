@@ -20,7 +20,6 @@ public class Book implements Serializable {
     private String title, author, genre, imageUrl;
     private String description = "Tom Sawyer is a boy of about 12 years of age, who resides in the fictional town of St. Petersburg, Missouri, in about the year 1845. Tom Sawyer's best friends include Joe Harper and Huckleberry Finn. In The Adventures of Tom Sawyer, Tom's infatuation with classmate Becky Thatcher is apparent as he tries to intrigue her with his strength, boldness, and handsome looks.";
 
-    private String myReview = "";
     private List<Review> reviews = new ArrayList<>();
 
     public Book(String jsonString) {
@@ -100,11 +99,17 @@ public class Book implements Serializable {
         return description;
     }
 
-    public String getReviewTextByUser(User user){
+    public void setReviewTextForUser(String text, User user){
+        boolean userExisted = false;
+
         for(Review r : reviews){
-            if(r.getReviewUser().equals(user)) return r.getReviewText();
+            if(r.getReviewUser().equals(user)){
+                userExisted = true;
+                r.setReviewText(text);
+            }
         }
-        return "";
+
+        if(!userExisted) reviews.add(new Review(user, text));
     }
 
     @Override
@@ -120,7 +125,23 @@ public class Book implements Serializable {
         return Objects.hash(title);
     }
 
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     public List<Review> getReviews() {
         return reviews;
+    }
+
+    public List<Review> getReviewsByOthers(User me){
+        List<Review> temp = new ArrayList<>();
+        for(Review r : reviews){
+            if(!r.getReviewUser().equals(me)) temp.add(r);
+        }
+        return temp;
+    }
+
+    public void addReview(Review review){
+        reviews.add(review);
     }
 }

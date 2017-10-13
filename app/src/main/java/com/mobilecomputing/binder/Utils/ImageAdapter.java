@@ -75,6 +75,21 @@ public class ImageAdapter extends ArrayAdapter {
      */
     public void setBooks(List<Book> books) {
         this.books = books;
+
+        /*Temporarily filling books with reviews*/
+        List<Review> reviews = new ArrayList<>();
+        reviews.add(new Review(new User("Karin2", "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg"), "I find this book amzing find this book amzing find this book amzing find this book amzing "));
+        reviews.add(new Review(new User("Karin2", "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg"), "I find this book amzing find this book amzing find this book amzing find this book amzing "));
+        reviews.add(new Review(new User("Karin2", "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg"), "I find this book amzing find this book amzing find this book amzing find this book amzing "));
+        reviews.add(new Review(new User("Karin1", "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg"), "I find this book amzing find this book amzing find this book amzing find this book amzing "));
+        reviews.add(new Review(new User("Karin3", "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg"), "I find this book amzing find this book amzing find this book amzing find this book amzing "));
+        reviews.add(new Review(new User("Karin4", "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg"), "I find this book amzing find this book amzing find this book amzing find this book amzing "));
+
+        for(Book b : books){
+            b.setReviews(reviews);
+        }
+
+
         notifyDataSetChanged();
     }
 

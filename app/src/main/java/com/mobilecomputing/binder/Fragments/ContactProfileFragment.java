@@ -107,20 +107,20 @@ public class ContactProfileFragment extends BasicFragment {
         book_grid_2.setAdapter(bookAdapter2);
 
         book_grid_1.setOnItemClickListener((parent, view, position, id) -> {
-            showBook(bookAdapter1.getItem(position), userAccount);
+            showBook(bookAdapter1.getItem(position), mContact);
         });
         book_grid_2.setOnItemClickListener((parent, view, position, id) -> {
-            showBook(bookAdapter2.getItem(position), userAccount);
+            showBook(bookAdapter2.getItem(position), mContact);
         });
 
     }
 
     private void updateContactInfo(){
 
-        profileName.setText(mContact.name);
+        profileName.setText(mContact.getGivenName());
         profileMatchInfo.setText(mContact.percent + getString(R.string.contact_profile_percent_match));
-        gridSplit.setText("Other books that " + mContact.name.split("\\s+")[0] + " loves");
-        Picasso.with(getContext()).load(mContact.pictureUrl).into(profileImage);
+        gridSplit.setText("Other books that " + mContact.getGivenName().split("\\s+")[0] + " loves");
+        Picasso.with(getContext()).load(mContact.getImageUrl()).into(profileImage);
     }
 
 

@@ -61,8 +61,8 @@ public class NewMatch extends AppCompatDialogFragment {
     }
 
     public void populateUI(){
-        matchText.setText("You got a " + match.percent + "% match with " + match.name);
-        Picasso.with(getContext()).load(match.pictureUrl).into(matchPicture);
+        matchText.setText("You got a " + match.percent + "% match with " + match.getGivenName());
+        Picasso.with(getContext()).load(match.getImageUrl()).into(matchPicture);
         Picasso.with(getContext()).load(user.getImageUrl()).into(profilePicture);
 
     }

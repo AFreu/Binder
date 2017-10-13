@@ -51,9 +51,9 @@ public class MatchesAdapter extends ArrayAdapter {
         TextView matchPercent = (TextView) convertView.findViewById(R.id.match_percent);
         ImageView matchPicture = (ImageView) convertView.findViewById(R.id.match_picture);
 
-        matchName.setText(match.name + " " + match.age);
+        matchName.setText(match.getGivenName() + " " + match.age);
         matchPercent.setText(match.percent + " % match");
-        Picasso.with(getContext()).load(match.pictureUrl).into(matchPicture);
+        Picasso.with(getContext()).load(match.getImageUrl()).into(matchPicture);
 
 
         return convertView;

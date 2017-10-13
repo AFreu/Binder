@@ -1,10 +1,12 @@
 package com.mobilecomputing.binder.Utils;
 
+import java.io.Serializable;
+
 /**
  * Created by mikael on 2017-10-13.
  */
 
-public class Review {
+public class Review implements Serializable {
     private User reviewUser;
     private String reviewText;
 
@@ -14,10 +16,14 @@ public class Review {
     }
 
     public User getReviewUser() {
-        return reviewUser;
+        return this.reviewUser;
     }
 
     public String getReviewText() {
         return reviewText;
+    }
+
+    public void setReviewText(String reviewText) {
+        this.reviewText = reviewText;
     }
 }
