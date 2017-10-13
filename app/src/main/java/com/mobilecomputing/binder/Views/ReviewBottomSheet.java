@@ -48,9 +48,9 @@ public class ReviewBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.book_bottom_sheet, container);
-        bookTitle = view.findViewById(R.id.book_bottom_sheet_title);
-        bookAuthor = view.findViewById(R.id.book_bottom_sheet_author);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.review_bottom_sheet, container);
+        bookTitle = view.findViewById(R.id.review_book_bottom_sheet_title);
+        bookAuthor = view.findViewById(R.id.review_book_bottom_sheet_author);
         reviewInput = view.findViewById(R.id.review_text_input);
 
         doneButton = view.findViewById(R.id.review_done_button);
