@@ -70,12 +70,13 @@
             android:layout_marginTop="@dimen/default_margin"
             android:text="My review" />
 
-        <TextView
+        <EditText
             android:id="@+id/book_bottom_sheet_my_review"
             style="@style/BookBottomSheetAuthorStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
+            android:maxLength="200"
             android:text="I like this book because it is really amazing!I like this book because it is really amazing!I like this book because it is really amazing!I like this book because it is really amazing!" />
 
 
