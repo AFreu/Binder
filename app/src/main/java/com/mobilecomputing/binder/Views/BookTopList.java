@@ -29,9 +29,9 @@ public class BookTopList extends LinearLayout {
 
     private void init(){
         inflate(getContext(), R.layout.added_toplist, this);
-        remove = findViewById(R.id.remove_toplist);
-        readMore = findViewById(R.id.view_toplist);
-        bookToplist = findViewById(R.id.book_toplist);
+        remove = findViewById(R.id.remove_toplist_button);
+        readMore = findViewById(R.id.view_toplist_button);
+        bookToplist = findViewById(R.id.book_toplist_image);
     }
 
 

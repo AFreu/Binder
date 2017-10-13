@@ -95,9 +95,46 @@
                 </com.wefika.flowlayout.FlowLayout>
 
                 <TextView
-                    android:id="@+id/profile_dislikes_title"
+                    android:id="@+id/profile_toplist_title"
                     style="@style/SecondaryTextStyle"
                     android:layout_below="@id/profile_flowlayout"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginLeft="@dimen/margin_medium"
+                    android:layout_marginRight="@dimen/margin_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Your top list:" />
+
+                <ScrollView
+                    android:layout_below="@id/profile_toplist_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.mobilecomputing.binder.Views.ExpandableHeightGridView
+                        android:id="@+id/profile_toplist_books"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/BookGridStyle"
+                        tools:listitem="@layout/image_layout" />
+
+                </ScrollView>
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/profile_toplist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/profile_dislikes_title"
+                    style="@style/SecondaryTextStyle"
                     android:layout_marginTop="@dimen/margin_medium"
                     android:layout_marginLeft="@dimen/margin_medium"
                     android:layout_marginRight="@dimen/margin_medium"
@@ -119,8 +156,6 @@
 
                 </ScrollView>
             </RelativeLayout>
-
-
         </FrameLayout>
 
     </LinearLayout>

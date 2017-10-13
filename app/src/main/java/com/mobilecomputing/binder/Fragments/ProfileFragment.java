@@ -17,6 +17,7 @@ import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.BookAdapter;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
+import com.mobilecomputing.binder.Views.AddTopList;
 import com.mobilecomputing.binder.Views.BottomSheet;
 import com.mobilecomputing.binder.Views.ChipButton;
 import com.mobilecomputing.binder.Views.ChipView;
@@ -57,9 +58,13 @@ public class ProfileFragment extends BasicFragment {
     private List<String> availableGenres = new ArrayList<>();
     private Set<String> ignoredGenres = new HashSet<>();
     private List<Book> likedBooks = new ArrayList<>();
+    private List<Book> topList = new ArrayList<>();
+    private AddTopList addTopListButton;
     private ChipButton chipButton;
+    private ExpandableHeightGridView topListGrid;
     private ExpandableHeightGridView likedBooksGrid;
     private BookAdapter bookAdapter;
+    private BookAdapter bookAdapterTopList;
 
     private View.OnClickListener clickRemoveListener;
     private AdapterView.OnItemClickListener clickGenreListener;
@@ -95,10 +100,15 @@ public class ProfileFragment extends BasicFragment {
 
     public void initUI(View view) {
 
+        topListGrid = view.findViewById(R.id.profile_toplist_books);
+        topListGrid.setExpanded(true);
+
         likedBooksGrid = view.findViewById(R.id.profile_liked_books);
         likedBooksGrid.setExpanded(true);
 
         bookAdapter = new BookAdapter(getContext(), R.layout.book_item, likedBooks);
+        bookAdapterTopList = new BookAdapter(getContext(), R.layout.book_item, topList);
+        topListGrid.setAdapter(bookAdapterTopList);
         likedBooksGrid.setAdapter(bookAdapter);
 
         likedBooksGrid.setOnItemClickListener((parent, view1, position, id) -> {
