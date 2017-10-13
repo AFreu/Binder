@@ -21,6 +21,7 @@ import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.BookAdapter;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.ExpandableHeightGridView;
 import com.squareup.picasso.Picasso;
 
@@ -54,10 +55,11 @@ public class ContactProfileFragment extends BasicFragment {
         // Required empty public constructor
     }
 
-    public static ContactProfileFragment newInstance(Match contact) {
+    public static ContactProfileFragment newInstance(Match contact, User user) {
         ContactProfileFragment fragment = new ContactProfileFragment();
         Bundle args = new Bundle();
         args.putSerializable("contact", contact);
+        args.putSerializable("user", user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,6 +69,7 @@ public class ContactProfileFragment extends BasicFragment {
         super.onCreate(savedInstanceState);
 
         mContact = (Match)getArguments().getSerializable("contact");
+        userAccount = (User)getArguments().getSerializable("user");
 
     }
 
@@ -104,10 +107,10 @@ public class ContactProfileFragment extends BasicFragment {
         book_grid_2.setAdapter(bookAdapter2);
 
         book_grid_1.setOnItemClickListener((parent, view, position, id) -> {
-            showBook(bookAdapter1.getItem(position));
+            showBook(bookAdapter1.getItem(position), userAccount);
         });
         book_grid_2.setOnItemClickListener((parent, view, position, id) -> {
-            showBook(bookAdapter2.getItem(position));
+            showBook(bookAdapter2.getItem(position), userAccount);
         });
 
     }

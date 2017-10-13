@@ -1,10 +1,12 @@
 package com.mobilecomputing.binder.Utils;
 
+import java.io.Serializable;
+
 /**
  * Created by mikael on 2017-10-09.
  */
 
-public class User {
+public class User implements Serializable {
     private String givenName, imageUrl;
 
     public User(String givenName, String imageUrl) {

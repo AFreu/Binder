@@ -48,7 +48,6 @@ public class ProfileFragment extends BasicFragment {
 
     private String TAG = "ProfileFragment";
 
-    private User userAccount;
     private TextView nameText;
     private ImageView profileImage;
     private FlowLayout flowLayout;
@@ -102,7 +101,7 @@ public class ProfileFragment extends BasicFragment {
         likedBooksGrid.setAdapter(bookAdapter);
 
         likedBooksGrid.setOnItemClickListener((parent, view1, position, id) -> {
-            showBook(bookAdapter.getItem(position));
+            showBook(bookAdapter.getItem(position), userAccount);
         });
 
         // removes an ignored genre

@@ -1,6 +1,7 @@
 package com.mobilecomputing.binder.Objects;
 
 import com.mobilecomputing.binder.Utils.Review;
+import com.mobilecomputing.binder.Utils.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,12 +100,11 @@ public class Book implements Serializable {
         return description;
     }
 
-    public void setMyReview(String myReview) {
-        this.myReview = myReview;
-    }
-
-    public String getMyReview() {
-        return myReview;
+    public String getReviewTextByUser(User user){
+        for(Review r : reviews){
+            if(r.getReviewUser().equals(user)) return r.getReviewText();
+        }
+        return "";
     }
 
     @Override

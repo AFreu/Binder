@@ -27,6 +27,7 @@ import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.MatchesAdapter;
+import com.mobilecomputing.binder.Utils.User;
 import com.squareup.picasso.Picasso;
 import static java.util.stream.Collectors.toList;
 
@@ -154,6 +155,7 @@ public class MatchesFragment extends BasicFragment {
 
             Intent intent = new Intent(getActivity(), ContactActivity.class);
             intent.putExtra("contact", matchList.get(position));
+            intent.putExtra("user", userAccount);
             System.out.println("List object clicked" + intent.getExtras());
             getActivity().startActivity(intent);
 
