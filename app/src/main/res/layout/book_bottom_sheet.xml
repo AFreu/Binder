@@ -1,46 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="@dimen/margin_medium">
 
-    <LinearLayout
-        android:layout_toLeftOf="@+id/book_bottom_sheet_image"
-        android:orientation="vertical"
-        android:layout_marginRight="@dimen/margin_small"
+    <RelativeLayout
+        android:id="@+id/book_bottom_sheet_book"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/book_bottom_sheet_title"
-            android:text="Title"
-            style="@style/TitleStyleLight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/book_bottom_sheet_author"
-            android:text="Author"
-            style="@style/BookBottomSheetAuthorStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/book_bottom_sheet_description"
-            android:text="Description goes here Description goes here Description goes here Description goes here Description goes here Description goes here Description goes here"
-            style="@style/BookBottomSheetAuthorStyle"
-            android:layout_marginTop="@dimen/margin_small"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_toLeftOf="@+id/book_bottom_sheet_image"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/book_bottom_sheet_title"
+                style="@style/TitleStyleLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title" />
+
+            <TextView
+                android:id="@+id/book_bottom_sheet_author"
+                style="@style/BookBottomSheetAuthorStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Author" />
+
+            <TextView
+                android:id="@+id/book_bottom_sheet_description"
+                style="@style/BookBottomSheetAuthorStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_small"
+                android:text="Description goes here Description goes here Description goes here Description goes here Description goes here Description goes here Description goes here" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/book_bottom_sheet_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:scaleType="fitStart"
+            app:srcCompat="@drawable/ic_book" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/book_bottom_sheet_book"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/SecondaryTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="My review" />
+
+        <TextView
+            android:id="@+id/book_bottom_sheet_my_review"
+            style="@style/BookBottomSheetAuthorStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:text="I like this book because it is really amazing!I like this book because it is really amazing!I like this book because it is really amazing!I like this book because it is really amazing!" />
+
+
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/SecondaryTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="Other reviews" />
+
+        <ListView
+            android:id="@+id/book_bottom_sheet_list_review"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/review_item" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/book_bottom_sheet_button_review"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/default_margin"
+            android:layout_weight="1"
+            android:background="@color/colorSemiBlack"
+            android:text="@string/button_review"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/book_bottom_sheet_button_rank"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/default_margin"
+            android:layout_weight="1"
+            android:background="@color/colorSemiBlack"
+            android:text="@string/button_rank"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/book_bottom_sheet_image"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:minHeight="300dp"
-        android:scaleType="fitStart" />
 
 </RelativeLayout>

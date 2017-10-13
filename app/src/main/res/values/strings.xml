@@ -45,4 +45,7 @@
     <string name="scan_text">Scan text</string>
     <string name="scan_bar_qr_code">Scan bar/qr - code</string>
 
+    <string name="button_review">Review</string>
+    <string name="button_rank">Rank</string>
+
 </resources>
