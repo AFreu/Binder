@@ -19,7 +19,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"/>
 
-    <TextView
+    <Button
         android:id="@+id/book_item_button"
         style="@style/Base.Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/review_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="top"
+            android:layout_margin="@dimen/default_margin"
+            app:cardCornerRadius="35dp">
+
+            <ImageView
+                android:id="@+id/review_picture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_profile" />
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/review_text"
+            style="@style/BookBottomSheetAuthorStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_margin="@dimen/default_margin"
+            android:text="I like this book because it is really amazing!I like this book because it is really amazing!I like this book because it is really amazing!I like this book because it is really amazing!" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

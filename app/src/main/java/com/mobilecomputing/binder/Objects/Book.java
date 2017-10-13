@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -14,6 +15,8 @@ public class Book implements Serializable {
     private String key;
     private String title, author, genre, imageUrl;
     private String description = "Tom Sawyer is a boy of about 12 years of age, who resides in the fictional town of St. Petersburg, Missouri, in about the year 1845. Tom Sawyer's best friends include Joe Harper and Huckleberry Finn. In The Adventures of Tom Sawyer, Tom's infatuation with classmate Becky Thatcher is apparent as he tries to intrigue her with his strength, boldness, and handsome looks.";
+
+    private String myReview = "";
 
     public Book(String jsonString) {
         JSONObject json;
@@ -90,6 +93,14 @@ public class Book implements Serializable {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setMyReview(String myReview) {
+        this.myReview = myReview;
+    }
+
+    public String getMyReview() {
+        return myReview;
     }
 
     @Override

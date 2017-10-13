@@ -27,6 +27,7 @@ import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.BookBottomSheet;
 import com.mobilecomputing.binder.Views.NewMatch;
+import com.mobilecomputing.binder.Views.ReviewBottomSheet;
 import com.squareup.picasso.Picasso;
 import com.yuyakaido.android.cardstackview.CardStackView;
 import com.yuyakaido.android.cardstackview.SwipeDirection;
@@ -111,12 +112,13 @@ public class CardFragment extends BasicFragment {
 
                 switch (direction) {
                     case Right:
+
                         likedBooks.add(books.get(cardStack.getTopIndex()-1));
+                        displayReviewBottomSheet(books.get(cardStack.getTopIndex()-1));
 
                         if(cardFragmentListener != null)
                             cardFragmentListener.bookLiked(books.get(cardStack.getTopIndex()-1));
 
-                        books.remove(cardStack.getTopIndex()-1);
                         break;
                     case Left:
                         dislikedBooks.add(books.get(cardStack.getTopIndex()-1));
@@ -124,7 +126,6 @@ public class CardFragment extends BasicFragment {
                         if(cardFragmentListener != null)
                             cardFragmentListener.bookDisliked(books.get(cardStack.getTopIndex()-1));
 
-                        books.remove(cardStack.getTopIndex()-1);
                         break;
                 }
             }
@@ -148,6 +149,16 @@ public class CardFragment extends BasicFragment {
         fetchData(ignoreGenres);
 
         populateUI();
+    }
+
+    /**
+     * Displays bottom sheet dialog when user swipes right on a book
+     */
+    public void displayReviewBottomSheet(Book book) {
+
+        ReviewBottomSheet reviewBottomSheet = new ReviewBottomSheet();
+        reviewBottomSheet.setBook(book);
+        reviewBottomSheet.show(getActivity().getSupportFragmentManager(), reviewBottomSheet.getTag());
     }
 
     // Loads disliked genres from local storage

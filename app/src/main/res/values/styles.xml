@@ -45,6 +45,7 @@
     <style name="BookBottomSheetAuthorStyle" parent="@style/TextAppearance.AppCompat">
         <item name="android:textColor">@color/colorSecondaryText</item>
         <item name="android:textSize">14dip</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="PrimaryTextStyle" parent="@style/TextAppearance.AppCompat">
