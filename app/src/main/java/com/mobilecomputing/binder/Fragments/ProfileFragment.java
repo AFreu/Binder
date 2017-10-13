@@ -1,22 +1,33 @@
 package com.mobilecomputing.binder.Fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.gson.Gson;
+import com.mobilecomputing.binder.Activities.BarcodeCaptureActivity;
+import com.mobilecomputing.binder.Activities.ChooseBookActivity;
 import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.BookAdapter;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
+import com.mobilecomputing.binder.Views.AddTopList;
 import com.mobilecomputing.binder.Views.BottomSheet;
 import com.mobilecomputing.binder.Views.ChipButton;
 import com.mobilecomputing.binder.Views.ChipView;
@@ -25,6 +36,7 @@ import com.squareup.picasso.Picasso;
 import com.wefika.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +46,12 @@ import java.util.Set;
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends BasicFragment {
+
+
+    private int CHOOSE_BOOKLIST_CANCELCODE = 85746;
+    private int CHOOSE_BOOKLIST_SELECTEDBOOK_CODE = 34893;
+
+    private int CHOOSE_BOOKLIST_ACTIVITY = 1287;
 
     public interface ProfileFragmentListener {
         void onDislikedGenreAdded(String genre);
@@ -56,9 +74,13 @@ public class ProfileFragment extends BasicFragment {
     private List<String> availableGenres = new ArrayList<>();
     private Set<String> ignoredGenres = new HashSet<>();
     private List<Book> likedBooks = new ArrayList<>();
+    private List<Book> topList = new ArrayList<>();
+    private AddTopList addTopListButton;
     private ChipButton chipButton;
+    private ExpandableHeightGridView topListGrid;
     private ExpandableHeightGridView likedBooksGrid;
     private BookAdapter bookAdapter;
+    private BookAdapter bookAdapterTopList;
 
     private View.OnClickListener clickRemoveListener;
     private AdapterView.OnItemClickListener clickGenreListener;
@@ -78,6 +100,18 @@ public class ProfileFragment extends BasicFragment {
 
         initUI(view);
 
+        Button btn = view.findViewById(R.id.btnClicked);
+        btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ChooseBookActivity.class);
+                Book book = new Book();
+                List<Book> listBook = new ArrayList<Book>();
+                listBook.addAll(likedBooks);
+                book.setBookList(listBook);
+                intent.putExtra("MyLikedBooks", book);
+                startActivityForResult(intent, CHOOSE_BOOKLIST_ACTIVITY);
+            }
+        });
         return view;
     }
 
@@ -94,10 +128,15 @@ public class ProfileFragment extends BasicFragment {
 
     public void initUI(View view) {
 
+        topListGrid = view.findViewById(R.id.profile_toplist_books);
+        topListGrid.setExpanded(true);
+
         likedBooksGrid = view.findViewById(R.id.profile_liked_books);
         likedBooksGrid.setExpanded(true);
 
         bookAdapter = new BookAdapter(getContext(), R.layout.book_item, likedBooks);
+        bookAdapterTopList = new BookAdapter(getContext(), R.layout.book_item, topList);
+        topListGrid.setAdapter(bookAdapterTopList);
         likedBooksGrid.setAdapter(bookAdapter);
 
         likedBooksGrid.setOnItemClickListener((parent, view1, position, id) -> {
@@ -190,6 +229,31 @@ public class ProfileFragment extends BasicFragment {
         c.setLayoutParams(new FlowLayout.LayoutParams(FlowLayout.LayoutParams.WRAP_CONTENT,FlowLayout.LayoutParams.WRAP_CONTENT));
 
         flowLayout.addView(c, flowLayout.getChildCount() - 1);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == CHOOSE_BOOKLIST_ACTIVITY) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Book book = (Book) data.getSerializableExtra("SelectedBook");
+                    bookAddToIntresstList(book);
+                } else {
+                    Log.d(TAG, "No Text captured, intent data is null");
+                }
+            }
+            else if (resultCode == CommonStatusCodes.CANCELED){
+                ((HomeActivity)getActivity()).logOut();
+            }
+        }
+        else {
+        }
+    }
+
+    public void bookAddToIntresstList(Book book) {
 
     }
 

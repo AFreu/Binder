@@ -40,7 +40,6 @@ import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
-import com.mobilecomputing.binder.camera.OcrCaptureActivity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -71,6 +70,9 @@ public class HomeActivity extends BasicActivity
 
     private static final int RC_OCR_CAPTURE = 9003;
     private static final int RC_BARCODE_CAPTURE = 9001;
+
+
+
 
     private static final String TAG = "MainActivity";
 
@@ -119,7 +121,8 @@ public class HomeActivity extends BasicActivity
         manager.beginTransaction().replace(R.id.content, cardFragment).commit();
         // recovering the instance state
         if (savedInstanceState != null) {
-            switchContent(savedInstanceState.getString("SelectedFragment"));
+            idFragment = savedInstanceState.getString("SelectedFragment");
+            switchContent(idFragment);
         }
 
     }
@@ -270,8 +273,9 @@ public class HomeActivity extends BasicActivity
                 } else {
                     Log.d(TAG, "No Text captured, intent data is null");
                 }
-            } else {
             }
+        }
+        else {
         }
     }
 
