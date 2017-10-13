@@ -59,6 +59,7 @@
                     android:layout_margin="@dimen/default_margin"
                     android:layout_weight="1"
                     android:text="89% match based on books such as" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -68,8 +69,9 @@
             style="@style/BookGridStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:stretchMode="columnWidth"
-            tools:listitem="@layout/image_layout"/>
+            tools:listitem="@layout/book_item" />
 
         <TextView
             android:id="@+id/contact_profile_grid_split"
@@ -85,7 +87,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:stretchMode="columnWidth"
-            tools:listitem="@layout/image_layout" />
+            android:gravity="center"
+            tools:listitem="@layout/book_item" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

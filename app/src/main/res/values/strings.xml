@@ -15,6 +15,7 @@
     <string name="title_books">Books</string>
     <string name="hint_enter_a_message">Type a message...</string>
     <string name="text_email">Email</string>
+    <string name="text_review">Your review</string>
     <string name="text_password">Password</string>
     <string name="text_binder">Binder</string>
     <string name="text_or">OR</string>
@@ -44,5 +45,8 @@
 
     <string name="scan_text">Scan text</string>
     <string name="scan_bar_qr_code">Scan bar/qr - code</string>
+
+    <string name="button_review">Review</string>
+    <string name="button_rank">Rank</string>
 
 </resources>

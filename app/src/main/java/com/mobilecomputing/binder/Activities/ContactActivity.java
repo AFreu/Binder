@@ -14,6 +14,7 @@ import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ContactPagerAdapter;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+import com.mobilecomputing.binder.Utils.User;
 
 
 public class ContactActivity extends BasicActivity {
@@ -31,10 +32,11 @@ public class ContactActivity extends BasicActivity {
 
         Intent intent = getIntent();
         Match contact = (Match)intent.getSerializableExtra("contact");
+        User user = (User)intent.getSerializableExtra("user");
 
         gridView = (GridView) findViewById(R.id.background_grid);
         ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.image_layout);
-        imageAdapter.setLessInfo();
+        imageAdapter.hideActionArea();
         imageAdapter.mockData();
         gridView.setAdapter(imageAdapter);
         gridView.setOnTouchListener((v, event) -> event.getAction() == MotionEvent.ACTION_MOVE);
@@ -42,7 +44,7 @@ public class ContactActivity extends BasicActivity {
         Toolbar toolBar = (Toolbar)findViewById(R.id.contact_toolbar);
         toolBar.setTitle("Match");
         setSupportActionBar(toolBar);
-        mContactPagerAdapter = new ContactPagerAdapter(getSupportFragmentManager(), this, contact);
+        mContactPagerAdapter = new ContactPagerAdapter(getSupportFragmentManager(), this, contact, user);
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mContactPagerAdapter);

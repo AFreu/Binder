@@ -27,6 +27,7 @@ import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.MatchesAdapter;
+import com.mobilecomputing.binder.Utils.User;
 import com.squareup.picasso.Picasso;
 import static java.util.stream.Collectors.toList;
 
@@ -60,13 +61,13 @@ public class MatchesFragment extends BasicFragment {
     ArrayList<Match> matchList;
 
     ArrayList<Book> booksToAdd = new ArrayList<>();
-    private Set<Book> likedBooks  = new HashSet<>();;
+    private List<Book> likedBooks  = new ArrayList<>();;
 
     public MatchesFragment() {
         // Required empty public constructor
     }
     // called from HomeActivity when user swipes on a book
-    public void setLikedBooks(Set<Book> likedBooks) {
+    public void setLikedBooks(List<Book> likedBooks) {
         this.likedBooks = likedBooks;
     }
 
@@ -154,6 +155,7 @@ public class MatchesFragment extends BasicFragment {
 
             Intent intent = new Intent(getActivity(), ContactActivity.class);
             intent.putExtra("contact", matchList.get(position));
+            intent.putExtra("user", userAccount);
             System.out.println("List object clicked" + intent.getExtras());
             getActivity().startActivity(intent);
 
@@ -207,7 +209,7 @@ public class MatchesFragment extends BasicFragment {
 
         queue.addRequestFinishedListener(listener -> {
             for (Match m: matchList){
-                m.setBooks(booksToAdd);
+                m.setBooks(booksToAdd, likedBooks);
             }
             list.setEnabled(true);
         });

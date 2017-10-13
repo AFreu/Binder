@@ -21,15 +21,17 @@ public class ContactPagerAdapter extends FragmentPagerAdapter
 {
     private ContactActivity mContactActivity;
     private Match mContact;
+    private User mUser;
 
     public ContactPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    public ContactPagerAdapter(FragmentManager fm, ContactActivity contactActivity, Match contact) {
+    public ContactPagerAdapter(FragmentManager fm, ContactActivity contactActivity, Match contact, User user) {
         super(fm);
         mContactActivity = contactActivity;
         mContact = contact;
+        mUser = user;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class ContactPagerAdapter extends FragmentPagerAdapter
         // Return a PlaceholderFragment (defined as a static inner class below).
         switch (position) {
             case 0:
-                return ContactProfileFragment.newInstance(mContact);
+                return ContactProfileFragment.newInstance(mContact, mUser);
             case 1:
                 return ContactChatFragment.newInstance(mContact);
         }

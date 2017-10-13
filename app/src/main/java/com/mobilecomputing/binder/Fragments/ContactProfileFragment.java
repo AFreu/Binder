@@ -3,6 +3,7 @@ package com.mobilecomputing.binder.Fragments;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -18,7 +19,9 @@ import android.widget.TextView;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Utils.BookAdapter;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.ExpandableHeightGridView;
 import com.squareup.picasso.Picasso;
 
@@ -35,13 +38,11 @@ public class ContactProfileFragment extends BasicFragment {
 
     Match mContact;
 
-    ArrayList<Book> mBooksToAdd;
-
     ExpandableHeightGridView book_grid_1;
     ExpandableHeightGridView book_grid_2;
 
-    ImageAdapter imageAdapter1;
-    ImageAdapter imageAdapter2;
+    BookAdapter bookAdapter1;
+    BookAdapter bookAdapter2;
 
     TextView profileName;
     TextView profileMatchInfo;
@@ -54,10 +55,11 @@ public class ContactProfileFragment extends BasicFragment {
         // Required empty public constructor
     }
 
-    public static ContactProfileFragment newInstance(Match contact) {
+    public static ContactProfileFragment newInstance(Match contact, User user) {
         ContactProfileFragment fragment = new ContactProfileFragment();
         Bundle args = new Bundle();
         args.putSerializable("contact", contact);
+        args.putSerializable("user", user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,9 +69,8 @@ public class ContactProfileFragment extends BasicFragment {
         super.onCreate(savedInstanceState);
 
         mContact = (Match)getArguments().getSerializable("contact");
+        userAccount = (User)getArguments().getSerializable("user");
 
-        mBooksToAdd = new ArrayList<>();
-        mBooksToAdd.addAll(mContact.getBooks());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -99,21 +100,18 @@ public class ContactProfileFragment extends BasicFragment {
         book_grid_1.setExpanded(true);
         book_grid_2.setExpanded(true);
 
-        imageAdapter1 = new ImageAdapter(getContext(), R.layout.image_layout);
-        imageAdapter2 = new ImageAdapter(getContext(), R.layout.image_layout);
+        bookAdapter1 = new BookAdapter(getContext(), R.layout.book_item, mContact.getMatchingBooks());
+        bookAdapter2 = new BookAdapter(getContext(), R.layout.book_item, mContact.getBooks());
 
-        imageAdapter1.setLessInfo();
-        imageAdapter2.setLessInfo();
+        book_grid_1.setAdapter(bookAdapter1);
+        book_grid_2.setAdapter(bookAdapter2);
 
-        if(mBooksToAdd.size() > 3)
-            imageAdapter1.setBooks(mBooksToAdd.subList(1,3));
-        imageAdapter2.setBooks(mBooksToAdd);
-
-        imageAdapter1.setImageAdapterListener(this);
-        imageAdapter2.setImageAdapterListener(this);
-
-        book_grid_1.setAdapter(imageAdapter1);
-        book_grid_2.setAdapter(imageAdapter2);
+        book_grid_1.setOnItemClickListener((parent, view, position, id) -> {
+            showBook(bookAdapter1.getItem(position), userAccount);
+        });
+        book_grid_2.setOnItemClickListener((parent, view, position, id) -> {
+            showBook(bookAdapter2.getItem(position), userAccount);
+        });
 
     }
 

@@ -24,6 +24,7 @@ import com.mobilecomputing.binder.Activities.ChooseBookActivity;
 import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Utils.BookAdapter;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.BottomSheet;
@@ -64,7 +65,6 @@ public class ProfileFragment extends BasicFragment {
 
     private String TAG = "ProfileFragment";
 
-    private User userAccount;
     private TextView nameText;
     private ImageView profileImage;
     private FlowLayout flowLayout;
@@ -72,10 +72,10 @@ public class ProfileFragment extends BasicFragment {
 
     private List<String> availableGenres = new ArrayList<>();
     private Set<String> ignoredGenres = new HashSet<>();
-    private Set<Book> likedBooks = new HashSet<>();
+    private List<Book> likedBooks = new ArrayList<>();
     private ChipButton chipButton;
     private ExpandableHeightGridView likedBooksGrid;
-    private ImageAdapter imageAdapter;
+    private BookAdapter bookAdapter;
 
     private View.OnClickListener clickRemoveListener;
     private AdapterView.OnItemClickListener clickGenreListener;
@@ -117,7 +117,7 @@ public class ProfileFragment extends BasicFragment {
     }
 
     // called from HomeActivity when user swipes on a book
-    public void setLikedBooks(Set<Book> likedBooks) {
+    public void setLikedBooks(List<Book> likedBooks) {
         this.likedBooks = likedBooks;
     }
 
@@ -126,10 +126,12 @@ public class ProfileFragment extends BasicFragment {
         likedBooksGrid = view.findViewById(R.id.profile_liked_books);
         likedBooksGrid.setExpanded(true);
 
-        imageAdapter = new ImageAdapter(getContext(), R.layout.image_layout);
-        imageAdapter.setLessInfo();
-        imageAdapter.setBooks(new ArrayList<>(likedBooks));
-        likedBooksGrid.setAdapter(imageAdapter);
+        bookAdapter = new BookAdapter(getContext(), R.layout.book_item, likedBooks);
+        likedBooksGrid.setAdapter(bookAdapter);
+
+        likedBooksGrid.setOnItemClickListener((parent, view1, position, id) -> {
+            showBook(bookAdapter.getItem(position), userAccount);
+        });
 
         // removes an ignored genre
         clickRemoveListener = view13 -> {
