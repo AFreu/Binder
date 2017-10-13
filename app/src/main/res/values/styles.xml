@@ -11,6 +11,10 @@
 
     </style>
 
+    <style name="ToolbarColoredStyle" parent="AppTheme">
+        <item name="android:colorControlNormal">@color/colorSecondaryText</item>
+    </style>
+
     <style name="TitleStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">24dip</item>

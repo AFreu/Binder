@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Utils.User;
 import com.squareup.picasso.Picasso;
 
 
@@ -22,6 +23,7 @@ import com.squareup.picasso.Picasso;
 public class BookBottomSheet extends BottomSheetDialogFragment {
 
     private Book book;
+    private User me;
 
     private TextView bookTitle;
     private TextView bookAuthor;
@@ -30,13 +32,17 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
 
     private TextView myBookReview;
 
+    private boolean showMyReview = false;
+
     public BookBottomSheet() {
 
     }
 
+    public void setUser(User user) { this.me = user; }
     public void setBook(Book book) {
         this.book = book;
     }
+    public void showMyReview() { this.showMyReview = true; }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -55,6 +61,8 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
 
         myBookReview = view.findViewById(R.id.book_bottom_sheet_my_review);
 
+
+
         if(book != null) {
             bookTitle.setText(book.getTitle());
             bookAuthor.setText(book.getAuthor());
@@ -62,8 +70,12 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
             bookTitle.setText(book.getTitle());
             Picasso.with(getContext()).load(book.getImageUrl()).into(bookImage);
 
-            myBookReview.setText(book.getMyReview());
+            myBookReview.setText(book.getReviewTextByUser(me));
         }
+
+        if(showMyReview) view.findViewById(R.id.book_bottom_sheet_my_review_layout).setVisibility(View.VISIBLE);
+
+
 
         return view;
     }

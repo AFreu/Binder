@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mobilecomputing.binder.camera;
+package com.mobilecomputing.binder.Activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -48,9 +48,13 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.gson.Gson;
-import com.mobilecomputing.binder.Activities.SearchResultActivity;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.camera.CameraSource;
+import com.mobilecomputing.binder.camera.CameraSourcePreview;
+import com.mobilecomputing.binder.camera.GraphicOverlay;
+import com.mobilecomputing.binder.camera.OcrDetectorProcessor;
+import com.mobilecomputing.binder.camera.OcrGraphic;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,6 +89,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
     private GraphicOverlay<OcrGraphic> mGraphicOverlay;
+    List<Book> books = new ArrayList<>();
+
 
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
@@ -379,7 +385,6 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         return str.substring(0, str.length() - 1);
     }
 
-    List<Book> books = new ArrayList<>();
     private void fetchBookFromText(String text) {
         String[] words = text.split("\\W+");
         String searchString = "";

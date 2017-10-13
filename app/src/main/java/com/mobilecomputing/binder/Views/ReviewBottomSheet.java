@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
+import com.mobilecomputing.binder.Utils.Review;
+import com.mobilecomputing.binder.Utils.User;
 import com.squareup.picasso.Picasso;
 
 
@@ -25,6 +27,7 @@ import com.squareup.picasso.Picasso;
 public class ReviewBottomSheet extends BottomSheetDialogFragment {
 
     private Book book;
+    private User user;
 
     private TextView bookTitle;
     private TextView bookAuthor;
@@ -59,7 +62,8 @@ public class ReviewBottomSheet extends BottomSheetDialogFragment {
 
         doneButton.setOnClickListener(doneListener -> {
 
-            String review = reviewInput.getText().toString();
+            Review review = new Review(user, reviewInput.getText().toString());
+            book.getReviews().add(review);
             // todo put review on Book
             dismiss();
         });
@@ -74,5 +78,9 @@ public class ReviewBottomSheet extends BottomSheetDialogFragment {
         }
 
         return view;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

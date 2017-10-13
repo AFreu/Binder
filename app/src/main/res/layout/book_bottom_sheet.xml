@@ -61,24 +61,34 @@
         android:layout_below="@+id/book_bottom_sheet_book"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView5"
-            style="@style/SecondaryTextStyle"
+
+        <LinearLayout
+            android:id="@+id/book_bottom_sheet_my_review_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_margin"
-            android:layout_marginTop="@dimen/default_margin"
-            android:text="My review" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <EditText
-            android:id="@+id/book_bottom_sheet_my_review"
-            style="@style/BookBottomSheetAuthorStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:hint="What do you think about this book?"
-            android:maxLength="200" />
+            <TextView
+                android:id="@+id/textView5"
+                style="@style/SecondaryTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_weight="1"
+                android:text="My review" />
 
+            <EditText
+                android:id="@+id/book_bottom_sheet_my_review"
+                style="@style/BookBottomSheetAuthorStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_weight="1"
+                android:hint="What do you think about this book?"
+                android:maxLength="200" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView4"
