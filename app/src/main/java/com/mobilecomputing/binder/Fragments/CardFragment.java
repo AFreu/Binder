@@ -112,13 +112,12 @@ public class CardFragment extends BasicFragment {
 
                 switch (direction) {
                     case Right:
+
                         likedBooks.add(books.get(cardStack.getTopIndex()-1));
                         displayReviewBottomSheet(books.get(cardStack.getTopIndex()-1));
 
                         if(cardFragmentListener != null)
                             cardFragmentListener.bookLiked(books.get(cardStack.getTopIndex()-1));
-
-                        books.remove(cardStack.getTopIndex()-1);
 
                         break;
                     case Left:
@@ -127,7 +126,6 @@ public class CardFragment extends BasicFragment {
                         if(cardFragmentListener != null)
                             cardFragmentListener.bookDisliked(books.get(cardStack.getTopIndex()-1));
 
-                        books.remove(cardStack.getTopIndex()-1);
                         break;
                 }
             }
