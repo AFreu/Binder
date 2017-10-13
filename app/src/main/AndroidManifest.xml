@@ -25,14 +25,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ContactActivity"></activity>
+        <activity android:name=".Activities.ContactActivity" />
         <activity
-            android:name=".camera.OcrCaptureActivity"
+            android:name=".Activities.OcrCaptureActivity"
             android:label="Read Text" />
         <activity
             android:name=".Activities.BarcodeCaptureActivity"
             android:label="Scan code" />
-        <activity android:name=".Activities.SearchResultActivity"></activity>
+        <activity android:name=".Activities.SearchResultActivity" />
+        <activity android:name=".Activities.ChooseBookActivity"></activity>
+
     </application>
 
 </manifest>

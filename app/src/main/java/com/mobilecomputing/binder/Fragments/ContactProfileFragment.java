@@ -124,6 +124,4 @@ public class ContactProfileFragment extends BasicFragment {
         gridSplit.setText("Other books that " + mContact.name.split("\\s+")[0] + " loves");
         Picasso.with(getContext()).load(mContact.pictureUrl).into(profileImage);
     }
-
-
 }
