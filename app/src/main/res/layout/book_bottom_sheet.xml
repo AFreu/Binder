@@ -71,6 +71,7 @@
             android:text="My review" />
 
         <EditText
+            android:id="@+id/book_bottom_sheet_my_review"
             style="@style/BookBottomSheetAuthorStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
