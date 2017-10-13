@@ -104,10 +104,10 @@ public class ContactProfileFragment extends BasicFragment {
         book_grid_2.setAdapter(bookAdapter2);
 
         book_grid_1.setOnItemClickListener((parent, view, position, id) -> {
-            onLearnMoreClick(bookAdapter1.getItem(position));
+            showBook(bookAdapter1.getItem(position));
         });
         book_grid_2.setOnItemClickListener((parent, view, position, id) -> {
-            onLearnMoreClick(bookAdapter2.getItem(position));
+            showBook(bookAdapter2.getItem(position));
         });
 
     }

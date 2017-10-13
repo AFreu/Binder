@@ -30,6 +30,8 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
 
     private TextView myBookReview;
 
+    private boolean showMyReview = false;
+
     public BookBottomSheet() {
 
     }
@@ -37,6 +39,7 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
     public void setBook(Book book) {
         this.book = book;
     }
+    public void showMyReview() { this.showMyReview = true; }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -55,6 +58,8 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
 
         myBookReview = view.findViewById(R.id.book_bottom_sheet_my_review);
 
+
+
         if(book != null) {
             bookTitle.setText(book.getTitle());
             bookAuthor.setText(book.getAuthor());
@@ -64,6 +69,10 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
 
             myBookReview.setText(book.getMyReview());
         }
+
+        if(showMyReview) view.findViewById(R.id.book_bottom_sheet_my_review_layout).setVisibility(View.VISIBLE);
+
+
 
         return view;
     }
