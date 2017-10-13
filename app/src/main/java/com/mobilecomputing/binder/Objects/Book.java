@@ -1,9 +1,12 @@
 package com.mobilecomputing.binder.Objects;
 
+import com.mobilecomputing.binder.Utils.Review;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,6 +20,7 @@ public class Book implements Serializable {
     private String description = "Tom Sawyer is a boy of about 12 years of age, who resides in the fictional town of St. Petersburg, Missouri, in about the year 1845. Tom Sawyer's best friends include Joe Harper and Huckleberry Finn. In The Adventures of Tom Sawyer, Tom's infatuation with classmate Becky Thatcher is apparent as he tries to intrigue her with his strength, boldness, and handsome looks.";
 
     private String myReview = "";
+    private List<Review> reviews = new ArrayList<>();
 
     public Book(String jsonString) {
         JSONObject json;
@@ -114,5 +118,9 @@ public class Book implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(title);
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
     }
 }

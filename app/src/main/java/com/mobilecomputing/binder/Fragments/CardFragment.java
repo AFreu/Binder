@@ -158,6 +158,7 @@ public class CardFragment extends BasicFragment {
 
         ReviewBottomSheet reviewBottomSheet = new ReviewBottomSheet();
         reviewBottomSheet.setBook(book);
+        reviewBottomSheet.setUser(userAccount);
         reviewBottomSheet.show(getActivity().getSupportFragmentManager(), reviewBottomSheet.getTag());
     }
 
