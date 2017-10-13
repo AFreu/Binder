@@ -28,6 +28,8 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
     private TextView bookDescription;
     private ImageView bookImage;
 
+    private TextView myBookReview;
+
     public BookBottomSheet() {
 
     }
@@ -51,12 +53,16 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
         bookDescription = view.findViewById(R.id.book_bottom_sheet_description);
         bookImage = view.findViewById(R.id.book_bottom_sheet_image);
 
+        myBookReview = view.findViewById(R.id.book_bottom_sheet_my_review);
+
         if(book != null) {
             bookTitle.setText(book.getTitle());
             bookAuthor.setText(book.getAuthor());
             bookDescription.setText(book.getDescription());
             bookTitle.setText(book.getTitle());
             Picasso.with(getContext()).load(book.getImageUrl()).into(bookImage);
+
+            myBookReview.setText(book.getMyReview());
         }
 
         return view;
