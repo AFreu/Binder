@@ -103,6 +103,7 @@ public class Book implements Serializable {
         return description;
     }
 
+    /* To edit an already existing review */
     public void setReviewTextForUser(String text, User user){
         boolean userExisted = false;
 
@@ -155,6 +156,7 @@ public class Book implements Serializable {
     }
 
     public void addReview(Review review){
-        reviews.add(review);
+        if(!review.getReviewText().isEmpty())
+            reviews.add(review);
     }
 }

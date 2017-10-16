@@ -127,6 +127,8 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
             }
         }
 
+
+        /* Show my review if it exists */
         if(myReview != null)
         {
             myBookReviewLayout.setVisibility(View.VISIBLE);

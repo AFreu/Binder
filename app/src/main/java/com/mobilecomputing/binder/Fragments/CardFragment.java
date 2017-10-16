@@ -24,6 +24,7 @@ import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
+import com.mobilecomputing.binder.Utils.Review;
 import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.BookBottomSheet;
 import com.mobilecomputing.binder.Views.NewMatch;
@@ -81,6 +82,7 @@ public class CardFragment extends BasicFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_card, container, false);
+
         initUI(view);
 
         books = new ArrayList<>();
@@ -107,21 +109,23 @@ public class CardFragment extends BasicFragment {
             @Override
             public void onCardSwiped(SwipeDirection direction) {
 
+                Book book = books.get(cardStack.getTopIndex()-1);
+
                 switch (direction) {
                     case Right:
 
-                        likedBooks.add(books.get(cardStack.getTopIndex()-1));
-                        displayReviewBottomSheet(books.get(cardStack.getTopIndex()-1));
+                        likedBooks.add(book);
+                        displayReviewBottomSheet(book);
 
                         if(cardFragmentListener != null)
-                            cardFragmentListener.bookLiked(books.get(cardStack.getTopIndex()-1));
+                            cardFragmentListener.bookLiked(book);
 
                         break;
                     case Left:
-                        dislikedBooks.add(books.get(cardStack.getTopIndex()-1));
+                        dislikedBooks.add(book);
 
                         if(cardFragmentListener != null)
-                            cardFragmentListener.bookDisliked(books.get(cardStack.getTopIndex()-1));
+                            cardFragmentListener.bookDisliked(book);
 
                         break;
                 }
@@ -167,6 +171,18 @@ public class CardFragment extends BasicFragment {
         String urlPrefix = "https://openlibrary.org/subjects/";
         String urlSufix = ".json#sort=edition_count&ebooks=true";
 
+        /*Temporarily filling books with reviews*/
+        List<Review> reviews = new ArrayList<>();
+        Review review = new Review(new User("Karin2", "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg"), "I find this book amzing find this book amzing find this book amzing find this book amzing ");
+        reviews.add(review);
+        reviews.add(review);
+        reviews.add(review);
+        reviews.add(review);
+        reviews.add(review);
+
+
+
+
         genresToIgnore.forEach(g -> Log.d("CardFragment", "ignore genre: " + g));
 
         HomeActivity.allGenres.forEach(genre -> {
@@ -191,6 +207,8 @@ public class CardFragment extends BasicFragment {
                                     for(int j = 0; j < worksArray.length(); j++) {
                                         Book b = new Book(worksArray.get(j).toString());
                                         b.setGenre(genre);
+                                        b.setReviews(reviews);
+
 
                                         boolean contains = likedBooks.contains(b)
                                                 || dislikedBooks.contains(b);
