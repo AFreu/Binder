@@ -1,7 +1,6 @@
 package com.mobilecomputing.binder.Objects;
 
 import com.mobilecomputing.binder.Utils.Review;
-import com.mobilecomputing.binder.Utils.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;

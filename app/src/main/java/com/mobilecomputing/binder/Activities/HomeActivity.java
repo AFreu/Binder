@@ -39,7 +39,7 @@ import com.mobilecomputing.binder.Fragments.ProfileFragment;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
-import com.mobilecomputing.binder.Utils.User;
+import com.mobilecomputing.binder.Objects.User;
 
 import java.util.ArrayList;
 import java.util.HashSet;

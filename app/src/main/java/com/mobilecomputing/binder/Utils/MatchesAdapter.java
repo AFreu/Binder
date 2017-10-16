@@ -1,4 +1,5 @@
 package com.mobilecomputing.binder.Utils;
+import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 
 
@@ -47,13 +48,51 @@ public class MatchesAdapter extends ArrayAdapter {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.match_item, parent, false);
         }
 
-        TextView matchName = (TextView) convertView.findViewById(R.id.match_name);
-        TextView matchPercent = (TextView) convertView.findViewById(R.id.match_percent);
-        ImageView matchPicture = (ImageView) convertView.findViewById(R.id.match_picture);
+        TextView matchName = convertView.findViewById(R.id.match_name);
+        TextView matchPercent = convertView.findViewById(R.id.match_percent);
+        ImageView matchPicture = convertView.findViewById(R.id.match_picture);
 
-        matchName.setText(match.getGivenName() + " " + match.age);
+        matchName.setText(match.getGivenName() + " " + match.getAge());
         matchPercent.setText(match.percent + " % match");
         Picasso.with(getContext()).load(match.getImageUrl()).into(matchPicture);
+
+        ImageView matchBook1 = convertView.findViewById(R.id.match_book_1);
+        ImageView matchBook2 = convertView.findViewById(R.id.match_book_2);
+        ImageView matchBook3 = convertView.findViewById(R.id.match_book_3);
+
+
+        TextView title = convertView.findViewById(R.id.match_interest);
+
+
+        List<Book> fB = match.getFeaturedBooks();
+        if(!fB.isEmpty()){
+            Picasso.with(getContext()).load(fB.get(0).getImageUrl()).into(matchBook1);
+            matchBook1.setVisibility(View.VISIBLE);
+            title.setVisibility(View.VISIBLE);
+            if(fB.size() > 1){
+                Picasso.with(getContext()).load(fB.get(1).getImageUrl()).into(matchBook2);
+                matchBook2.setVisibility(View.VISIBLE);
+            }else{
+                matchBook2.setVisibility(View.GONE);
+            }
+            if(fB.size() > 2){
+                Picasso.with(getContext()).load(fB.get(2).getImageUrl()).into(matchBook3);
+                matchBook3.setVisibility(View.VISIBLE);
+            }else{
+                matchBook3.setVisibility(View.GONE);
+            }
+
+        }else{
+            matchBook1.setVisibility(View.GONE);
+            title.setVisibility(View.INVISIBLE);
+        }
+
+
+
+
+
+
+
 
 
         return convertView;

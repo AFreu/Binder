@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.widget.GridView;
@@ -14,7 +13,7 @@ import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ContactPagerAdapter;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
-import com.mobilecomputing.binder.Utils.User;
+import com.mobilecomputing.binder.Objects.User;
 
 
 public class ContactActivity extends BasicActivity {

@@ -1,5 +1,7 @@
 package com.mobilecomputing.binder.Utils;
 
+import com.mobilecomputing.binder.Objects.User;
+
 import java.io.Serializable;
 
 /**

@@ -2,7 +2,6 @@ package com.mobilecomputing.binder.Fragments;
 
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -11,39 +10,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.mobilecomputing.binder.Activities.ContactActivity;
 import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.MatchesAdapter;
-import com.mobilecomputing.binder.Utils.Review;
-import com.mobilecomputing.binder.Utils.User;
-import com.squareup.picasso.Picasso;
+
 import static java.util.stream.Collectors.toList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 
 /**
@@ -62,7 +52,8 @@ public class MatchesFragment extends BasicFragment {
     ArrayList<Match> matchList;
 
     ArrayList<Book> booksToAdd = new ArrayList<>();
-    private List<Book> likedBooks  = new ArrayList<>();;
+    private List<Book> likedBooks  = new ArrayList<>();
+    private ArrayList<Book> featuredBooks = new ArrayList<>();
 
     public MatchesFragment() {
         // Required empty public constructor
@@ -86,7 +77,7 @@ public class MatchesFragment extends BasicFragment {
         matchList = new ArrayList<>();
 
 
-        fetchData(1);
+        fetchData(5);
 
         Match match1 = new Match("Lovisa", 26, null, 0, "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg", 0);
         match1.percent = calculateMatchProcent(match1);
@@ -168,11 +159,10 @@ public class MatchesFragment extends BasicFragment {
         String urlPrefix = "https://openlibrary.org/subjects/";
         String urlSufix = ".json#sort=edition_count&ebooks=true";
 
-        HomeActivity.allGenres.stream().forEach(genre -> {
 
-            // Request a string response from the provided URL.
-            StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                    urlPrefix + genre + urlSufix,
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                    urlPrefix + "romance" + urlSufix,
                     response -> {
 
                         JSONObject json;
@@ -187,7 +177,12 @@ public class MatchesFragment extends BasicFragment {
                                 // TODO filter what books to fetch in some way..
                                 for(int j = 0; j < worksArray.length(); j++){
                                     if(j >= max) break;
-                                    booksToAdd.add(new Book(worksArray.get(j).toString()));
+                                    Book book = new Book(worksArray.get(j).toString());
+                                    booksToAdd.add(book);
+                                    if((j%2) == 0){
+                                        featuredBooks.add(book);
+                                    }
+
                                 }
 
 
@@ -199,20 +194,23 @@ public class MatchesFragment extends BasicFragment {
 
                     }, error -> {
                 Log.d("CardFragment", "That didn't work..");
-            });
-
-            // Add the request to the RequestQueue.
-            queue.add(stringRequest);
         });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
 
         queue.addRequestFinishedListener(listener -> {
 
             for (Match match: matchList){
                 match.setBooks(booksToAdd, likedBooks);
+                match.setFeaturedBooks(booksToAdd);
                 /* Adding one review per book */
                 //booksToAdd.stream().forEach(b -> {b.setReviewTextForUser("This book has an awesome story! I like how it is impossible to guess what happens next!", match );});
             }
+
             list.setEnabled(true);
+            matches.notifyDataSetChanged();
 
 
         });

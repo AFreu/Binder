@@ -2,7 +2,6 @@ package com.mobilecomputing.binder.Views;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
-import com.mobilecomputing.binder.Utils.User;
+import com.mobilecomputing.binder.Objects.User;
 import com.squareup.picasso.Picasso;
 
 /**
