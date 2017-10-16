@@ -10,7 +10,7 @@ import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.Review;
-import com.mobilecomputing.binder.Utils.User;
+import com.mobilecomputing.binder.Objects.User;
 import com.mobilecomputing.binder.Views.BookBottomSheet;
 import com.mobilecomputing.binder.Views.ReviewBottomSheet;
 
@@ -40,6 +40,11 @@ public abstract class BasicFragment extends Fragment implements ImageAdapter.Ima
     @Override
     public void reviewClicked(Review review) {
         //TODO: fix user/match issue
+
+        User reviewer = review.getReviewUser();
+        Match match = (Match)reviewer;
+        match.setBooks(reviewer.getBooks(), userAccount.getBooks());
+
         Log.d(TAG, "review clicked");
         //switchToMatch(review.getReviewUser());
     }

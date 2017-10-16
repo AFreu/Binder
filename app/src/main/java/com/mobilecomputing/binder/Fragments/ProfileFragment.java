@@ -14,19 +14,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.gson.Gson;
-import com.mobilecomputing.binder.Activities.BarcodeCaptureActivity;
 import com.mobilecomputing.binder.Activities.ChooseBookActivity;
 import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.BookAdapter;
-import com.mobilecomputing.binder.Utils.ImageAdapter;
-import com.mobilecomputing.binder.Utils.User;
+import com.mobilecomputing.binder.Objects.User;
 import com.mobilecomputing.binder.Views.AddTopList;
 import com.mobilecomputing.binder.Views.BottomSheet;
 import com.mobilecomputing.binder.Views.ChipButton;
@@ -36,7 +30,6 @@ import com.squareup.picasso.Picasso;
 import com.wefika.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

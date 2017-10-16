@@ -1,7 +1,6 @@
 package com.mobilecomputing.binder.Objects;
 
 import com.mobilecomputing.binder.Utils.Review;
-import com.mobilecomputing.binder.Utils.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -119,9 +118,6 @@ public class Book implements Serializable {
 
     @Override
     public boolean equals(Object otherBook) {
-        //if(otherBook.getClass() != Book.class)
-        //    return false;
-
         return title.equals(((Book)otherBook).getTitle());
     }
 

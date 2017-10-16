@@ -1,8 +1,5 @@
 package com.mobilecomputing.binder.Utils;
 
-import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,6 +8,7 @@ import com.mobilecomputing.binder.Activities.ContactActivity;
 import com.mobilecomputing.binder.Fragments.ContactChatFragment;
 import com.mobilecomputing.binder.Fragments.ContactProfileFragment;
 import com.mobilecomputing.binder.Objects.Match;
+import com.mobilecomputing.binder.Objects.User;
 import com.mobilecomputing.binder.R;
 
 /**
