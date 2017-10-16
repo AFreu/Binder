@@ -109,21 +109,23 @@ public class CardFragment extends BasicFragment {
             @Override
             public void onCardSwiped(SwipeDirection direction) {
 
+                Book book = books.get(cardStack.getTopIndex()-1);
+
                 switch (direction) {
                     case Right:
 
-                        likedBooks.add(books.get(cardStack.getTopIndex()-1));
-                        displayReviewBottomSheet(books.get(cardStack.getTopIndex()-1));
+                        likedBooks.add(book);
+                        displayReviewBottomSheet(book);
 
                         if(cardFragmentListener != null)
-                            cardFragmentListener.bookLiked(books.get(cardStack.getTopIndex()-1));
+                            cardFragmentListener.bookLiked(book);
 
                         break;
                     case Left:
-                        dislikedBooks.add(books.get(cardStack.getTopIndex()-1));
+                        dislikedBooks.add(book);
 
                         if(cardFragmentListener != null)
-                            cardFragmentListener.bookDisliked(books.get(cardStack.getTopIndex()-1));
+                            cardFragmentListener.bookDisliked(book);
 
                         break;
                 }
