@@ -63,8 +63,8 @@ public class ReviewBottomSheet extends BottomSheetDialogFragment {
         doneButton.setOnClickListener(doneListener -> {
 
             Review review = new Review(user, reviewInput.getText().toString());
-            book.getReviews().add(review);
-            // todo put review on Book
+            book.addReview(review);
+
             dismiss();
         });
 

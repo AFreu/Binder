@@ -207,10 +207,10 @@ public class MatchesFragment extends BasicFragment {
 
         queue.addRequestFinishedListener(listener -> {
 
-            for (Match m: matchList){
-                m.setBooks(booksToAdd, likedBooks);
+            for (Match match: matchList){
+                match.setBooks(booksToAdd, likedBooks);
                 /* Adding one review per book */
-                booksToAdd.stream().forEach(b -> {b.setReviewTextForUser("This book has an awesome story! I like how it is impossible to guess what happens next!", m );});
+                //booksToAdd.stream().forEach(b -> {b.setReviewTextForUser("This book has an awesome story! I like how it is impossible to guess what happens next!", match );});
             }
             list.setEnabled(true);
 
