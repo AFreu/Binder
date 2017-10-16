@@ -40,6 +40,11 @@ public abstract class BasicFragment extends Fragment implements ImageAdapter.Ima
     @Override
     public void reviewClicked(Review review) {
         //TODO: fix user/match issue
+
+        User reviewer = review.getReviewUser();
+        Match match = (Match)reviewer;
+        match.setBooks(reviewer.getBooks(), userAccount.getBooks());
+
         Log.d(TAG, "review clicked");
         //switchToMatch(review.getReviewUser());
     }

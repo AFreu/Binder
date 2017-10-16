@@ -118,9 +118,6 @@ public class Book implements Serializable {
 
     @Override
     public boolean equals(Object otherBook) {
-        //if(otherBook.getClass() != Book.class)
-        //    return false;
-
         return title.equals(((Book)otherBook).getTitle());
     }
 

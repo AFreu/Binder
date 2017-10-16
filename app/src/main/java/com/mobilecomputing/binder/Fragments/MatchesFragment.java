@@ -49,7 +49,7 @@ public class MatchesFragment extends BasicFragment {
     private ImageView profileImage;
     ListView list;
     MatchesAdapter matches;
-    ArrayList<Match> matchList;
+    private List<Match> matchList = new ArrayList<>();
 
     ArrayList<Book> booksToAdd = new ArrayList<>();
     private List<Book> likedBooks  = new ArrayList<>();
@@ -62,6 +62,9 @@ public class MatchesFragment extends BasicFragment {
     public void setLikedBooks(List<Book> likedBooks) {
         this.likedBooks = likedBooks;
     }
+    public void setMatches(List<Match> matches) {
+       this.matchList = matches;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -73,24 +76,7 @@ public class MatchesFragment extends BasicFragment {
         list = view.findViewById(R.id.matches_list);
         list.setEnabled(false);
 
-
-        matchList = new ArrayList<>();
-
-
         fetchData(5);
-
-        Match match1 = new Match("Lovisa", 26, null, 0, "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg", 0);
-        match1.percent = calculateMatchProcent(match1);
-        matchList.add(match1);
-        Match match2 = new Match("Mikael", 24, null, 1, "https://www.aceshowbiz.com/images/photo/ryan_gosling.jpg", 0);
-        match2.percent = calculateMatchProcent(match2);
-        matchList.add(match2);
-        Match match3 = new Match("Anton", 73, null, 2, "http://akns-images.eonline.com/eol_images/Entire_Site/20161129/rs_300x300-161229151358-ap.jpg?downsize=300:*&crop=300:300;left,top", 0);
-        match3.percent = calculateMatchProcent(match3);
-        matchList.add(match3);
-        Match match4 = new Match("Jimmy", 45, null, 3, "http://3.bp.blogspot.com/-a71LPYXKmYs/T5KQLsCOQNI/AAAAAAAAErw/vyC3o5j7JoA/s1600/Orlando+Bloom+(1).jpg", 100);
-        match4.percent = calculateMatchProcent(match4);
-        matchList.add(match4);
 
         Collections.sort(matchList, new Match());
 
@@ -99,36 +85,7 @@ public class MatchesFragment extends BasicFragment {
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private int calculateMatchProcent(Match match) {
-        List<List<String>> likedBooks = new ArrayList<List<String>>();
-        String list1[] = {"/works/OL13101191W", "/works/OL13101191W","/works/OL20600W","/works/OL362703W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W", "/works/OL10279W", "/works/OL262758W", "/works/OL362703W", "/works/OL20600W"};
-        String list2[] = {"/works/OL13101191W","/works/OL20600W","/works/OL362703W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W"};
-        String list3[] = {"/works/OL13101191W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W"};
-        String list4[] = {"/works/OL13101191W","/works/OL362703W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W"};
 
-        likedBooks.add(Arrays.asList(list1));
-        likedBooks.add(Arrays.asList(list2));
-        likedBooks.add(Arrays.asList(list3));
-        likedBooks.add(Arrays.asList(list4));
-        List<String> myLikedBooks = myLikedBooks();
-        List<String> matchBooks = getLikedBooks(match.id, likedBooks, myLikedBooks);
-
-        return (int) (((float)matchBooks.size()/ (float)myLikedBooks.size()) * 100);
-    }
-
-    @TargetApi(Build.VERSION_CODES.N)
-    private List<String> getLikedBooks(int id, List<List<String>> likedBooks, List<String> myLikedBooks) {
-
-        return myLikedBooks.stream().filter(likedBooks.get(id)::contains).collect(toList());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private List<String> myLikedBooks() {
-        //String list1[] = {"/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W", "/works/OL10279W", "/works/OL262758W", "/works/OL362703W", "/works/OL20600W"};
-        List<String> list2 = likedBooks.stream().map(book -> {return book.getKey();}).collect(toList());
-        return list2;
-    }
 
     public void initUI(View view) {
         nameText = view.findViewById(R.id.profile_name);

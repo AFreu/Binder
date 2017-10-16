@@ -1,17 +1,21 @@
 package com.mobilecomputing.binder.Activities;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -37,20 +41,26 @@ import com.mobilecomputing.binder.Fragments.CardFragment;
 import com.mobilecomputing.binder.Fragments.MatchesFragment;
 import com.mobilecomputing.binder.Fragments.ProfileFragment;
 import com.mobilecomputing.binder.Objects.Book;
+import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Objects.User;
+import com.mobilecomputing.binder.Views.NewMatch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static java.util.stream.Collectors.toList;
 
 public class HomeActivity extends BasicActivity
         implements GoogleApiClient.OnConnectionFailedListener,
         ProfileFragment.ProfileFragmentListener,
         CardFragment.CardFragmentListener {
 
+    private User user;
     private GridView gridView;
     private LinearLayout appBody;
     private GoogleApiClient googleApiClient;
@@ -60,6 +70,7 @@ public class HomeActivity extends BasicActivity
 
     private List<Book> likedBooks = new ArrayList<>();
     private List<Book> dislikedBooks = new ArrayList<>();
+    private List<Match> matches = new ArrayList<>();
     private Fragment profileFragment;
     private Fragment cardFragment;
     private Fragment matchesFragment;
@@ -71,12 +82,12 @@ public class HomeActivity extends BasicActivity
     private static final int RC_OCR_CAPTURE = 9003;
     private static final int RC_BARCODE_CAPTURE = 9001;
 
-
-
-
     private static final String TAG = "MainActivity";
 
     private static final int CHOOSE_BOOK_ACTIVITY = 1435;
+
+    private int matchCounter = 4;
+
 
     private Menu menu;
     private SharedPreferences sharedPreferences;
@@ -102,12 +113,14 @@ public class HomeActivity extends BasicActivity
                 return false;
             };
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         addAllGenres();
+        addAllMatches();
         initGoogleApiClient();
 
         initUI();
@@ -115,6 +128,7 @@ public class HomeActivity extends BasicActivity
         createFragments();
         loadLikesAndDisliked();
         loadIgnoreGenres();
+        loadMatches();
 
         // sets first fragment to booksfragment
         FragmentManager manager = getSupportFragmentManager();
@@ -173,7 +187,7 @@ public class HomeActivity extends BasicActivity
         isSignedIn = sharedPreferences.getBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), false);
 
         if(isSignedIn) {
-            User user = new User(
+            user = new User(
                 sharedPreferences.getString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME), ""),
                 sharedPreferences.getString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL), ""));
 
@@ -193,6 +207,52 @@ public class HomeActivity extends BasicActivity
         allGenres.add("fantasy");
         allGenres.add("action");
         allGenres.add("horror");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void addAllMatches(){
+        Match match1 = new Match("Lovisa", 26, null, 0, "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg", 0);
+        match1.percent = calculateMatchProcent(match1);
+        matches.add(match1);
+        Match match2 = new Match("Mikael", 24, null, 1, "https://www.aceshowbiz.com/images/photo/ryan_gosling.jpg", 0);
+        match2.percent = calculateMatchProcent(match2);
+        matches.add(match2);
+        Match match3 = new Match("Anton", 73, null, 2, "http://akns-images.eonline.com/eol_images/Entire_Site/20161129/rs_300x300-161229151358-ap.jpg?downsize=300:*&crop=300:300;left,top", 0);
+        match3.percent = calculateMatchProcent(match3);
+        matches.add(match3);
+        Match match4 = new Match("Jimmy", 45, null, 3, "http://3.bp.blogspot.com/-a71LPYXKmYs/T5KQLsCOQNI/AAAAAAAAErw/vyC3o5j7JoA/s1600/Orlando+Bloom+(1).jpg", 100);
+        match4.percent = calculateMatchProcent(match4);
+        matches.add(match4);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private int calculateMatchProcent(Match match) {
+        List<List<String>> likedBooks = new ArrayList<List<String>>();
+        String list1[] = {"/works/OL13101191W", "/works/OL13101191W","/works/OL20600W","/works/OL362703W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W", "/works/OL10279W", "/works/OL262758W", "/works/OL362703W", "/works/OL20600W"};
+        String list2[] = {"/works/OL13101191W","/works/OL20600W","/works/OL362703W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W"};
+        String list3[] = {"/works/OL13101191W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W"};
+        String list4[] = {"/works/OL13101191W","/works/OL362703W","/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W"};
+
+        likedBooks.add(Arrays.asList(list1));
+        likedBooks.add(Arrays.asList(list2));
+        likedBooks.add(Arrays.asList(list3));
+        likedBooks.add(Arrays.asList(list4));
+        List<String> myLikedBooks = myLikedBooks();
+        List<String> matchBooks = getLikedBooks(match.id, likedBooks, myLikedBooks);
+
+        return (int) (((float)matchBooks.size()/ (float)myLikedBooks.size()) * 100);
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    private List<String> getLikedBooks(int id, List<List<String>> likedBooks, List<String> myLikedBooks) {
+        return myLikedBooks.stream().filter(likedBooks.get(id)::contains).collect(toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private List<String> myLikedBooks() {
+        //String list1[] = {"/works/OL262758W","/works/OL10279W","/works/OL676009W","/works/OL82592W","/works/OL71175W","/works/OL45891W","/works/OL71174W", "/works/OL71172W", "/works/OL15638539W", "/works/OL10279W", "/works/OL262758W", "/works/OL362703W", "/works/OL20600W"};
+        List<String> list2 = likedBooks.stream().map(book -> {return book.getKey();}).collect(toList());
+        return list2;
     }
 
     private void initGoogleApiClient() {
@@ -481,6 +541,10 @@ public class HomeActivity extends BasicActivity
         ((CardFragment)cardFragment).refreshIgnoreGenres(ignoreGenres);
     }
 
+    public void loadMatches(){
+        ((MatchesFragment)matchesFragment).setMatches(matches);
+    }
+
     @Override
     public void onDislikedGenreAdded(String genre) {
 
@@ -532,6 +596,8 @@ public class HomeActivity extends BasicActivity
         ((ProfileFragment)profileFragment).setLikedBooks(likedBooks);
         ((MatchesFragment)matchesFragment).setLikedBooks(likedBooks);
 
+        runMatchMakingSystem();
+
     }
 
     @Override
@@ -541,5 +607,25 @@ public class HomeActivity extends BasicActivity
         ((ProfileFragment)profileFragment).setLikedBooks(likedBooks);
         ((MatchesFragment)matchesFragment).setLikedBooks(likedBooks);
 
+        runMatchMakingSystem();
+
     }
+
+    private void runMatchMakingSystem(){
+
+        matchCounter--;
+        if(matchCounter == 0){
+            NewMatch newMatch = new NewMatch();
+            Match match = new Match("Erik", 27, null, 1, "http://fanexpocanada.com/wp-content/uploads/Eric-McCormack.png", 64);
+            newMatch.setMatch(match);
+            newMatch.setUser(user);
+            newMatch.show(getSupportFragmentManager(), newMatch.getTag());
+
+            matches.add(match);
+            loadMatches();
+
+            matchCounter = 4;
+        }
+    }
+
 }
