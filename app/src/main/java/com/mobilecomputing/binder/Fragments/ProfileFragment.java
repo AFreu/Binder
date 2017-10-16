@@ -254,7 +254,7 @@ public class ProfileFragment extends BasicFragment {
     }
 
     public void bookAddToIntresstList(Book book) {
-
+        topList.add(book);
     }
 
 }
