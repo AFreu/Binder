@@ -236,16 +236,20 @@ public class HomeActivity extends BasicActivity
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void addAllMatches(){
         Match match1 = new Match("Lovisa", 26, null, 0, "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg", 0);
-        match1.percent = calculateMatchProcent(match1);
+        //match1.percent = calculateMatchProcent(match1);
+        match1.percent = 76;
         matches.add(match1);
         Match match2 = new Match("Mikael", 24, null, 1, "https://www.aceshowbiz.com/images/photo/ryan_gosling.jpg", 0);
-        match2.percent = calculateMatchProcent(match2);
+        //match2.percent = calculateMatchProcent(match2);
+        match2.percent = 89;
         matches.add(match2);
         Match match3 = new Match("Anton", 73, null, 2, "http://akns-images.eonline.com/eol_images/Entire_Site/20161129/rs_300x300-161229151358-ap.jpg?downsize=300:*&crop=300:300;left,top", 0);
-        match3.percent = calculateMatchProcent(match3);
+        //match3.percent = calculateMatchProcent(match3);
+        match3.percent = 75;
         matches.add(match3);
         Match match4 = new Match("Jimmy", 45, null, 3, "http://3.bp.blogspot.com/-a71LPYXKmYs/T5KQLsCOQNI/AAAAAAAAErw/vyC3o5j7JoA/s1600/Orlando+Bloom+(1).jpg", 100);
-        match4.percent = calculateMatchProcent(match4);
+        //match4.percent = calculateMatchProcent(match4);
+        match4.percent = 91;
         matches.add(match4);
     }
 

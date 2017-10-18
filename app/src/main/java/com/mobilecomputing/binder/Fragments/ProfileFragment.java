@@ -32,6 +32,7 @@ import com.mobilecomputing.binder.Utils.ImageAdapter;
 
 import com.mobilecomputing.binder.Objects.User;
 import com.mobilecomputing.binder.Views.AddTopList;
+import com.mobilecomputing.binder.Views.BookTopList;
 import com.mobilecomputing.binder.Views.BottomSheet;
 import com.mobilecomputing.binder.Views.ChipButton;
 import com.mobilecomputing.binder.Views.ChipView;
@@ -79,6 +80,7 @@ public class ProfileFragment extends BasicFragment {
     private List<Book> topList = new ArrayList<>();
     private AddTopList addTopListButton;
     private ChipButton chipButton;
+    private Button btn;
     private ExpandableHeightGridView topListGrid;
     private ExpandableHeightGridView likedBooksGrid;
     private BookAdapter bookAdapter;
@@ -267,8 +269,9 @@ public class ProfileFragment extends BasicFragment {
     }
 
     public void bookAddToIntresstList(Book book) {
-            topList.add(book);
-            bookAdapterTopList.addItem(book);
+        topList.add(book);
+        bookAdapterTopList.addItem(book);
+
     }
 
 }
