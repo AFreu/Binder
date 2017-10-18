@@ -1,6 +1,7 @@
 package com.mobilecomputing.binder.Views;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobilecomputing.binder.Activities.ContactActivity;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Objects.User;
@@ -26,7 +28,6 @@ public class NewMatch extends AppCompatDialogFragment {
 
     private TextView matchText;
     private TextView viewProfile;
-    private TextView openChat;
     private ImageView profilePicture;
     private ImageView matchPicture;
 
@@ -51,7 +52,6 @@ public class NewMatch extends AppCompatDialogFragment {
 
         matchText = view.findViewById(R.id.match_text);
         viewProfile = view.findViewById(R.id.button_view_profile);
-        openChat = view.findViewById(R.id.button_chat);
         profilePicture = view.findViewById(R.id.profile_picture_match_view);
         matchPicture = view.findViewById(R.id.match_picture_match_view);
 
@@ -64,6 +64,16 @@ public class NewMatch extends AppCompatDialogFragment {
         Picasso.with(getContext()).load(match.getImageUrl()).into(matchPicture);
         Picasso.with(getContext()).load(user.getImageUrl()).into(profilePicture);
 
+        viewProfile.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ContactActivity.class);
+                intent.putExtra("contact", match);
+                intent.putExtra("user", user);
+                getActivity().startActivity(intent);
+                getDialog().dismiss();
+            }
+        });
     }
 
 }
