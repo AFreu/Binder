@@ -3,11 +3,13 @@ package com.mobilecomputing.binder.Activities;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
@@ -26,6 +28,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -149,6 +152,27 @@ public class HomeActivity extends BasicActivity
         super.onSaveInstanceState(outState);
     }
 
+    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
+
     public void initUI() {
         Toolbar toolBar = (Toolbar)findViewById(R.id.home_toolbar);
         setSupportActionBar(toolBar);
@@ -212,16 +236,20 @@ public class HomeActivity extends BasicActivity
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void addAllMatches(){
         Match match1 = new Match("Lovisa", 26, null, 0, "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg", 0);
-        match1.percent = calculateMatchProcent(match1);
+        //match1.percent = calculateMatchProcent(match1);
+        match1.percent = 76;
         matches.add(match1);
         Match match2 = new Match("Mikael", 24, null, 1, "https://www.aceshowbiz.com/images/photo/ryan_gosling.jpg", 0);
-        match2.percent = calculateMatchProcent(match2);
+        //match2.percent = calculateMatchProcent(match2);
+        match2.percent = 89;
         matches.add(match2);
         Match match3 = new Match("Anton", 73, null, 2, "http://akns-images.eonline.com/eol_images/Entire_Site/20161129/rs_300x300-161229151358-ap.jpg?downsize=300:*&crop=300:300;left,top", 0);
-        match3.percent = calculateMatchProcent(match3);
+        //match3.percent = calculateMatchProcent(match3);
+        match3.percent = 75;
         matches.add(match3);
         Match match4 = new Match("Jimmy", 45, null, 3, "http://3.bp.blogspot.com/-a71LPYXKmYs/T5KQLsCOQNI/AAAAAAAAErw/vyC3o5j7JoA/s1600/Orlando+Bloom+(1).jpg", 100);
-        match4.percent = calculateMatchProcent(match4);
+        //match4.percent = calculateMatchProcent(match4);
+        match4.percent = 91;
         matches.add(match4);
     }
 

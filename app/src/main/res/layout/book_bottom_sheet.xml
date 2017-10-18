@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:layout_marginTop="@dimen/default_margin"
-                android:text="Reviews by others" />
+                android:text="Reviews by your matches" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/book_bottom_sheet_list_review"
