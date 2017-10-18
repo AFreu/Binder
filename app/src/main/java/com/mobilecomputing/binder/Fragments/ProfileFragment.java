@@ -6,12 +6,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
@@ -25,6 +32,7 @@ import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.BookAdapter;
+import com.mobilecomputing.binder.Utils.BookTopListAdapter;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.User;
 import com.mobilecomputing.binder.Views.AddTopList;
@@ -34,6 +42,8 @@ import com.mobilecomputing.binder.Views.ChipView;
 import com.mobilecomputing.binder.Views.ExpandableHeightGridView;
 import com.squareup.picasso.Picasso;
 import com.wefika.flowlayout.FlowLayout;
+
+import org.intellij.lang.annotations.JdkConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,9 +57,6 @@ import java.util.Set;
  */
 public class ProfileFragment extends BasicFragment {
 
-
-    private int CHOOSE_BOOKLIST_CANCELCODE = 85746;
-    private int CHOOSE_BOOKLIST_SELECTEDBOOK_CODE = 34893;
 
     private int CHOOSE_BOOKLIST_ACTIVITY = 1287;
 
@@ -80,7 +87,7 @@ public class ProfileFragment extends BasicFragment {
     private ExpandableHeightGridView topListGrid;
     private ExpandableHeightGridView likedBooksGrid;
     private BookAdapter bookAdapter;
-    private BookAdapter bookAdapterTopList;
+    private BookTopListAdapter bookAdapterTopList;
 
     private View.OnClickListener clickRemoveListener;
     private AdapterView.OnItemClickListener clickGenreListener;
@@ -100,18 +107,6 @@ public class ProfileFragment extends BasicFragment {
 
         initUI(view);
 
-        Button btn = view.findViewById(R.id.btnClicked);
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ChooseBookActivity.class);
-                Book book = new Book();
-                List<Book> listBook = new ArrayList<Book>();
-                listBook.addAll(likedBooks);
-                book.setBookList(listBook);
-                intent.putExtra("MyLikedBooks", book);
-                startActivityForResult(intent, CHOOSE_BOOKLIST_ACTIVITY);
-            }
-        });
         return view;
     }
 
@@ -128,20 +123,42 @@ public class ProfileFragment extends BasicFragment {
 
     public void initUI(View view) {
 
-        topListGrid = view.findViewById(R.id.profile_toplist_books);
+        topListGrid = view.findViewById(R.id.profile_top_books);
         topListGrid.setExpanded(true);
+        bookAdapterTopList = new BookTopListAdapter(getContext(), R.layout.book_item, null);
+        bookAdapterTopList.addSeparatorItem(null);
+        topListGrid.setAdapter(bookAdapterTopList);
+        bookAdapterTopList.addManyItems(topList);
+
+
+        topListGrid.setOnItemClickListener((parent, view1, position, id) -> {
+            if(position != 0) {
+                showBook(bookAdapterTopList.getItem(position));
+            }
+            else {
+                if(topList.size() < 6) {
+                    Intent intent = new Intent(getContext(), ChooseBookActivity.class);
+                    Book book = new Book();
+                    List<Book> listBook = new ArrayList<Book>();
+                    listBook.addAll(likedBooks);
+                    book.setBookList(listBook);
+                    intent.putExtra("MyLikedBooks", book);
+                    startActivityForResult(intent, CHOOSE_BOOKLIST_ACTIVITY);
+                }
+            }
+        });
 
         likedBooksGrid = view.findViewById(R.id.profile_liked_books);
         likedBooksGrid.setExpanded(true);
 
         bookAdapter = new BookAdapter(getContext(), R.layout.book_item, likedBooks);
-        bookAdapterTopList = new BookAdapter(getContext(), R.layout.book_item, topList);
-        topListGrid.setAdapter(bookAdapterTopList);
+
         likedBooksGrid.setAdapter(bookAdapter);
 
         likedBooksGrid.setOnItemClickListener((parent, view1, position, id) -> {
             showBook(bookAdapter.getItem(position));
         });
+
 
         // removes an ignored genre
         clickRemoveListener = view13 -> {
@@ -254,7 +271,8 @@ public class ProfileFragment extends BasicFragment {
     }
 
     public void bookAddToIntresstList(Book book) {
-
+            topList.add(book);
+            bookAdapterTopList.addItem(book);
     }
 
 }
