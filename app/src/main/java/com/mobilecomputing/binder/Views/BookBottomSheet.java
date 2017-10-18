@@ -7,23 +7,18 @@ import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
-import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.Review;
 import com.mobilecomputing.binder.Utils.ReviewAdapter;
-import com.mobilecomputing.binder.Utils.User;
+import com.mobilecomputing.binder.Objects.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -127,6 +122,8 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
             }
         }
 
+
+        /* Show my review if it exists */
         if(myReview != null)
         {
             myBookReviewLayout.setVisibility(View.VISIBLE);

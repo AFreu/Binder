@@ -3,30 +3,21 @@ package com.mobilecomputing.binder.Fragments;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.BookAdapter;
-import com.mobilecomputing.binder.Utils.ImageAdapter;
-import com.mobilecomputing.binder.Utils.User;
+import com.mobilecomputing.binder.Objects.User;
 import com.mobilecomputing.binder.Views.ExpandableHeightGridView;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 
 /**

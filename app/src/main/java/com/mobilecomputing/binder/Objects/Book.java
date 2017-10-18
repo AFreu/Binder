@@ -1,7 +1,6 @@
 package com.mobilecomputing.binder.Objects;
 
 import com.mobilecomputing.binder.Utils.Review;
-import com.mobilecomputing.binder.Utils.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,6 +102,7 @@ public class Book implements Serializable {
         return description;
     }
 
+    /* To edit an already existing review */
     public void setReviewTextForUser(String text, User user){
         boolean userExisted = false;
 
@@ -118,9 +118,6 @@ public class Book implements Serializable {
 
     @Override
     public boolean equals(Object otherBook) {
-        //if(otherBook.getClass() != Book.class)
-        //    return false;
-
         return title.equals(((Book)otherBook).getTitle());
     }
 
@@ -155,6 +152,7 @@ public class Book implements Serializable {
     }
 
     public void addReview(Review review){
-        reviews.add(review);
+        if(!review.getReviewText().isEmpty())
+            reviews.add(review);
     }
 }
