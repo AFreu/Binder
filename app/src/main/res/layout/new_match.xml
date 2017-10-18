@@ -79,13 +79,6 @@
             android:layout_margin="6dp"
             android:text="VIEW PROFILE" />
 
-        <TextView
-            android:id="@+id/button_chat"
-            style="@style/ButtonTextStylePurple"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:text="CHAT" />
 
     </LinearLayout>
 

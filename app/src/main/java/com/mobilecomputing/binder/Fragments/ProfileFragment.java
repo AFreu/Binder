@@ -22,6 +22,7 @@ import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.BookAdapter;
 import com.mobilecomputing.binder.Objects.User;
 import com.mobilecomputing.binder.Views.AddTopList;
+import com.mobilecomputing.binder.Views.BookTopList;
 import com.mobilecomputing.binder.Views.BottomSheet;
 import com.mobilecomputing.binder.Views.ChipButton;
 import com.mobilecomputing.binder.Views.ChipView;
@@ -70,6 +71,7 @@ public class ProfileFragment extends BasicFragment {
     private List<Book> topList = new ArrayList<>();
     private AddTopList addTopListButton;
     private ChipButton chipButton;
+    private Button btn;
     private ExpandableHeightGridView topListGrid;
     private ExpandableHeightGridView likedBooksGrid;
     private BookAdapter bookAdapter;
@@ -93,7 +95,7 @@ public class ProfileFragment extends BasicFragment {
 
         initUI(view);
 
-        Button btn = view.findViewById(R.id.btnClicked);
+        btn = view.findViewById(R.id.btnClicked);
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ChooseBookActivity.class);
@@ -248,6 +250,8 @@ public class ProfileFragment extends BasicFragment {
 
     public void bookAddToIntresstList(Book book) {
         topList.add(book);
+        BookTopList b = new BookTopList(getContext());
+
     }
 
 }
