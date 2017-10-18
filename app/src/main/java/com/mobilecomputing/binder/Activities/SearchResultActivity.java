@@ -17,6 +17,8 @@ import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.BooksAdapter;
 import com.mobilecomputing.binder.Utils.MatchesAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -39,14 +41,11 @@ public class SearchResultActivity extends AppCompatActivity {
         list = (ListView) findViewById(R.id.searchResults);
 
         bookList = new ArrayList<Book>();
+        Book book = (Book)getIntent().getSerializableExtra("books");
 
-        JsonArray bookArr = new Gson().fromJson(getIntent().getStringExtra("books"), JsonArray.class);
+        bookList.addAll(book.getBookList());
 
-        for (int i = 0; i < bookArr.size();  i++)
-        {
-            Book book = new Gson().fromJson(bookArr.get(i), Book.class);
-            bookList.add(book);
-        }
+
         books = new BooksAdapter(this, R.layout.book_list_item, bookList);
 
         list.setAdapter(books);

@@ -27,6 +27,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -422,8 +423,15 @@ public final class OcrCaptureActivity extends AppCompatActivity {
 
                                 String image = "";
                                 try {
-                                    image = obj.getString("cover_i") != null ? obj.getString("cover_i") : "";
-                                } catch (JSONException e) { e.printStackTrace(); }
+                                    image = obj.getString("cover_i") != null ? "http://covers.openlibrary.org/b/ID/" + obj.getString("cover_i") + "-L.jpg" : "";
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    try {
+                                        image = obj.getString("cover_edition_key") != null ? "http://covers.openlibrary.org/b/ID/" + obj.getString("cover_edition_key") + "-L.jpg"  : "";
+                                    } catch (JSONException e2) {
+                                        e2.printStackTrace();
+                                    }
+                                }
 
                                 Book book = new Book(obj.getString("title") + str,
                                         author, "", image, obj.getString("key"));
@@ -432,9 +440,10 @@ public final class OcrCaptureActivity extends AppCompatActivity {
                             }
                             Log.d("HomeActivity", "num of books: " + books.size());
 
+                            Book newBook = new Book();
+                            newBook.setBookList(books);
                             Intent intent = new Intent(this, SearchResultActivity.class);
-                            String strBooks = new Gson().toJson(books);
-                            intent.putExtra("books", strBooks);
+                            intent.putExtra("books", newBook);
                             startActivityForResult(intent, CHOOSE_BOOK_ACTIVITY);
 
                         } else {
