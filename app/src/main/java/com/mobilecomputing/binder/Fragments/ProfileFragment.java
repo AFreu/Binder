@@ -64,7 +64,7 @@ public class ProfileFragment extends BasicFragment {
     private FlowLayout flowLayout;
     private BottomSheet bottomSheet = new BottomSheet();
 
-    private List<String> availableGenres = new ArrayList<>();
+    private List<String> availableGenres;
     private Set<String> ignoredGenres = new HashSet<>();
     private List<Book> likedBooks = new ArrayList<>();
     private List<Book> topList = new ArrayList<>();
@@ -80,6 +80,7 @@ public class ProfileFragment extends BasicFragment {
 
     public ProfileFragment() {
         // Required empty public constructor
+        availableGenres = new ArrayList<>();
         availableGenres.addAll(HomeActivity.allGenres);
     }
 
