@@ -105,21 +105,6 @@ public class ProfileFragment extends BasicFragment {
 
         initUI(view);
 
-<<<<<<< HEAD
-        btn = view.findViewById(R.id.btnClicked);
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ChooseBookActivity.class);
-                Book book = new Book();
-                List<Book> listBook = new ArrayList<Book>();
-                listBook.addAll(likedBooks);
-                book.setBookList(listBook);
-                intent.putExtra("MyLikedBooks", book);
-                startActivityForResult(intent, CHOOSE_BOOKLIST_ACTIVITY);
-            }
-        });
-=======
->>>>>>> 11304b8f3127837e523ce848c89ce505d421102b
         return view;
     }
 
@@ -284,14 +269,9 @@ public class ProfileFragment extends BasicFragment {
     }
 
     public void bookAddToIntresstList(Book book) {
-<<<<<<< HEAD
         topList.add(book);
-        BookTopList b = new BookTopList(getContext());
+        bookAdapterTopList.addItem(book);
 
-=======
-            topList.add(book);
-            bookAdapterTopList.addItem(book);
->>>>>>> 11304b8f3127837e523ce848c89ce505d421102b
     }
 
 }

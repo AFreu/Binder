@@ -177,7 +177,7 @@ public class CardFragment extends BasicFragment {
         reviews.add(review2);
         reviews.add(review3);
         reviews.add(review4);
-        
+
         genresToIgnore.forEach(g -> Log.d("CardFragment", "ignore genre: " + g));
 
         HomeActivity.allGenres.forEach(genre -> {
