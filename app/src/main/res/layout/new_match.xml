@@ -79,7 +79,6 @@
             android:layout_margin="6dp"
             android:text="VIEW PROFILE" />
 
-
     </LinearLayout>
 
 

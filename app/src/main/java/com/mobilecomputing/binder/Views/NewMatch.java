@@ -78,6 +78,16 @@ public class NewMatch extends AppCompatDialogFragment {
         Picasso.with(getContext()).load(match.getImageUrl()).into(matchPicture);
         Picasso.with(getContext()).load(user.getImageUrl()).into(profilePicture);
 
+        viewProfile.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ContactActivity.class);
+                intent.putExtra("contact", match);
+                intent.putExtra("user", user);
+                getActivity().startActivity(intent);
+                getDialog().dismiss();
+            }
+        });
     }
 
 }
