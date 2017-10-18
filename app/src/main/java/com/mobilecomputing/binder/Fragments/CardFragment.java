@@ -19,6 +19,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.mobilecomputing.binder.Activities.HomeActivity;
 import com.mobilecomputing.binder.Objects.Book;
+import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.Review;
@@ -168,16 +169,15 @@ public class CardFragment extends BasicFragment {
 
         /*Temporarily filling books with reviews*/
         List<Review> reviews = new ArrayList<>();
-        Review review = new Review(new User("Karin2", "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg"), "I find this book amzing find this book amzing find this book amzing find this book amzing ");
+        Review review = new Review(new User("Karin", "http://cdn-fashionisers.fcpv4ak.maxcdn-edge.com/wp-content/uploads/2014/03/top_80_updo_hairstyles_2014_for_women_Emma_Stone_updos2.jpg"), "I find this book amazing! It has a fantastic main character!");
+        Review review2 = new Review(new User("Daniel", "https://www.aceshowbiz.com/images/photo/ryan_gosling.jpg"), "I like this book, I recommend you to read it if you like deep topics.");
+        Review review3 = new Review(new User("Peter", "http://akns-images.eonline.com/eol_images/Entire_Site/20161129/rs_300x300-161229151358-ap.jpg?downsize=300:*&crop=300:300;left,top"), "I don't know how many times I have read this book by now, it is really good!");
+        Review review4 = new Review(new User("Frans", "http://3.bp.blogspot.com/-a71LPYXKmYs/T5KQLsCOQNI/AAAAAAAAErw/vyC3o5j7JoA/s1600/Orlando+Bloom+(1).jpg"), "Havn't read this yet, please tell me if it is any good!");
         reviews.add(review);
-        reviews.add(review);
-        reviews.add(review);
-        reviews.add(review);
-        reviews.add(review);
-
-
-
-
+        reviews.add(review2);
+        reviews.add(review3);
+        reviews.add(review4);
+        
         genresToIgnore.forEach(g -> Log.d("CardFragment", "ignore genre: " + g));
 
         HomeActivity.allGenres.forEach(genre -> {
