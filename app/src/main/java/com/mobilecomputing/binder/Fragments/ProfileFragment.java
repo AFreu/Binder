@@ -108,6 +108,7 @@ public class ProfileFragment extends BasicFragment {
         return view;
     }
 
+
     // Loads disliked genres from local storage
     public void refreshIgnoreGenres(Set<String> ignores) {
         ignoredGenres.addAll(ignores);
@@ -126,6 +127,7 @@ public class ProfileFragment extends BasicFragment {
         bookAdapterTopList = new BookTopListAdapter(getContext(), R.layout.book_item, null);
         bookAdapterTopList.addSeparatorItem(null);
         topListGrid.setAdapter(bookAdapterTopList);
+        topList = ((HomeActivity)getActivity()).getTopList();
         bookAdapterTopList.addManyItems(topList);
 
 
@@ -271,6 +273,7 @@ public class ProfileFragment extends BasicFragment {
     public void bookAddToIntresstList(Book book) {
         topList.add(book);
         bookAdapterTopList.addItem(book);
+        ((HomeActivity)getActivity()).setTopList(topList);
 
     }
 
