@@ -128,6 +128,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/BookGridStyle"
+                        android:gravity="center"
+                        android:stretchMode="columnWidth"
                         tools:listitem="@layout/image_layout">
 
                     </com.mobilecomputing.binder.Views.ExpandableHeightGridView>
@@ -166,6 +168,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/BookGridStyle"
+                        android:gravity="center"
+                        android:stretchMode="columnWidth"
                         tools:listitem="@layout/image_layout" />
 
                 </ScrollView>

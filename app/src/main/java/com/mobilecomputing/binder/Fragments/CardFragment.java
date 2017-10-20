@@ -243,12 +243,16 @@ public class CardFragment extends BasicFragment {
         }
     }
 
-    public void setLikedBooks(Set<Book> likedBooks) {
-        this.likedBooks = likedBooks;
+    public void setLikedBooks(List<Book> likedBooksL) {
+        Set<Book> booksSet = new HashSet<>();
+        booksSet.addAll(likedBooksL);
+        this.likedBooks = booksSet;
     }
 
-    public void setDislikedBooks(Set<Book> dislikedBooks) {
-        this.dislikedBooks = dislikedBooks;
+    public void setDislikedBooks(List<Book> dislikedBooksL) {
+        Set<Book> booksSet = new HashSet<>();
+        booksSet.addAll(dislikedBooksL);
+        this.dislikedBooks = booksSet;
     }
 
     public void setUserAccount(User userAccount) {
