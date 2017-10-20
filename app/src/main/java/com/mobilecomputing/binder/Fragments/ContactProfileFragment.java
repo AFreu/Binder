@@ -31,13 +31,16 @@ public class ContactProfileFragment extends BasicFragment {
 
     ExpandableHeightGridView book_grid_1;
     ExpandableHeightGridView book_grid_2;
+    ExpandableHeightGridView book_grid_3;
 
     BookAdapter bookAdapter1;
     BookAdapter bookAdapter2;
+    BookAdapter bookAdapter3;
 
     TextView profileName;
     TextView profileMatchInfo;
     TextView gridSplit;
+    TextView topListTitle;
 
     ImageView profileImage;
 
@@ -62,6 +65,11 @@ public class ContactProfileFragment extends BasicFragment {
         mContact = (Match)getArguments().getSerializable("contact");
         userAccount = (User)getArguments().getSerializable("user");
 
+        if(mContact.getBooks().size() > 6){
+            /* Faking some featured books */
+            mContact.setFeaturedBooks(mContact.getBooks().subList(3,5));
+        }
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -75,9 +83,11 @@ public class ContactProfileFragment extends BasicFragment {
         profileMatchInfo = view.findViewById(R.id.contact_profile_match_info);
         profileName = view.findViewById(R.id.contact_profile_name);
         gridSplit = view.findViewById(R.id.contact_profile_grid_split);
+        topListTitle = view.findViewById(R.id.contact_profile_top_title);
 
         book_grid_1 = view.findViewById(R.id.book_grid_1);
         book_grid_2 = view.findViewById(R.id.book_grid_2);
+        book_grid_3 = view.findViewById(R.id.book_grid_3);
 
 
         populateUI();
@@ -90,17 +100,23 @@ public class ContactProfileFragment extends BasicFragment {
 
         book_grid_1.setExpanded(true);
         book_grid_2.setExpanded(true);
+        book_grid_3.setExpanded(true);
 
         bookAdapter1 = new BookAdapter(getContext(), R.layout.book_item, mContact.getMatchingBooks());
         bookAdapter2 = new BookAdapter(getContext(), R.layout.book_item, mContact.getBooks());
+        bookAdapter3 = new BookAdapter(getContext(), R.layout.book_item, mContact.getFeaturedBooks());
 
         book_grid_1.setAdapter(bookAdapter1);
         book_grid_2.setAdapter(bookAdapter2);
+        book_grid_3.setAdapter(bookAdapter3);
 
         book_grid_1.setOnItemClickListener((parent, view, position, id) -> {
             showBook(bookAdapter1.getItem(position), mContact);
         });
         book_grid_2.setOnItemClickListener((parent, view, position, id) -> {
+            showBook(bookAdapter2.getItem(position), mContact);
+        });
+        book_grid_3.setOnItemClickListener((parent, view, position, id) -> {
             showBook(bookAdapter2.getItem(position), mContact);
         });
 
@@ -110,7 +126,11 @@ public class ContactProfileFragment extends BasicFragment {
 
         profileName.setText(mContact.getGivenName());
         profileMatchInfo.setText(mContact.percent + getString(R.string.contact_profile_percent_match));
-        gridSplit.setText("Other books that " + mContact.getGivenName().split("\\s+")[0] + " loves");
+        gridSplit.setText("Other books that " + mContact.getGivenName().split("\\s+")[0] + " likes");
         Picasso.with(getContext()).load(mContact.getImageUrl()).into(profileImage);
+
+        topListTitle.setText("Books that " + mContact.getGivenName().split("\\s+")[0] + " find interesting");
+
+
     }
 }
