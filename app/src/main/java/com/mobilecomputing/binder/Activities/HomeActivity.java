@@ -74,6 +74,7 @@ public class HomeActivity extends BasicActivity
     private List<Book> likedBooks = new ArrayList<>();
     private List<Book> dislikedBooks = new ArrayList<>();
     private List<Match> matches = new ArrayList<>();
+
     private Fragment profileFragment;
     private Fragment cardFragment;
     private Fragment matchesFragment;
@@ -638,6 +639,12 @@ public class HomeActivity extends BasicActivity
         ((ProfileFragment)profileFragment).setLikedBooks(likedBooks);
         ((MatchesFragment)matchesFragment).setLikedBooks(likedBooks);
 
+        user.setLikedBooks(likedBooks);
+        ((ProfileFragment)profileFragment).setUserAccount(user);
+        ((MatchesFragment)matchesFragment).setUserAccount(user);
+
+
+
         runMatchMakingSystem();
 
     }
@@ -648,6 +655,11 @@ public class HomeActivity extends BasicActivity
         likedBooks.remove(book);
         ((ProfileFragment)profileFragment).setLikedBooks(likedBooks);
         ((MatchesFragment)matchesFragment).setLikedBooks(likedBooks);
+
+        user.setLikedBooks(likedBooks);
+        ((ProfileFragment)profileFragment).setUserAccount(user);
+        ((MatchesFragment)matchesFragment).setUserAccount(user);
+        ((CardFragment)cardFragment).setUserAccount(user);
 
         runMatchMakingSystem();
 

@@ -14,6 +14,8 @@ import com.mobilecomputing.binder.Objects.User;
 import com.mobilecomputing.binder.Views.BookBottomSheet;
 import com.mobilecomputing.binder.Views.ReviewBottomSheet;
 
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -39,14 +41,20 @@ public abstract class BasicFragment extends Fragment implements ImageAdapter.Ima
 
     @Override
     public void reviewClicked(Review review) {
-        //TODO: fix user/match issue
 
+        /* Making a match out of the user */
         User reviewer = review.getReviewUser();
-        Match match = (Match)reviewer;
-        match.setBooks(reviewer.getBooks(), userAccount.getBooks());
+        List<Book> books = reviewer.getBooks();
+        Match match = new Match(reviewer.getGivenName(), reviewer.getAge(), reviewer.getCity(), 7, reviewer.getImageUrl(), 65);
+        match.setBooks(books, userAccount.getBooks());
 
-        Log.d(TAG, "review clicked");
-        //switchToMatch(review.getReviewUser());
+
+        if(books.size() > 6){
+            /* Faking some featured books */
+            //match.setFeaturedBooks(reviewer.getBooks().subList(3,6));
+        }
+
+        switchToMatch(match);
     }
 
     @Override
@@ -78,6 +86,10 @@ public abstract class BasicFragment extends Fragment implements ImageAdapter.Ima
         reviewBottomSheet.show(getActivity().getSupportFragmentManager(), reviewBottomSheet.getTag());
     }
 
+    /**
+     * Starts a contact activity for a match
+     * @param match - the match to populate contact activity with
+     */
     protected void switchToMatch(Match match){
         Intent intent = new Intent(getActivity(), ContactActivity.class);
         intent.putExtra("contact", match);
@@ -92,5 +104,7 @@ public abstract class BasicFragment extends Fragment implements ImageAdapter.Ima
         this.userAccount = userAccount;
     }
 
-
+    public User getUserAccount() {
+        return userAccount;
+    }
 }
