@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobilecomputing.binder.Objects.Author;
+import com.mobilecomputing.binder.Objects.ChatImage;
 import com.mobilecomputing.binder.Objects.Message;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
@@ -96,7 +97,20 @@ public class ContactChatFragment extends BasicFragment
         inputView.setAttachmentsListener(new MessageInput.AttachmentsListener() {
             @Override
             public void onAddAttachments() {
-                int i = 0;//select attachments
+                Author author = new Author();
+                author.setId(total % 2 == 0 ? "Me" : "Match");
+                author.setName(total % 2 == 0 ? "Me" : mContact.getGivenName());
+                author.setAvatar("https://blog.prepscholar.com/hubfs/body_testinprogress.gif?t=1506619170859");
+                ChatImage image = new ChatImage();
+                image.setUrl("https://blog.prepscholar.com/hubfs/body_testinprogress.gif?t=1506619170859");
+                Message msg = new Message();
+                msg.setId(String.valueOf(total));
+//                msg.setText(String.valueOf(input));
+                msg.setImage(image);
+                msg.setAuthor(author);
+                msg.setCreatedAt(Calendar.getInstance().getTime());
+                adapter.addToStart(msg, true);//select attachments
+                total++;
             }
         });
         return view;
