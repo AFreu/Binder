@@ -60,16 +60,6 @@ public class NewMatch extends AppCompatDialogFragment {
 
         populateUI();
 
-
-        viewProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ContactActivity.class);
-                intent.putExtra("contact", match);
-                intent.putExtra("user", user);
-                getActivity().startActivity(intent);
-            }
-        });
         return view;
     }
 
