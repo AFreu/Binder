@@ -139,6 +139,15 @@ public class HomeActivity extends BasicActivity
         // recovering the instance state
         if (savedInstanceState != null) {
             idFragment = savedInstanceState.getString("SelectedFragment");
+            Book book = (Book)savedInstanceState.getSerializable("likedBooks");
+            likedBooks = book.getBookList();
+            Book book2 = (Book)savedInstanceState.getSerializable("dislikedBooks");
+            dislikedBooks = book2.getBookList();
+            ((MatchesFragment) matchesFragment).setLikedBooks(likedBooks);
+            ((ProfileFragment) profileFragment).setLikedBooks(likedBooks);
+            ((CardFragment) cardFragment).setLikedBooks(likedBooks);
+            ((CardFragment) cardFragment).setDislikedBooks(dislikedBooks);
+
             switchContent(idFragment);
         }
 
@@ -147,7 +156,12 @@ public class HomeActivity extends BasicActivity
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("SelectedFragment", idFragment);
-
+        Book book = new Book();
+        book.setBookList(likedBooks);
+        outState.putSerializable("likedBooks", book);
+        Book book2 = new Book();
+        book2.setBookList(dislikedBooks);
+        outState.putSerializable("dislikedBooks", book2);
         // call superclass to save any view hierarchy
         super.onSaveInstanceState(outState);
     }
