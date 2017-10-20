@@ -236,7 +236,9 @@ public class ProfileFragment extends BasicFragment {
 
     public void setUserAccount(User userAccount) {
         this.userAccount = userAccount;
-    }
+        try {
+            Picasso.with(getContext()).load(userAccount.getImageUrl()).into(profileImage);
+        } catch (Exception e){}    }
 
     private void addDislikedGenre(String name){
 

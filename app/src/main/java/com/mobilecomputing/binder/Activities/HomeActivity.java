@@ -327,9 +327,22 @@ public class HomeActivity extends BasicActivity
 
     private void mockSignIn() {
 
+        User userAccount = new User("TestUser",
+                "https://cdn3.iconfinder.com/data/icons/black-easy/512/538642-user_512x512.png");
         isSignedIn = true;
-        ((ProfileFragment)profileFragment).setUserAccount(null);
-        ((CardFragment)cardFragment).setUserAccount(null);
+        ((ProfileFragment)profileFragment).setUserAccount(userAccount);
+        ((CardFragment)cardFragment).setUserAccount(userAccount);
+
+
+        if(sharedPreferences == null)
+            sharedPreferences = getSharedPreferences(getString(R.string.SHARED_PREFS_USER_DATA_TAG), MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), isSignedIn);
+        editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME), userAccount.getGivenName());
+        editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL),
+                userAccount.getImageUrl());
+        editor.apply();
         setVisibilityOfSignIn();
         setScanMenu();
     }
@@ -440,7 +453,7 @@ public class HomeActivity extends BasicActivity
             editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), isSignedIn);
             editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME), acct.getGivenName());
             editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL),
-                    acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "ic_profile.xml");
+                    acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "https://cdn3.iconfinder.com/data/icons/black-easy/512/538642-user_512x512.png");
             editor.apply();
 
         } else {

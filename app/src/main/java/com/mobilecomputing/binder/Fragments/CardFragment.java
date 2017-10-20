@@ -89,6 +89,7 @@ public class CardFragment extends BasicFragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void initUI(View view) {
         profileImage = view.findViewById(R.id.card_profile_image);
+        Picasso.with(getContext()).load("https://cdn3.iconfinder.com/data/icons/black-easy/512/538642-user_512x512.png").into(profileImage);
         profileName = view.findViewById(R.id.card_text_name);
         cardStack = view.findViewById(R.id.card_stack);
         imageAdapter = new ImageAdapter(getActivity(), R.layout.image_layout);
@@ -257,7 +258,9 @@ public class CardFragment extends BasicFragment {
 
     public void setUserAccount(User userAccount) {
         this.userAccount = userAccount;
-
+        try {
+            Picasso.with(getContext()).load(userAccount.getImageUrl()).into(profileImage);
+        } catch (Exception e){}
         populateUI();
     }
 
