@@ -327,11 +327,11 @@ public class HomeActivity extends BasicActivity
 
     private void mockSignIn() {
 
-        User userAccount = new User("TestUser",
+        user = new User("TestUser",
                 "https://cdn3.iconfinder.com/data/icons/black-easy/512/538642-user_512x512.png");
         isSignedIn = true;
-        ((ProfileFragment)profileFragment).setUserAccount(userAccount);
-        ((CardFragment)cardFragment).setUserAccount(userAccount);
+        ((ProfileFragment)profileFragment).setUserAccount(user);
+        ((CardFragment)cardFragment).setUserAccount(user);
 
 
         if(sharedPreferences == null)
@@ -339,12 +339,15 @@ public class HomeActivity extends BasicActivity
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), isSignedIn);
-        editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME), userAccount.getGivenName());
+        editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_DISPLAY_NAME), user.getGivenName());
         editor.putString(getString(R.string.SHARED_PREFS_USER_DATA_TAG_PHOTO_URL),
-                userAccount.getImageUrl());
+                user.getImageUrl());
         editor.apply();
+
         setVisibilityOfSignIn();
         setScanMenu();
+        loadIgnoreGenres();
+
     }
 
     /**
@@ -436,13 +439,12 @@ public class HomeActivity extends BasicActivity
 
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            User userAccount = new User(acct.getGivenName(),
+            user = new User(acct.getGivenName(),
                     acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() :
                             "https://cdn3.iconfinder.com/data/icons/black-easy/512/538642-user_512x512.png");
             isSignedIn = true;
-            ((ProfileFragment)profileFragment).setUserAccount(userAccount);
-            ((CardFragment)cardFragment).setUserAccount(userAccount);
-
+            ((ProfileFragment)profileFragment).setUserAccount(user);
+            ((CardFragment)cardFragment).setUserAccount(user);
             setScanMenu();
             setVisibilityOfSignIn();
 
@@ -462,7 +464,7 @@ public class HomeActivity extends BasicActivity
             ((CardFragment)cardFragment).setUserAccount(null);
         }
 
-
+        loadIgnoreGenres();
         setVisibilityOfSignIn();
     }
 
@@ -544,13 +546,21 @@ public class HomeActivity extends BasicActivity
             setEmptyMenu();
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), false).apply();
+            editor.putBoolean(getString(R.string.SHARED_PREFS_USER_DATA_TAG_SIGNED_IN), false);
+            editor.remove(getString(R.string.SHARED_PREFS_USER_DATA_TAG_IGNORE_GENRES));
+            editor.apply();
             isSignedIn = false;
-
+            idFragment = "CardFragment";
             if(googleApiClient != null && googleApiClient.isConnected())
                 googleApiClient.disconnect();
 
-            setVisibilityOfSignIn();
+            //setVisibilityOfSignIn();
+            //switchContent(idFragment);
+            Intent intent = new Intent(this, HomeActivity.class);
+
+            finish();
+
+            startActivity(intent);
         }
 
         if(sharedPreferences == null)
