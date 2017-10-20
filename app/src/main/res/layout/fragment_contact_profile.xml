@@ -74,6 +74,23 @@
             tools:listitem="@layout/book_item" />
 
         <TextView
+            android:id="@+id/contact_profile_top_title"
+            style="@style/SecondaryTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:text="Books that Joe find interesting" />
+
+        <com.mobilecomputing.binder.Views.ExpandableHeightGridView
+            android:id="@+id/book_grid_3"
+            style="@style/BookGridStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchMode="columnWidth"
+            android:gravity="center"
+            tools:listitem="@layout/book_item" />
+
+        <TextView
             android:id="@+id/contact_profile_grid_split"
             style="@style/SecondaryTextStyle"
             android:layout_width="match_parent"

@@ -49,10 +49,7 @@ public abstract class BasicFragment extends Fragment implements ImageAdapter.Ima
         match.setBooks(books, userAccount.getBooks());
 
 
-        if(books.size() > 6){
-            /* Faking some featured books */
-            //match.setFeaturedBooks(reviewer.getBooks().subList(3,6));
-        }
+
 
         switchToMatch(match);
     }
