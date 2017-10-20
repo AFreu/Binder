@@ -51,8 +51,15 @@ public class BooksAdapter extends ArrayAdapter {
         matchName.setText(book.getTitle());
         //TODO fix this
         matchPercent.setText("By " + book.getAuthor());
-        Picasso.with(mContext).load("http://covers.openlibrary.org/b/id/"
-                + book.getImageUrl() + "-M.jpg").into(matchPicture);
+        String str = book.getImageUrl();
+        if(str != "")
+            str = str.replace("L.jpg", "M.jpg");
+        try {
+            Picasso.with(mContext).load(str).into(matchPicture);
+        }
+        catch (Exception e){
+
+        }
 
         return convertView;
     }

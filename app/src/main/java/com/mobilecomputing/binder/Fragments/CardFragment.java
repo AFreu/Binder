@@ -276,9 +276,8 @@ public class CardFragment extends BasicFragment {
                         if (json != null) {
 
                             // TODO add all books from a genre and not only the first one
-                            String imgUrl = "http://covers.openlibrary.org/b/id/" + book.getImageUrl() + "-L.jpg";
+                            String imgUrl = book.getImageUrl();
                             books.add(0, new Book(book.getTitle(), book.getAuthor(), "", imgUrl, book.getKey()));
-                            Log.d("CardFragment", "num of books: " + books.size());
 
                         } else {
                             Log.d("CardFragment", "no works found..");
