@@ -173,6 +173,7 @@ public class CardFragment extends BasicFragment {
         Review review2 = new Review(new User("Daniel", "https://www.aceshowbiz.com/images/photo/ryan_gosling.jpg"), "I like this book, I recommend you to read it if you like deep topics.");
         Review review3 = new Review(new User("Peter", "http://akns-images.eonline.com/eol_images/Entire_Site/20161129/rs_300x300-161229151358-ap.jpg?downsize=300:*&crop=300:300;left,top"), "I don't know how many times I have read this book by now, it is really good!");
         Review review4 = new Review(new User("Frans", "http://3.bp.blogspot.com/-a71LPYXKmYs/T5KQLsCOQNI/AAAAAAAAErw/vyC3o5j7JoA/s1600/Orlando+Bloom+(1).jpg"), "Havn't read this yet, please tell me if it is any good!");
+
         reviews.add(review);
         reviews.add(review2);
         reviews.add(review3);
@@ -225,7 +226,13 @@ public class CardFragment extends BasicFragment {
             }
         });
 
-        queue.addRequestFinishedListener(listener -> imageAdapter.setBooks(books));
+        queue.addRequestFinishedListener(listener -> {
+            imageAdapter.setBooks(books);
+            for(Review r : reviews){
+                r.getReviewUser().setLikedBooks(books);
+            }
+
+        });
     }
 
     public void populateUI() {
