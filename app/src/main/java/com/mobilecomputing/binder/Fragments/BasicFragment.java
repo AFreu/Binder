@@ -4,6 +4,7 @@ package com.mobilecomputing.binder.Fragments;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 
@@ -93,7 +94,8 @@ public abstract class BasicFragment extends Fragment implements ImageAdapter.Ima
     public void displayReviewSnackbar(Book book) {
 
         Snackbar mySnackbar = Snackbar.make(getView(),
-                "Book liked", Snackbar.LENGTH_SHORT);
+                "Book liked", Snackbar.LENGTH_LONG);
+        mySnackbar.setActionTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         mySnackbar.setAction("Add review", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
