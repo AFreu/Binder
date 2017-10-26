@@ -691,7 +691,7 @@ public class HomeActivity extends BasicActivity
         ((MatchesFragment)matchesFragment).setUserAccount(user);
         ((CardFragment)cardFragment).setUserAccount(user);
 
-        runMatchMakingSystem();
+        //runMatchMakingSystem();
 
     }
 
@@ -708,7 +708,7 @@ public class HomeActivity extends BasicActivity
             matches.add(match);
             loadMatches();
 
-            matchCounter = 4;
+            matchCounter = 5;
         }
     }
 
