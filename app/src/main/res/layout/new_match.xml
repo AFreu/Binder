@@ -4,12 +4,19 @@
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_gravity="center"
     android:layout_height="wrap_content"
-    android:padding="20dp">
+    android:elevation="24dp">
+
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
         style="@style/GenreTextStyle"
         android:text="You got a match!" />
 
@@ -59,29 +66,38 @@
         android:id="@+id/match_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
         android:text="" />
 
+</LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:gravity="end"
-        android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:gravity="end"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/button_cancel"
+        style="@style/ButtonTextStylePurple"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="8dp"
+        android:padding="8dp"
+        android:text="NOT NOW" />
 
 
-        <TextView
-            android:id="@+id/button_view_profile"
-            style="@style/ButtonTextStylePurple"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:text="VIEW PROFILE" />
+    <TextView
+        android:id="@+id/button_view_profile"
+        style="@style/ButtonTextStylePurple"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:padding="8dp"
+        android:text="VIEW PROFILE" />
 
     </LinearLayout>
-
-
-
 
 </LinearLayout>

@@ -30,6 +30,7 @@ public class NewMatch extends AppCompatDialogFragment {
 
     private TextView matchText;
     private TextView viewProfile;
+    private TextView cancel;
     private ImageView profilePicture;
     private ImageView matchPicture;
 
@@ -55,6 +56,7 @@ public class NewMatch extends AppCompatDialogFragment {
 
         matchText = view.findViewById(R.id.match_text);
         viewProfile = view.findViewById(R.id.button_view_profile);
+        cancel = view.findViewById(R.id.button_cancel);
         profilePicture = view.findViewById(R.id.profile_picture_match_view);
         matchPicture = view.findViewById(R.id.match_picture_match_view);
 
@@ -75,6 +77,13 @@ public class NewMatch extends AppCompatDialogFragment {
                 intent.putExtra("contact", match);
                 intent.putExtra("user", user);
                 getActivity().startActivity(intent);
+                getDialog().dismiss();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 getDialog().dismiss();
             }
         });
