@@ -65,13 +65,17 @@ public abstract class BasicFragment extends Fragment implements ImageAdapter.Ima
 
 
     protected void showBook(Book book){
-        showBook(book, userAccount);
+        showBook(book, userAccount, false);
+    }
+    protected void showBook(Book book, boolean showAddReview){
+        showBook(book, userAccount,showAddReview);
     }
 
-    protected void showBook(Book b, User u){
+    protected void showBook(Book b, User u, boolean showAddReview){
         bookBottomSheet = new BookBottomSheet();
         bookBottomSheet.setBook(b);
         bookBottomSheet.setUser(u);
+        bookBottomSheet.setShowReview(showAddReview);
         bookBottomSheet.setBookBottomSheetListener(this);
         bookBottomSheet.show(getActivity().getSupportFragmentManager(), bookBottomSheet.getTag());
     }

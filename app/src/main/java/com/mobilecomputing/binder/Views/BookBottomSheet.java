@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobilecomputing.binder.Objects.Book;
@@ -45,6 +46,7 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
 
     private Book book;
     private User me;
+    private boolean showReview;
 
     private TextView bookTitle;
     private TextView bookAuthor;
@@ -54,6 +56,8 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
     private TextView myBookReview;
     private ImageView myBookReviewImage;
     private LinearLayout myBookReviewLayout;
+    private LinearLayout addReviewField;
+
 
     private RecyclerView recyclerView;
     private ReviewAdapter adapter;
@@ -65,6 +69,9 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
     public void setUser(User user) { this.me = user; }
     public void setBook(Book book) {
         this.book = book;
+    }
+    public void setShowReview(boolean show) {
+        this.showReview = show;
     }
 
     @Override
@@ -85,6 +92,7 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
         myBookReviewImage = view.findViewById(R.id.review_item_picture);
         recyclerView = view.findViewById(R.id.book_bottom_sheet_list_review);
         myBookReviewLayout = view.findViewById(R.id.book_bottom_sheet_my_review_layout);
+        addReviewField = view.findViewById(R.id.addReviewField);
 
         populateUI();
 
@@ -103,6 +111,9 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void populateUI(){
+        if(showReview){
+            addReviewField.setVisibility(View.VISIBLE);
+        }
 
         List<Review> reviewsByOthers = new ArrayList<>();
         Review myReview = null;

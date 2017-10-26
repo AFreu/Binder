@@ -133,7 +133,7 @@ public class ProfileFragment extends BasicFragment {
 
         topListGrid.setOnItemClickListener((parent, view1, position, id) -> {
             if(position != 0) {
-                showBook(bookAdapterTopList.getItem(position));
+                showBook(bookAdapterTopList.getItem(position), true);
             }
             else {
                 if(topList.size() < 6) {
@@ -156,7 +156,7 @@ public class ProfileFragment extends BasicFragment {
         likedBooksGrid.setAdapter(bookAdapter);
 
         likedBooksGrid.setOnItemClickListener((parent, view1, position, id) -> {
-            showBook(bookAdapter.getItem(position));
+            showBook(bookAdapter.getItem(position), true);
         });
 
 

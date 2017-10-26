@@ -111,13 +111,13 @@ public class ContactProfileFragment extends BasicFragment {
         book_grid_3.setAdapter(bookAdapter3);
 
         book_grid_1.setOnItemClickListener((parent, view, position, id) -> {
-            showBook(bookAdapter1.getItem(position), mContact);
+            showBook(bookAdapter1.getItem(position), mContact, false);
         });
         book_grid_2.setOnItemClickListener((parent, view, position, id) -> {
-            showBook(bookAdapter2.getItem(position), mContact);
+            showBook(bookAdapter2.getItem(position), mContact, false);
         });
         book_grid_3.setOnItemClickListener((parent, view, position, id) -> {
-            showBook(bookAdapter2.getItem(position), mContact);
+            showBook(bookAdapter2.getItem(position), mContact, false);
         });
 
     }

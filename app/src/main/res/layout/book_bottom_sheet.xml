@@ -63,6 +63,49 @@
                     app:srcCompat="@drawable/ic_book" />
 
             </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/addReviewField"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:text="What did like about the book?"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/review_text_input"
+                    android:hint="@string/text_review"
+                    android:singleLine="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_alignParentEnd="true"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+                        <Button
+                            android:id="@+id/review_done_button"
+                            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                            android:layout_gravity="right"
+                            android:text="Add"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/book_bottom_sheet_my_review_layout"
