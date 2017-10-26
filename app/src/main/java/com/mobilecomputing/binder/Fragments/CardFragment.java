@@ -112,7 +112,7 @@ public class CardFragment extends BasicFragment {
                     case Right:
 
                         likedBooks.add(book);
-                        displayReviewBottomSheet(book);
+                        displayReviewSnackbar(book);
 
                         if(cardFragmentListener != null)
                             cardFragmentListener.bookLiked(book);

@@ -2,12 +2,15 @@ package com.mobilecomputing.binder.Fragments;
 
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.View;
 
 import com.mobilecomputing.binder.Activities.ContactActivity;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
+import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 import com.mobilecomputing.binder.Utils.Review;
 import com.mobilecomputing.binder.Objects.User;
@@ -81,6 +84,23 @@ public abstract class BasicFragment extends Fragment implements ImageAdapter.Ima
         reviewBottomSheet.setBook(book);
         reviewBottomSheet.setUser(userAccount);
         reviewBottomSheet.show(getActivity().getSupportFragmentManager(), reviewBottomSheet.getTag());
+    }
+
+    /**
+     * Enables user to review a book after swiping right
+     * @param book
+     */
+    public void displayReviewSnackbar(Book book) {
+
+        Snackbar mySnackbar = Snackbar.make(getView(),
+                "Book liked", Snackbar.LENGTH_SHORT);
+        mySnackbar.setAction("Add review", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayReviewBottomSheet(book);
+            }
+        });
+        mySnackbar.show();
     }
 
     /**
