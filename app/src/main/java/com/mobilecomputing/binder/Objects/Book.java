@@ -143,6 +143,14 @@ public class Book implements Serializable {
         return reviews;
     }
 
+    public List<Review> getReviewsByMe(User me){
+        List<Review> temp = new ArrayList<>();
+        for(Review r : reviews){
+            if(r.getReviewUser().equals(me)) temp.add(r);
+        }
+        return temp;
+    }
+
     public List<Review> getReviewsByOthers(User me){
         List<Review> temp = new ArrayList<>();
         for(Review r : reviews){

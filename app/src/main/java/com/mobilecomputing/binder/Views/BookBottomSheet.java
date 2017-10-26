@@ -153,6 +153,7 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
         /* Show my review if it exists */
         if(myReview != null)
         {
+            addReviewField.setVisibility(View.GONE);
             myBookReviewLayout.setVisibility(View.VISIBLE);
             myBookReview.setText(myReview.getReviewText());
             Picasso.with(getContext()).load(myReview.getReviewUser().getImageUrl()).into(myBookReviewImage);

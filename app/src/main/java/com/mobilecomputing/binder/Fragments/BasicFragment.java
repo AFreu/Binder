@@ -69,9 +69,7 @@ public abstract class BasicFragment extends Fragment implements ImageAdapter.Ima
     }
     protected void showBook(Book book, boolean showAddReview){
         showBook(book, userAccount,showAddReview);
-        if(!showAddReview) {
-            onLearnMoreClick(book);
-        }
+
     }
 
     protected void showBook(Book b, User u, boolean showAddReview){

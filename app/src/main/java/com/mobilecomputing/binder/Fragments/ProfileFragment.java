@@ -31,6 +31,7 @@ import com.mobilecomputing.binder.Utils.BookTopListAdapter;
 import com.mobilecomputing.binder.Utils.ImageAdapter;
 
 import com.mobilecomputing.binder.Objects.User;
+import com.mobilecomputing.binder.Utils.Review;
 import com.mobilecomputing.binder.Views.AddTopList;
 import com.mobilecomputing.binder.Views.BookTopList;
 import com.mobilecomputing.binder.Views.BottomSheet;
@@ -129,6 +130,7 @@ public class ProfileFragment extends BasicFragment {
         topListGrid.setAdapter(bookAdapterTopList);
         topList = ((HomeActivity)getActivity()).getTopList();
         bookAdapterTopList.addManyItems(topList);
+
 
 
         topListGrid.setOnItemClickListener((parent, view1, position, id) -> {
