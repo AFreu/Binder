@@ -12,7 +12,7 @@
         android:id="@+id/genre_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:paddingLeft="12dp"
         android:layout_gravity="center"
         style="@style/ButtonTextStyle"
         android:text="genre"/>
@@ -20,9 +20,8 @@
         android:id="@+id/genre_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         android:layout_gravity="center"
-        android:background="@drawable/ic_remove"
-        />
+        android:background="@drawable/ic_remove"/>
 </LinearLayout>
