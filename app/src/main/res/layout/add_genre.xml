@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_margin="5dp"
     android:radius="20dp"
-    android:layout_height="36dp"
+    android:layout_height="32dp"
     android:elevation="2dp"
     android:background="@drawable/background_addgenre">
 
@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="5dp"
         android:layout_gravity="center"
         android:background="@drawable/ic_add"/>
 </LinearLayout>
