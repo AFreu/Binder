@@ -114,7 +114,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/book_bottom_sheet_my_book_review_title"
                     style="@style/SecondaryTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -130,24 +130,32 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView4"
-                style="@style/SecondaryTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:layout_marginTop="@dimen/default_margin"
-                android:text="Reviews by your matches" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/book_bottom_sheet_list_review"
+            <LinearLayout
+                android:id="@+id/book_bottom_sheet_review_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:isScrollContainer="false"
-                android:nestedScrollingEnabled="true"
-                tools:listitem="@layout/review_item" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    style="@style/SecondaryTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:text="Reviews by your matches" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/book_bottom_sheet_list_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:isScrollContainer="false"
+                    android:nestedScrollingEnabled="true"
+                    tools:listitem="@layout/review_item" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

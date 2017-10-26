@@ -12,12 +12,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.Objects.Match;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.BookAdapter;
 import com.mobilecomputing.binder.Objects.User;
+import com.mobilecomputing.binder.Utils.Review;
 import com.mobilecomputing.binder.Views.ExpandableHeightGridView;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 
 /**
@@ -67,7 +71,13 @@ public class ContactProfileFragment extends BasicFragment {
 
         if(mContact.getBooks().size() > 6){
             /* Faking some featured books */
-            mContact.setFeaturedBooks(mContact.getBooks().subList(3,5));
+            List<Book> fBooks = mContact.getBooks().subList(3,5);
+
+            mContact.setFeaturedBooks(fBooks);
+        }
+
+        for(Book b : mContact.getBooks()){
+            b.addReview(new Review(mContact, "This book is among my favorites, I really like the main character!"));
         }
 
     }

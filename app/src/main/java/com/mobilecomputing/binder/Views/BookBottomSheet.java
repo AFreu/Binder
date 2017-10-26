@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.vision.text.Line;
+import com.google.android.gms.vision.text.Text;
 import com.mobilecomputing.binder.Objects.Book;
 import com.mobilecomputing.binder.R;
 import com.mobilecomputing.binder.Utils.Review;
@@ -53,14 +55,21 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
     private TextView bookDescription;
     private ImageView bookImage;
 
+    private TextView myBookReviewTitle;
     private TextView myBookReview;
     private ImageView myBookReviewImage;
     private LinearLayout myBookReviewLayout;
     private LinearLayout addReviewField;
 
 
+
+    private LinearLayout bookReviewLayout;
+
     private RecyclerView recyclerView;
     private ReviewAdapter adapter;
+
+
+    private boolean matchsBook = false;
 
     public BookBottomSheet() {
 
@@ -73,6 +82,9 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
     public void setShowReview(boolean show) {
         this.showReview = show;
     }
+
+    /* Temporary flag to indicate from which screen the bottomsheet has been opened from */
+    public void matchsBook() {matchsBook = true;}
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -93,6 +105,10 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
         recyclerView = view.findViewById(R.id.book_bottom_sheet_list_review);
         myBookReviewLayout = view.findViewById(R.id.book_bottom_sheet_my_review_layout);
         addReviewField = view.findViewById(R.id.addReviewField);
+
+        bookReviewLayout = view.findViewById(R.id.book_bottom_sheet_review_layout);
+
+        myBookReviewTitle = view.findViewById(R.id.book_bottom_sheet_my_book_review_title);
 
         populateUI();
 
@@ -140,10 +156,23 @@ public class BookBottomSheet extends BottomSheetDialogFragment {
             myBookReviewLayout.setVisibility(View.VISIBLE);
             myBookReview.setText(myReview.getReviewText());
             Picasso.with(getContext()).load(myReview.getReviewUser().getImageUrl()).into(myBookReviewImage);
+
+            if(matchsBook){
+                myBookReviewTitle.setText(me.getGivenName().split("\\s+")[0] + "s review");
+            }
+
         }else
         {
             myBookReviewLayout.setVisibility(View.GONE);
         }
+
+        if(reviewsByOthers.isEmpty()){
+            bookReviewLayout.setVisibility(View.GONE);
+        }else{
+            bookReviewLayout.setVisibility(View.VISIBLE);
+        }
+
+
 
 
         adapter = new ReviewAdapter(book.getReviewsByOthers(me));

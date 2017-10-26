@@ -69,6 +69,9 @@ public abstract class BasicFragment extends Fragment implements ImageAdapter.Ima
     }
     protected void showBook(Book book, boolean showAddReview){
         showBook(book, userAccount,showAddReview);
+        if(!showAddReview) {
+            onLearnMoreClick(book);
+        }
     }
 
     protected void showBook(Book b, User u, boolean showAddReview){
@@ -76,6 +79,7 @@ public abstract class BasicFragment extends Fragment implements ImageAdapter.Ima
         bookBottomSheet.setBook(b);
         bookBottomSheet.setUser(u);
         bookBottomSheet.setShowReview(showAddReview);
+        bookBottomSheet.matchsBook();
         bookBottomSheet.setBookBottomSheetListener(this);
         bookBottomSheet.show(getActivity().getSupportFragmentManager(), bookBottomSheet.getTag());
     }
