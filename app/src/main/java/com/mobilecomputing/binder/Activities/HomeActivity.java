@@ -97,7 +97,7 @@ public class HomeActivity extends BasicActivity
 
     private Menu menu;
     private SharedPreferences sharedPreferences;
-
+    private BottomNavigationView navigation;
     private String idFragment = "CardFragment";
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -178,28 +178,14 @@ public class HomeActivity extends BasicActivity
 
     @Override
     public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
-        }
-
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce=false;
-            }
-        }, 2000);
+        navigation.setSelectedItemId(R.id.navigation_books);
     }
 
     public void initUI() {
         Toolbar toolBar = (Toolbar)findViewById(R.id.home_toolbar);
         setSupportActionBar(toolBar);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         appBody = (LinearLayout) findViewById(R.id.app_body);
@@ -431,7 +417,7 @@ public class HomeActivity extends BasicActivity
         }
 
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.content, fragment).commit();
+        manager.beginTransaction().replace(R.id.content, fragment).addToBackStack(content).commit();
         getSupportActionBar().setTitle(title);
     }
 
