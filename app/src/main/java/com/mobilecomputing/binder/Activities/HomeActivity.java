@@ -361,7 +361,7 @@ public class HomeActivity extends BasicActivity
                     Log.d(TAG, "Text read: " + text);
 
                     ((CardFragment)cardFragment).addBookToTop(text);
-                    switchContent("CardFragment");
+                    navigation.setSelectedItemId(R.id.navigation_books);
 
                 } else {
                     Log.d(TAG, "No Text captured, intent data is null");
@@ -380,7 +380,7 @@ public class HomeActivity extends BasicActivity
 
                     String strBook = new Gson().toJson(book);
                     ((CardFragment)cardFragment).addBookToTop2(strBook);
-                    switchContent("CardFragment");
+                    navigation.setSelectedItemId(R.id.navigation_books);
 
                 } else {
                     Log.d(TAG, "No Text captured, intent data is null");
