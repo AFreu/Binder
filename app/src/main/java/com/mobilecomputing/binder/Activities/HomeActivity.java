@@ -313,8 +313,8 @@ public class HomeActivity extends BasicActivity
 
     private void mockSignIn() {
 
-        user = new User("TestUser",
-                "https://cdn3.iconfinder.com/data/icons/black-easy/512/538642-user_512x512.png");
+        user = new User("Jane",
+                "https://cdn.dribbble.com/users/241119/screenshots/1882974/lady-shot.png");
         isSignedIn = true;
         ((ProfileFragment)profileFragment).setUserAccount(user);
         ((CardFragment)cardFragment).setUserAccount(user);
@@ -686,7 +686,11 @@ public class HomeActivity extends BasicActivity
         matchCounter--;
         if(matchCounter == 0){
             NewMatch newMatch = new NewMatch();
-            Match match = new Match("Erik", 27, null, 1, "http://fanexpocanada.com/wp-content/uploads/Eric-McCormack.png", 64);
+            Match match = new Match("Erik", 27, null, 1, "https://cdn.dribbble.com/users/241119/screenshots/1771312/dork-dr.png", 64);
+            List<Book> eriksBooks = new ArrayList<>();
+            eriksBooks.addAll(likedBooks);
+            eriksBooks.addAll(dislikedBooks);
+            match.setBooks(eriksBooks, likedBooks);
             newMatch.setMatch(match);
             newMatch.setUser(user);
             newMatch.show(getSupportFragmentManager(), newMatch.getTag());

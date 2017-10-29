@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public class User implements Serializable {
-    protected String givenName, imageUrl, city;
+    protected String givenName, imageUrl = "https://cdn.dribbble.com/users/113499/screenshots/3551730/dribbble.png", city;
 
     protected Integer age;
 
